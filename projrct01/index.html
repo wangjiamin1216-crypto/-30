@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大宗商品管理中心</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTAgMGMtNS41MjMgMC0xMCA0LjQ3Ny0xMCAxMHM0LjQ3NyAxMCAxMCAxMCAxMC00LjQ3NyAxMC0xMC00LjQ3Ny0xMC0xMC0xMHoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZiIgc3Ryb2tlLXdpZHRoPSIxIi8+PHBhdGggZD0iTTUgMTBsNS01IDUtNSIvPjwvc3ZnPg==" alt="佬司机">
+                    <span>佬司机 商品中心</span>
+                </div>
+            </div>
+            <div class="header-center">
+                <h1>大宗商品管理中心</h1>
+            </div>
+            <div class="header-right">
+                <div class="theme-toggle">
+                    <button id="theme-toggle" class="theme-btn">🌙</button>
+                </div>
+                <div class="welcome">欢迎您，超级管理员</div>
+                <div class="date">2021.12.16 19:30 周五</div>
+            </div>
+        </header>
+
+        <nav class="nav">
+            <div class="company-info">
+                <span>西安禾硕数字供应链管理有限公司</span>
+                <div class="dropdown"></div>
+            </div>
+            <div class="nav-menu">
+                <a href="#">+ 拍卖管理</a>
+                <a href="#">+ 订单管理</a>
+                <a href="#">+ 买家管理</a>
+                <a href="#" class="active">+ 云仓管理</a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <div class="left-section">
+                    <div class="product-card">
+                        <div class="product-header">
+                            <div class="promotion-tag">促销宣传</div>
+                            <div class="product-image">
+                                <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=coal%20black%20power%20coal%20texture&image_size=portrait_4_3" alt="动力煤">
+                                <div class="product-info">
+                                    <h3>动力煤</h3>
+                                    <div class="price">750元/吨</div>
+                                    <div class="stock">10万吨</div>
+                                    <div class="stock-label">库存数量</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-indicators">
+                            <h4>产品指标：</h4>
+                            <div class="indicator-item">
+                                <span>发热量：</span>
+                                <span>5000k</span>
+                            </div>
+                            <div class="indicator-item">
+                                <span>灰分：</span>
+                                <span>≤12%</span>
+                            </div>
+                            <div class="indicator-item">
+                                <span>水分：</span>
+                                <span>12%以下</span>
+                            </div>
+                            <div class="indicator-item">
+                                <span>挥发份：</span>
+                                <span>24%以下</span>
+                            </div>
+                            <div class="indicator-item">
+                                <span>硫份：</span>
+                                <span>3%以下</span>
+                            </div>
+                            <div class="indicator-item">
+                                <span>粘结度：</span>
+                                <span>78</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-stats">
+                        <div class="stat-item">
+                            <span>卖家数量：</span>
+                            <span>4家</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>售卖总量：</span>
+                            <span>30万吨</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>查看次数：</span>
+                            <span>125次</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>上次成交卖家：</span>
+                            <span>西安禾硕供应链管理...</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>买家数量：</span>
+                            <span>6家</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>售卖总额：</span>
+                            <span>12560万元</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>被浏览次数：</span>
+                            <span>125次</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>成交最多卖家：</span>
+                            <span>西安禾硕供应链管理...</span>
+                        </div>
+                    </div>
+
+                    <div class="product-selection">
+                        <label for="product-select">选择产品：</label>
+                        <select id="product-select">
+                            <option>动力煤</option>
+                        </select>
+                    </div>
+
+                    <div class="wallet-section">
+                        <div class="wallet-header">
+                            <h4>账户余额：100000.00元</h4>
+                            <h4>商品账户余额：0.00元</h4>
+                        </div>
+                        <div class="wallet-actions">
+                            <button class="recharge-btn">充值</button>
+                            <button class="record-btn">查看充值记录</button>
+                            <button class="record-btn">查看账户记录</button>
+                        </div>
+                        <div class="payment-section">
+                            <div class="payment-info">
+                                <span>您需要支付的订单总金额：</span>
+                                <span>0.00元</span>
+                            </div>
+                            <button class="pay-btn">— 支付</button>
+                        </div>
+                    </div>
+
+                    <div class="add-product">
+                        <button class="add-btn">+ 添加商品</button>
+                    </div>
+                </div>
+
+                <div class="center-section">
+                    <div class="product-details">
+                        <div class="detail-item">
+                            <span>产品提供：</span>
+                            <span>陕西煤业化工股份有限公司</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>上架时间：</span>
+                            <span>2021.04.05 10:10:00</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>有效时间：</span>
+                            <span>30天</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>最高标价：</span>
+                            <span>850元/吨</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>最低标价：</span>
+                            <span>750元/吨</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>最低出售数量：</span>
+                            <span>2万吨</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>自动签约价：</span>
+                            <span>±5%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>发货位置：</span>
+                            <span>榆林市...</span>
+                        </div>
+                        <div class="detail-item">
+                            <span>运输场景：</span>
+                            <span>公路、铁路</span>
+                        </div>
+                    </div>
+
+                    <div class="product-description">
+                        <h4>产品介绍</h4>
+                        <p>陕西煤业化工集团有限责任公司是陕西省人民政府国有资产监督管理委员会管理的省属大型企业，是陕西省能源化工产业的龙头企业，也是全国煤炭行业的骨干企业之一。</p>
+                        <div class="description-actions">
+                            <button class="edit-btn">+ 修改</button>
+                            <button class="confirm-btn">一键确认</button>
+                        </div>
+                    </div>
+
+                    <div class="contract-management">
+                        <h4>印章管理</h4>
+                        <div class="contract-item">
+                            <div class="contract-icon">📄</div>
+                            <div class="contract-info">
+                                <span>买家合同一</span>
+                                <div class="contract-status">已签署</div>
+                            </div>
+                        </div>
+                        <div class="contract-item">
+                            <div class="contract-icon">📄</div>
+                            <div class="contract-info">
+                                <span>买家合同二</span>
+                                <div class="contract-status">未签署</div>
+                            </div>
+                        </div>
+                        <button class="contract-btn">合同管理</button>
+                    </div>
+                </div>
+
+                <div class="right-section">
+                    <div class="recommended-products">
+                        <h4>推荐产品：</h4>
+                        <div class="product-list">
+                            <div class="recommended-product">
+                                <div class="product-tag">库存商品</div>
+                                <div class="product-img">
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=purple%20gemstone%20amethyst%20crystal&image_size=square" alt="萤石">
+                                </div>
+                                <div class="product-name">萤石</div>
+                                <div class="product-price">1750元/吨</div>
+                                <div class="product-stock">1万吨</div>
+                                <div class="product-deal">最新成交：1830元/吨</div>
+                            </div>
+                            <div class="recommended-product">
+                                <div class="product-tag">促销宣传</div>
+                                <div class="product-img">
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=coal%20black%20power%20coal%20texture&image_size=square" alt="动力煤">
+                                </div>
+                                <div class="product-name">动力煤</div>
+                                <div class="product-price">750元/吨</div>
+                                <div class="product-stock">10万吨</div>
+                                <div class="product-deal">最新成交：830元/吨</div>
+                            </div>
+                            <div class="recommended-product">
+                                <div class="product-tag">促销宣传</div>
+                                <div class="product-img">
+                                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=coal%20black%20power%20coal%20texture&image_size=square" alt="动力煤">
+                                </div>
+                                <div class="product-name">动力煤</div>
+                                <div class="product-price">750元/吨</div>
+                                <div class="product-stock">10万吨</div>
+                                <div class="product-deal">最新成交：830元/吨</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recommended-companies">
+                        <h4>推荐企业：</h4>
+                        <div class="company-list">
+                            <div class="company-item">
+                                <div class="company-rank">1</div>
+                                <div class="company-info">
+                                    <h5>府谷金隅镁业</h5>
+                                    <p>内蒙古自治区，规模榜第1，青年</p>
+                                </div>
+                            </div>
+                            <div class="company-item">
+                                <div class="company-rank">No2</div>
+                                <div class="company-info">
+                                    <h5>神华宁煤行业</h5>
+                                    <p>180元/吨，所有省市区，规模榜第2，青年</p>
+                                </div>
+                            </div>
+                            <div class="company-item">
+                                <div class="company-rank">No3</div>
+                                <div class="company-info">
+                                    <h5>我的游戏</h5>
+                                    <p>规模榜第3，青年</p>
+                                </div>
+                            </div>
+                            <div class="company-item">
+                                <div class="company-rank">No4</div>
+                                <div class="company-info">
+                                    <h5>内蒙古蒙能煤业</h5>
+                                    <p>电话：180元/吨，所有省市区，规模榜第4，青年</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </main>
+    </div>
+    <script>
+        // 主题切换功能
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        // 检查本地存储中的主题设置
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-theme');
+            themeToggle.textContent = '☀️';
+        }
+        
+        // 切换主题
+        themeToggle.addEventListener('click', function() {
+            body.classList.toggle('light-theme');
+            
+            if (body.classList.contains('light-theme')) {
+                themeToggle.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeToggle.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+    </script>
+</body>
+</html>
