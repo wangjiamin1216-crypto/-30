@@ -198,8 +198,8 @@
                     <span className="bg-blue-500/10 text-accent text-[10px] px-2 py-1 rounded border border-accent/20 font-bold whitespace-nowrap">编辑中</span>
                   </div>
 
-                  {/* === 原生1/3比例：商品图片展示区域 === */}
-                  <div className="w-full h-1/3 flex-shrink-0 rounded-lg relative overflow-hidden group/image border border-gray-200 dark:border-slate-700 shadow-sm">
+                  {/* 优化后的弹性图片展示区域 (自动适应剩余高度空间) */}
+                  <div className="w-full min-h-[120px] flex-[1.5] rounded-lg relative overflow-hidden group/image border border-gray-200 dark:border-slate-700 shadow-sm flex-shrink">
                     <div className="absolute top-0 left-0 bg-rose-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-br-lg z-10 shadow-sm">
                       推荐商品
                     </div>
@@ -214,58 +214,55 @@
                     <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
                   </div>
 
-                  {/* === 自适应占比区 === */}
-                  <div className="flex-1 flex flex-col gap-3 min-h-0">
-                    
-                    {/* 产品指标卡片 (弹性拉伸，适配垂直居中) */}
-                    <div className={`flex-1 rounded p-3 relative flex flex-col justify-center ${isDark ? 'bg-slate-900 border border-slate-800' : 'bg-gray-50 border border-gray-100'}`}>
-                      <h3 className="text-[10px] font-bold mb-2 text-gray-500 tracking-widest uppercase">成分指标</h3>
-                      <div className="grid grid-cols-3 gap-2">
-                        {[ 
-                          { k: '发热值', v: '5500k', color: 'text-orange-500' },
-                          { k: '含硫量', v: '≤0.02', color: 'text-rose-500' },
-                          { k: '水分', v: '12%以下', color: 'text-sky-500' },
-                          { k: '灰分', v: '≤10%', color: 'text-stone-500' },
-                          { k: '挥发分', v: '20-30%', color: 'text-amber-500' },
-                          { k: '固定碳', v: '≥50%', color: 'text-gray-300' }
-                        ].map(item => (
-                          <div key={item.k} className={`p-1.5 rounded border group/item cursor-pointer flex flex-col items-center justify-center text-center transition-all ${isDark ? 'bg-slate-800/60 border-slate-700 hover:border-slate-500' : 'bg-white border-gray-200 hover:border-accent shadow-sm'}`}>
-                            <div className="text-[10px] text-gray-400 font-bold scale-90 -mb-0.5">{item.k}</div>
-                            <div className={`font-black text-[13px] ${item.color} font-mono w-full truncate relative`}>
-                              {item.v}
-                              <div className="absolute inset-0 bg-slate-800 text-[10px] text-accent flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-opacity">修改</div>
-                            </div>
+                  {/* 产品指标卡片 (改为高度更紧凑的 3x2 网格体系) */}
+                  <div className={`rounded p-3 relative flex-shrink-0 ${isDark ? 'bg-slate-900 border border-slate-800' : 'bg-gray-50 border border-gray-100'}`}>
+                    <h3 className="text-[10px] font-bold mb-2 text-gray-500 tracking-widest uppercase">成分指标</h3>
+                    <div className="grid grid-cols-3 gap-2">
+                      {[ 
+                        { k: '发热值', v: '5500k', color: 'text-orange-500' },
+                        { k: '含硫量', v: '≤0.02', color: 'text-rose-500' },
+                        { k: '水分', v: '12%以下', color: 'text-sky-500' },
+                        { k: '灰分', v: '≤10%', color: 'text-stone-500' },
+                        { k: '挥发分', v: '20-30%', color: 'text-amber-500' },
+                        { k: '固定碳', v: '≥50%', color: 'text-gray-300' }
+                      ].map(item => (
+                        <div key={item.k} className={`p-1.5 rounded border group/item cursor-pointer flex flex-col items-center justify-center text-center transition-all ${isDark ? 'bg-slate-800/60 border-slate-700 hover:border-slate-500' : 'bg-white border-gray-200 hover:border-accent shadow-sm'}`}>
+                          <div className="text-[10px] text-gray-400 font-bold scale-90 -mb-0.5">{item.k}</div>
+                          <div className={`font-black text-[13px] ${item.color} font-mono w-full truncate relative`}>
+                            {item.v}
+                            <div className="absolute inset-0 bg-slate-800 text-[10px] text-accent flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-opacity">修改</div>
                           </div>
-                        ))}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* 拍卖逻辑区块 (消除间隙，极限压缩纵向占用) */}
+                  <div className="flex flex-col gap-2 flex-shrink-0">
+                    <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center relative py-1">
+                      <span className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></span>
+                      <span className="mx-2">逻辑配置</span>
+                      <span className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></span>
+                    </h3>
+                    
+                    <div className={`p-3 rounded-xl border flex items-center justify-between ${isDark ? 'bg-gradient-to-r from-slate-900 to-slate-800 border-slate-700' : 'bg-gradient-to-r from-blue-50 to-white border-blue-200'}`}>
+                      <div>
+                        <p className="text-[10px] text-gray-500 font-bold">高低限价</p>
+                        <div className="flex items-baseline mt-0.5 space-x-1">
+                          <span className="text-xl font-black text-rose-500 font-mono leading-none">850</span>
+                          <span className="text-gray-400 font-light px-0.5">/</span>
+                          <span className="text-base font-bold text-emerald-500 font-mono leading-none">750</span>
+                          <span className="text-[10px] text-gray-500 ml-1">元/吨</span>
+                        </div>
                       </div>
+                      <div className="h-8 w-8 border border-dashed border-gray-400 dark:border-slate-600 rounded flex items-center justify-center text-xs text-gray-400 cursor-pointer hover:border-accent hover:text-accent transition">✎</div>
                     </div>
 
-                    {/* 拍卖逻辑区块 (弹性拉伸，适配垂直居中) */}
-                    <div className="flex-1 flex flex-col justify-center gap-2">
-                      <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center relative py-1">
-                        <span className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></span>
-                        <span className="mx-2">逻辑配置</span>
-                        <span className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></span>
-                      </h3>
-                      
-                      <div className={`p-3 rounded-xl border flex items-center justify-between ${isDark ? 'bg-gradient-to-r from-slate-900 to-slate-800 border-slate-700' : 'bg-gradient-to-r from-blue-50 to-white border-blue-200'}`}>
-                        <div>
-                          <p className="text-[10px] text-gray-500 font-bold">高低限价</p>
-                          <div className="flex items-baseline mt-0.5 space-x-1">
-                            <span className="text-xl font-black text-rose-500 font-mono leading-none">850</span>
-                            <span className="text-gray-400 font-light px-0.5">/</span>
-                            <span className="text-base font-bold text-emerald-500 font-mono leading-none">750</span>
-                            <span className="text-[10px] text-gray-500 ml-1">元/吨</span>
-                          </div>
-                        </div>
-                        <div className="h-8 w-8 border border-dashed border-gray-400 dark:border-slate-600 rounded flex items-center justify-center text-xs text-gray-400 cursor-pointer hover:border-accent hover:text-accent transition">✎</div>
+                    <div className="grid grid-cols-2 gap-2 mt-1">
+                      <div className={`py-2 px-1 rounded-lg border text-center flex flex-col ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-gray-200 shadow-sm'}`}>
+                        <span className="text-[10px] text-gray-500 font-bold mb-0.5">提供库存</span>
+                        <div><span className="text-base font-black font-mono">10</span><span className="text-[9px] text-gray-400 ml-0.5">万吨</span></div>
                       </div>
-
-                      <div className="grid grid-cols-2 gap-2 mt-1">
-                        <div className={`py-2 px-1 rounded-lg border text-center flex flex-col ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-gray-200 shadow-sm'}`}>
-                          <span className="text-[10px] text-gray-500 font-bold mb-0.5">提供库存</span>
-                          <div><span className="text-base font-black font-mono">10</span><span className="text-[9px] text-gray-400 ml-0.5">万吨</span></div>
-                        </div>
                       <div className={`py-2 px-1 rounded-lg border text-center flex flex-col ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-gray-200 shadow-sm'}`}>
                         <span className="text-[10px] text-gray-500 font-bold mb-0.5">自动签约价</span>
                         <div><span className="text-base font-black font-mono text-accent">850</span><span className="text-[9px] text-gray-400 ml-0.5">元</span></div>

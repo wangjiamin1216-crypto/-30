@@ -174,109 +174,104 @@
 
             {/* 核心工作流网格 (紧凑一屏) */}
             <div className="flex-1 p-4 grid grid-cols-12 gap-4 overflow-hidden h-full min-h-0">
-              
-              {/* 左侧 (Col-4): 商品编辑区 (一屏化高度计算重构版) */}
-              <div className="col-span-4 flex flex-col h-full overflow-hidden">
-                <div className={`rounded-xl shadow-xl border flex flex-col h-full p-4 gap-3 ${isDark ? 'bg-[#0F172A] border-slate-800' : 'bg-white border-gray-200'}`}>
-                  
-                  {/* 顶栏与交互提示 (精简边界) */}
-                  <div className="flex items-center justify-between border-b border-dashed border-gray-300 dark:border-slate-700 pb-2 flex-shrink-0">
+
+              {/* 左侧 (Col-4): 商品编辑区 (恢复上个版本大间距与详情布局) */}
+              <div className="col-span-4 space-y-6 flex flex-col h-full overflow-y-auto hide-scrollbar">
+                <div className={`rounded-xl shadow-xl border transition-all ${isDark ? 'bg-[#0F172A] border-slate-800' : 'bg-white border-gray-200'} p-6 flex flex-col`}>
+
+                  {/* 悬停约束条件交互 */}
+                  <div className="flex items-center justify-between mb-5 border-b border-dashed border-gray-300 dark:border-slate-700 pb-4">
                     <Tooltip content={
                       <div className="space-y-1">
-                        <p className="font-bold text-amber-400 flex items-center text-sm border-b border-slate-700 pb-1 mb-1">
-                          <span className="mr-1">⚠️</span> 启动前置约束
+                        <p className="font-bold text-amber-400 flex items-center text-sm border-b border-slate-700 pb-2 mb-2">
+                          <span className="mr-2">⚠️</span> 启动拍卖前置约束
                         </p>
-                        <p className="text-gray-300 text-[11px]">需有 3 家买家准备好，付保证金 2 万元。</p>
+                        <p className="text-gray-300 leading-relaxed text-xs">需有 <span className="text-white font-bold">3 家及以上买家</span>准备好方可开始拍卖，同时需支付保证金 <span className="text-white font-bold">2 万元</span>。</p>
                       </div>
                     }>
-                      <h2 className="text-[15px] font-black flex items-center cursor-help group">
-                        <span className="w-1.5 h-4 bg-accent rounded mr-2"></span>
-                        产品发布介绍 
-                        <span className="ml-2 px-1.5 py-0.5 text-[9px] bg-slate-100 dark:bg-slate-800 text-gray-500 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">约束提示</span>
+                      <h2 className="text-lg font-black flex items-center cursor-help group">
+                        <span className="w-1.5 h-6 bg-accent rounded mr-3"></span>
+                        产品发布介绍
+                        <span className="ml-3 px-2 py-0.5 text-[10px] bg-slate-100 dark:bg-slate-800 text-gray-500 rounded border border-gray-200 dark:border-slate-700 opacity-50 group-hover:opacity-100 transition-all shadow-sm">将鼠标悬停查看约束</span>
                       </h2>
                     </Tooltip>
-                    <span className="bg-blue-500/10 text-accent text-[10px] px-2 py-1 rounded border border-accent/20 font-bold whitespace-nowrap">编辑中</span>
+                    <span className="bg-blue-500/10 text-accent text-xs px-2.5 py-1.5 rounded-md border border-accent/20 font-bold">编辑中状态</span>
                   </div>
 
-                  {/* === 原生1/3比例：商品图片展示区域 === */}
-                  <div className="w-full h-1/3 flex-shrink-0 rounded-lg relative overflow-hidden group/image border border-gray-200 dark:border-slate-700 shadow-sm">
-                    <div className="absolute top-0 left-0 bg-rose-500 text-white text-[10px] font-bold px-2.5 py-1 rounded-br-lg z-10 shadow-sm">
-                      推荐商品
-                    </div>
-                    <img 
-                      src="./png/无烟煤图片.png" 
-                      alt="大宗无烟煤" 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover/image:scale-105"
-                    />
-                    <button className="absolute bottom-2 right-2 bg-black/60 hover:bg-black/90 backdrop-blur-sm text-white text-[10px] px-2.5 py-1.5 rounded opacity-0 group-hover/image:opacity-100 transition-all font-bold z-10 shadow">
-                      🔍 放大图片
-                    </button>
-                    <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
-                  </div>
-
-                  {/* === 自适应占比区 === */}
-                  <div className="flex-1 flex flex-col gap-3 min-h-0">
-                    
-                    {/* 产品指标卡片 (弹性拉伸，适配垂直居中) */}
-                    <div className={`flex-1 rounded p-3 relative flex flex-col justify-center ${isDark ? 'bg-slate-900 border border-slate-800' : 'bg-gray-50 border border-gray-100'}`}>
-                      <h3 className="text-[10px] font-bold mb-2 text-gray-500 tracking-widest uppercase">成分指标</h3>
-                      <div className="grid grid-cols-3 gap-2">
-                        {[ 
-                          { k: '发热值', v: '5500k', color: 'text-orange-500' },
-                          { k: '含硫量', v: '≤0.02', color: 'text-rose-500' },
-                          { k: '水分', v: '12%以下', color: 'text-sky-500' },
-                          { k: '灰分', v: '≤10%', color: 'text-stone-500' },
-                          { k: '挥发分', v: '20-30%', color: 'text-amber-500' },
-                          { k: '固定碳', v: '≥50%', color: 'text-gray-300' }
-                        ].map(item => (
-                          <div key={item.k} className={`p-1.5 rounded border group/item cursor-pointer flex flex-col items-center justify-center text-center transition-all ${isDark ? 'bg-slate-800/60 border-slate-700 hover:border-slate-500' : 'bg-white border-gray-200 hover:border-accent shadow-sm'}`}>
-                            <div className="text-[10px] text-gray-400 font-bold scale-90 -mb-0.5">{item.k}</div>
-                            <div className={`font-black text-[13px] ${item.color} font-mono w-full truncate relative`}>
-                              {item.v}
-                              <div className="absolute inset-0 bg-slate-800 text-[10px] text-accent flex items-center justify-center opacity-0 group-hover/item:opacity-100 transition-opacity">修改</div>
-                            </div>
+                  {/* 要求还原卡片：6个指标带修改按钮 */}
+                  <div className={`rounded-lg p-5 mb-6 relative group ${isDark ? 'bg-slate-900 border border-slate-800' : 'bg-gray-50 border border-gray-100'}`}>
+                    <h3 className="text-xs font-bold mb-4 text-gray-500 dark:text-gray-400 tracking-[0.2em]">关键产品成分指标</h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      {[
+                        { k: '发热值', v: '5500k', color: 'text-orange-500' },
+                        { k: '含硫量', v: '≤0.02', color: 'text-rose-500' },
+                        { k: '水分', v: '12%以下', color: 'text-sky-500' },
+                        { k: '灰分', v: '≤10%', color: 'text-stone-500' },
+                        { k: '挥发分', v: '20-30%', color: 'text-amber-500' },
+                        { k: '固定碳', v: '≥50%', color: 'text-gray-700 dark:text-gray-300' }
+                      ].map(item => (
+                        <div key={item.k} className={`p-3 rounded-md border transition-all group/item cursor-pointer flex justify-between items-center ${isDark ? 'bg-slate-800/50 border-slate-700 hover:border-slate-500 hover:bg-slate-800' : 'bg-white border-gray-200 hover:border-accent hover:shadow-md'}`}>
+                          <div>
+                            <div className="text-[11px] text-gray-400 mb-0.5">{item.k}</div>
+                            <div className={`font-black text-lg ${item.color} font-mono tracking-tight`}>{item.v}</div>
                           </div>
-                        ))}
-                      </div>
+                          {/* 交互：+修改 按钮显示 */}
+                          <button className="opacity-0 group-hover/item:opacity-100 transition-opacity text-[11px] bg-accent text-white px-2 py-1.5 rounded hover:bg-blue-600 shadow-md">
+                            + 修改
+                          </button>
+                        </div>
+                      ))}
                     </div>
+                  </div>
 
-                    {/* 拍卖逻辑区块 (弹性拉伸，适配垂直居中) */}
-                    <div className="flex-1 flex flex-col justify-center gap-2">
-                      <h3 className="text-[10px] font-bold text-gray-500 uppercase tracking-widest flex items-center relative py-1">
-                        <span className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></span>
-                        <span className="mx-2">逻辑配置</span>
-                        <span className="flex-1 h-px bg-gray-300 dark:bg-slate-700"></span>
-                      </h3>
-                      
-                      <div className={`p-3 rounded-xl border flex items-center justify-between ${isDark ? 'bg-gradient-to-r from-slate-900 to-slate-800 border-slate-700' : 'bg-gradient-to-r from-blue-50 to-white border-blue-200'}`}>
+                  {/* 拍卖逻辑展示区块 */}
+                  <div className="space-y-4 mb-8">
+                    <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 tracking-[0.2em] flex items-center">
+                      <span className="mr-3 border-t flex-1 border-gray-300 dark:border-slate-800"></span>
+                      拍卖核心逻辑配置
+                      <span className="ml-3 border-t flex-1 border-gray-300 dark:border-slate-800"></span>
+                    </h3>
+
+                    <div className="grid grid-cols-2 gap-4">
+
+                      <div className={`p-5 rounded-xl border col-span-2 flex items-center justify-between ${isDark ? 'bg-gradient-to-r from-slate-900 to-slate-800 border-slate-700 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]' : 'bg-gradient-to-r from-blue-50 to-white border-blue-200 shadow-inner'}`}>
                         <div>
-                          <p className="text-[10px] text-gray-500 font-bold">高低限价</p>
-                          <div className="flex items-baseline mt-0.5 space-x-1">
-                            <span className="text-xl font-black text-rose-500 font-mono leading-none">850</span>
-                            <span className="text-gray-400 font-light px-0.5">/</span>
-                            <span className="text-base font-bold text-emerald-500 font-mono leading-none">750</span>
-                            <span className="text-[10px] text-gray-500 ml-1">元/吨</span>
+                          <p className="text-[11px] text-gray-500 tracking-wider">最高/最低 标价限制</p>
+                          <div className="flex items-baseline mt-1 space-x-2">
+                            <span className="text-3xl font-black text-rose-500 font-mono">850</span>
+                            <span className="text-gray-400 font-light text-xl">/</span>
+                            <span className="text-xl font-bold text-emerald-500 font-mono">750</span>
+                            <span className="text-xs text-gray-500 ml-1">元/吨</span>
                           </div>
                         </div>
-                        <div className="h-8 w-8 border border-dashed border-gray-400 dark:border-slate-600 rounded flex items-center justify-center text-xs text-gray-400 cursor-pointer hover:border-accent hover:text-accent transition">✎</div>
+                        <div className="h-10 w-10 border border-dashed border-gray-400 dark:border-slate-600 rounded flex items-center justify-center text-gray-400 cursor-pointer hover:border-accent hover:text-accent transition">
+                          ✎
+                        </div>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-2 mt-1">
-                        <div className={`py-2 px-1 rounded-lg border text-center flex flex-col ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-gray-200 shadow-sm'}`}>
-                          <span className="text-[10px] text-gray-500 font-bold mb-0.5">提供库存</span>
-                          <div><span className="text-base font-black font-mono">10</span><span className="text-[9px] text-gray-400 ml-0.5">万吨</span></div>
+                      <div className={`p-4 rounded-xl border flex flex-col justify-center items-center text-center shadow-sm ${isDark ? 'bg-slate-800/80 border-slate-700/80' : 'bg-white border-gray-200'}`}>
+                        <span className="text-[11px] text-gray-500 tracking-wider mb-2">可供拍卖库存</span>
+                        <div className="flex items-baseline">
+                          <span className="text-2xl font-black font-mono dark:text-white">10</span>
+                          <span className="text-xs ml-1 text-gray-500 font-bold">万吨</span>
                         </div>
-                      <div className={`py-2 px-1 rounded-lg border text-center flex flex-col ${isDark ? 'bg-slate-800/80 border-slate-700' : 'bg-white border-gray-200 shadow-sm'}`}>
-                        <span className="text-[10px] text-gray-500 font-bold mb-0.5">自动签约价</span>
-                        <div><span className="text-base font-black font-mono text-accent">850</span><span className="text-[9px] text-gray-400 ml-0.5">元</span></div>
                       </div>
+
+                      <div className={`p-4 rounded-xl border flex flex-col justify-center items-center text-center shadow-sm ${isDark ? 'bg-slate-800/80 border-slate-700/80' : 'bg-white border-gray-200'}`}>
+                        <span className="text-[11px] text-gray-500 tracking-wider mb-2">自动签约熔断价</span>
+                        <div className="flex items-baseline">
+                          <span className="text-2xl font-black font-mono text-accent">850</span>
+                          <span className="text-xs ml-1 text-gray-500 font-bold">元/吨</span>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
-                  
-                  {/* 最底部的固定按钮组 */}
-                  <div className="mt-auto pt-1 flex gap-3 flex-shrink-0 h-[38px]">
-                    <button className="flex-[1] bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 font-bold rounded-lg text-xs hover:bg-gray-200 dark:hover:bg-slate-700 border border-transparent dark:border-slate-700 transition">存入草稿</button>
-                    <button className="flex-[2] bg-accent text-white font-bold rounded-lg text-xs hover:bg-blue-600 shadow shadow-accent/30 transition ring-1 ring-blue-500/50">保存并发布拍卖</button>
+
+                  {/* 操作按钮组 */}
+                  <div className="mt-auto flex gap-4">
+                    <button className="flex-[1] bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-gray-300 font-bold py-3.5 rounded-lg hover:bg-gray-200 dark:hover:bg-slate-700 border border-transparent dark:border-slate-700 transition">存入草稿箱</button>
+                    <button className="flex-[2] bg-accent text-white font-bold py-3.5 rounded-lg hover:bg-blue-600 shadow-lg shadow-blue-500/20 text-base transition ring-1 ring-blue-400 dark:ring-blue-800/50">保存并发布拍卖</button>
                   </div>
                 </div>
               </div>
