@@ -2,263 +2,215 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>大宗交易平台业务角色全链路画像</title>
+  <title>大宗交易平台全链路画像 (业务主轴贯穿版)</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <!-- 动态连线库 -->
+  <script src="https://cdn.jsdelivr.net/npm/leader-line-new@1.1.9/leader-line.min.js"></script>
+
   <style>
     body {
       background-color: #f4f6f8;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    /* 顶部彩色贯穿条 */
-    .card-top-blue { border-top: 5px solid #3b82f6; }
-    .card-top-green { border-top: 5px solid #22c55e; }
-    .card-top-orange { border-top: 5px solid #f97316; }
-    .card-top-purple { border-top: 5px solid #a855f7; }
-    .card-top-yellow { border-top: 5px solid #eab308; }
+    /* 卡片顶部饰边 */
+    .card-top-blue { border-top: 6px solid #3b82f6; }
+    .card-top-green { border-top: 6px solid #22c55e; }
+    .card-top-orange { border-top: 6px solid #f97316; }
+    .card-top-purple { border-top: 6px solid #a855f7; }
+    .card-top-yellow { border-top: 6px solid #eab308; }
 
-    /* 侧边栏横滑框架适配 */
-    .scroll-container {
-      display: flex;
-      gap: 1.25rem;
-      overflow-x: auto;
-      padding: 1rem 2rem 2rem 2rem;
-      align-items: flex-start;
-    }
-    
+    /* 通用卡片底子 */
     .persona-card {
       background: white;
-      border-radius: 8px;
-      min-width: 320px;
+      border-radius: 12px;
       width: 320px;
-      flex-shrink: 0;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       padding: 1.5rem;
       display: flex;
       flex-direction: column;
+      z-index: 10;
+      position: relative;
     }
 
-    /* Hide scrollbar visually but keep function */
-    .scroll-container::-webkit-scrollbar {
-      height: 8px;
+    /* 中心平台方特殊发光发热动效 */
+    .hub-glow {
+      box-shadow: 0 0 40px -5px rgba(168, 85, 247, 0.5);
+      animation: pulse-border 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
-    .scroll-container::-webkit-scrollbar-track {
-      background: #e2e8f0; 
-      border-radius: 4px;
+    @keyframes pulse-border {
+      0%, 100% { box-shadow: 0 0 30px -5px rgba(168, 85, 247, 0.4); }
+      50% { box-shadow: 0 0 50px 5px rgba(168, 85, 247, 0.7); }
     }
-    .scroll-container::-webkit-scrollbar-thumb {
-      background: #94a3b8; 
+
+    .leader-line-label {
+      font-size: 11px;
+      font-weight: bold;
+      color: #1e293b;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 2px 6px;
       border-radius: 4px;
+      border: 1px solid #e2e8f0;
+      pointer-events: none;
     }
   </style>
 </head>
-<body class="m-0 p-0 overflow-hidden h-screen flex flex-col">
+<body class="m-0 p-0 overflow-y-auto overflow-x-hidden min-h-screen pb-32">
 
-  <!-- 头部区 -->
-  <header class="text-center py-10 flex-shrink-0">
-    <h1 class="text-4xl font-black text-slate-800 mb-4 tracking-wide">大宗交易平台业务角色全链路画像 (Persona Whiteboard)</h1>
-    <p class="text-[15px] text-gray-500 font-medium tracking-wide">聚焦于“商品解释权+供应链服务服+控货”三位一体的核心业务痛点与诉求</p>
+  <!-- 头部与图例区 -->
+  <header class="text-center py-10 relative z-20">
+    <h1 class="text-4xl font-black text-slate-800 mb-4 tracking-wide">大宗业务全局生命周期闭环</h1>
+    <p class="text-[15px] text-gray-500 font-medium tracking-wide">商品解释权的让渡重构主轴贯穿图</p>
   </header>
 
-  <!-- 看板容器（支持横向滚动） -->
-  <main class="scroll-container flex-1">
+  <!-- 核心 3x3 放射状网格 -->
+  <main class="grid grid-cols-3 grid-rows-3 gap-x-8 gap-y-10 w-full max-w-[1400px] mx-auto px-4 relative z-10 pt-4">
 
-    <!-- 1. 卖家/货主 -->
-    <div class="persona-card card-top-blue">
-      <h2 class="text-[22px] font-black flex items-center text-blue-500 mb-8 border-none">
-        <i class="fas fa-cube mr-3 text-xl"></i>卖家/货主
+    <!-- ========== Top Left: 卖家/货主 ========== -->
+    <div id="node-seller" class="persona-card card-top-blue col-start-1 row-start-1 h-28 flex justify-center items-center hover:-translate-y-1 transition-transform">
+      <h2 class="text-[20px] font-black flex items-center text-blue-500 m-0 border-none">
+        <i class="fas fa-cube mr-3 text-lg"></i>货主/源头
       </h2>
+    </div>
+
+    <!-- ========== Top Right: 买家 ========== -->
+    <div id="node-buyer" class="persona-card card-top-green col-start-3 row-start-1 h-28 flex justify-center items-center hover:-translate-y-1 transition-transform ml-auto">
+      <h2 class="text-[20px] font-black flex items-center text-green-500 m-0 border-none">
+        <i class="fas fa-shopping-cart mr-3 text-lg"></i>工业终端买家
+      </h2>
+    </div>
+
+    <!-- ========== Center Row: 平台与生命周期主轴 ========== -->
+    <div class="col-start-1 col-span-3 row-start-2 flex flex-col items-center justify-center gap-10 w-full max-w-[1300px] mx-auto relative z-30 pt-4 pb-4">
       
-      <div class="space-y-7 text-[13px] leading-relaxed text-gray-600">
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-blue-500 pl-3">我是谁？</h3>
-          <p>资源掌控者。手握散货资源（矿务局/化工厂/一级贸易商），手握重资产却苦于渠道受限与低效客情。</p>
+      <!-- 平台管理方悬浮中心 -->
+      <div id="node-platform" class="persona-card h-28 flex justify-center items-center ring-4 ring-purple-500 hub-glow transform scale-110 z-50 bg-white">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-[10px] px-3 py-1 font-black rounded-full whitespace-nowrap shadow-md tracking-wider">
+          核心裁夺者
+        </div>
+        <h2 class="text-[22px] font-black flex items-center text-purple-600 m-0 border-none">
+          <i class="fas fa-shield-alt mr-3 text-lg"></i>平台管理方
+        </h2>
+      </div>
+
+      <!-- 四大阶段生命周期闭环主干道 -->
+      <div id="pipeline" class="w-full bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 rounded-3xl p-6 shadow-2xl border border-slate-700 flex justify-between items-center relative overflow-hidden">
+        <!-- 背景连接导轨 -->
+        <div class="absolute left-10 right-10 top-1/2 -translate-y-1/2 h-2 bg-slate-700 z-0 rounded-full"></div>
+        
+        <!-- 阶段 1 -->
+        <div id="step-1" class="relative z-10 w-56 bg-slate-800 border-2 border-slate-600 hover:border-blue-400 rounded-xl p-4 flex flex-col items-center text-center shadow-[0_0_15px_rgba(59,130,246,0.15)] transition-colors">
+          <span class="text-blue-400 font-black text-[11px] mb-1 tracking-widest uppercase">STATE 1 / 打破黑箱</span>
+          <span class="text-white font-bold text-sm">底层物料指标上链</span>
         </div>
         
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-blue-500 pl-3">我关心什么？</h3>
-          <ul class="list-disc pl-4 space-y-1.5 marker:text-gray-300">
-            <li><strong class="text-slate-800">解释权与高溢价：</strong>非标货品指标能否被全市场公认？</li>
-            <li><strong class="text-slate-800">回款速度：</strong>能否款到发货、见单即付？</li>
-            <li><strong class="text-slate-800">甩手经营：</strong>我只专注生产，能否将找买家和甩库存交给平台？</li>
-          </ul>
+        <!-- 阶段 2 -->
+        <div id="step-2" class="relative z-10 w-56 bg-slate-800 border-2 border-slate-600 hover:border-purple-400 rounded-xl p-4 flex flex-col items-center text-center shadow-[0_0_15px_rgba(168,85,247,0.15)] transition-colors">
+          <span class="text-purple-400 font-black text-[11px] mb-1 tracking-widest uppercase">STATE 2 / 确立锚点</span>
+          <span class="text-white font-bold text-sm">平台审核与标品化</span>
         </div>
 
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-blue-500 pl-3">我要完成的任务</h3>
-          <p>对非标现货“标准化上架”（输入核心质量指标与产能）；设定交易规则（高低底价、±5%自动签约）、回收货款。</p>
+        <!-- 阶段 3 -->
+        <div id="step-3" class="relative z-10 w-56 bg-slate-800 border-2 border-slate-600 hover:border-emerald-400 rounded-xl p-4 flex flex-col items-center text-center shadow-[0_0_15px_rgba(16,185,129,0.15)] transition-colors">
+          <span class="text-emerald-400 font-black text-[11px] mb-1 tracking-widest uppercase">STATE 3 / 现实锚定</span>
+          <span class="text-white font-bold text-sm">物理仓储与硬向查封</span>
         </div>
 
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-blue-500 pl-3">我最怕遇到什么？</h3>
-          <p>压港压库导致资产贬值；买家恶意借指标问题（如水/灰份超标）拒收并克扣尾款；三角债拖崩资金链。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-blue-500 pl-3">我有交集的角色</h3>
-          <p>直接对局平台上的【买家】；向【库方】移交仓单；接受【平台管理方】审查或被【包销】。</p>
+        <!-- 阶段 4 -->
+        <div id="step-4" class="relative z-10 w-56 bg-slate-800 border-2 border-slate-600 hover:border-yellow-400 rounded-xl p-4 flex flex-col items-center text-center shadow-[0_0_15px_rgba(234,179,8,0.15)] transition-colors">
+          <span class="text-yellow-400 font-black text-[11px] mb-1 tracking-widest uppercase">STATE 4 / 最终裂变</span>
+          <span class="text-white font-bold text-sm">资产包裹信流转</span>
         </div>
       </div>
     </div>
 
-
-    <!-- 2. 买家 -->
-    <div class="persona-card card-top-green">
-      <h2 class="text-[22px] font-black flex items-center text-green-500 mb-8 border-none">
-        <i class="fas fa-shopping-cart mr-3 text-xl"></i>买家
+    <!-- ========== Bottom Left: 库方 ========== -->
+    <div id="node-warehouse" class="persona-card card-top-orange col-start-1 row-start-3 h-28 flex justify-center items-center hover:-translate-y-1 transition-transform">
+      <h2 class="text-[20px] font-black flex items-center text-orange-500 m-0 border-none">
+        <i class="fas fa-warehouse mr-3 text-lg"></i>库方/三方质检
       </h2>
-      
-      <div class="space-y-7 text-[13px] leading-relaxed text-gray-600">
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-green-500 pl-3">我是谁？</h3>
-          <p>下游终端制造企业（如化肥、钢厂）或次级贸易商。供应链上极其敏感、利润挤压严重的一方。</p>
-        </div>
-        
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-green-500 pl-3">我关心什么？</h3>
-          <ul class="list-disc pl-4 space-y-1.5 marker:text-gray-300">
-            <li><strong class="text-slate-800">绝对保真背书：</strong>货品真实指标的背书，拒绝线下黑暗“跑厂”。</li>
-            <li><strong class="text-slate-800">资金杠杆：</strong>平台能否用交易流水给我授信、分期？</li>
-            <li><strong class="text-slate-800">智能定价引擎：</strong>利用平台的智库告诉我现在的大盘市值与囤货时机。</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-green-500 pl-3">我要完成的任务</h3>
-          <p>比选订阅并竞拍符合工艺配比的原物料；一键签约并交冻大额保证金；盯盘今日市值与涨跌幅并最终提货。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-green-500 pl-3">我最怕遇到什么？</h3>
-          <p>高点接盘跌价爆仓；提货时遭遇空单或掺假废品；行情暴涨时卖家宁付违约金也捂盘惜售导致工厂断料。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-green-500 pl-3">我有交集的角色</h3>
-          <p>寻找并购买【货主】资源；乞求【资金方】放款；盯紧【库方】发货放行。</p>
-        </div>
-      </div>
     </div>
 
-
-    <!-- 3. 库方 / 承运 / 质检 -->
-    <div class="persona-card card-top-orange">
-      <h2 class="text-[22px] font-black flex items-center text-orange-500 mb-8 border-none">
-        <i class="fas fa-warehouse mr-3 text-xl"></i>库方 / 承运 / 质检
+    <!-- ========== Bottom Right: 资金方 ========== -->
+    <div id="node-finance" class="persona-card card-top-yellow col-start-3 row-start-3 h-28 flex justify-center items-center hover:-translate-y-1 transition-transform ml-auto">
+      <h2 class="text-[20px] font-black flex items-center text-yellow-500 m-0 border-none">
+        <i class="fas fa-dollar-sign mr-3 text-lg"></i>金融授信方
       </h2>
-      
-      <div class="space-y-7 text-[13px] leading-relaxed text-gray-600">
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-orange-500 pl-3">我是谁？</h3>
-          <p>大宗数字资产到物理实物的“硬核守门人”。涵盖云仓管理员、地磅操作员、三方独立质检商。</p>
-        </div>
-        
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-orange-500 pl-3">我关心什么？</h3>
-          <ul class="list-disc pl-4 space-y-1.5 marker:text-gray-300">
-            <li><strong class="text-slate-800">账实相符：</strong>系统数字与库区堆场现货必须绝无偏差。</li>
-            <li><strong class="text-slate-800">吞吐效率：</strong>车辆排车进场、过磅系统并发稳定。</li>
-            <li><strong class="text-slate-800">严格的责任划界：</strong>自然损耗、磅差、指标降级不要让我背锅。</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-orange-500 pl-3">我要完成的任务</h3>
-          <p>质检结果、实物库区数据“上链”。收到平台及资金方的云锁/解押命令后，对现货进行物理级别的转移和抬杆放行。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-orange-500 pl-3">我最怕遇到什么？</h3>
-          <p>货单漏洞遭遇惊天洗劫（一女多嫁/重复质押融资）；调度系统滞后带来的群聚性压车压港事件。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-orange-500 pl-3">我有交集的角色</h3>
-          <p>接手【卖方】源头入库确认；协助【买方】点验交接；被【资金及平台方】视为风控锁眼。</p>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- 4. 平台管理方（主控） -->
-    <div class="persona-card card-top-purple">
-      <h2 class="text-[22px] font-black flex items-center text-purple-500 mb-8 border-none">
-        <i class="fas fa-shield-alt mr-3 text-xl"></i>平台管理方（主控）
-      </h2>
-      
-      <div class="space-y-7 text-[13px] leading-relaxed text-gray-600">
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-purple-500 pl-3">我是谁？</h3>
-          <p>我是大宗行业的“规则执剑人”与未来产业庄家。并非单纯撮合软件，而是生态与秩序的建立者。</p>
-        </div>
-        
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-purple-500 pl-3">我关心什么？</h3>
-          <ul class="list-disc pl-4 space-y-1.5 marker:text-gray-300">
-            <li><strong class="text-slate-800">底层商品模型：</strong>能否把行业万般非标的黑箱用数字和图表彻底解释清楚？</li>
-            <li><strong class="text-slate-800">绝对控盘话语权：</strong>以真金白银流水获取控货权和资源调配溢价（预付锁定渠道）。</li>
-            <li><strong class="text-slate-800">AI赋能收益：</strong>通过输出情报干预买点/卖点。</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-purple-500 pl-3">我要完成的任务</h3>
-          <p>定义极其硬核的商品结构模型树。利用实时看板盯控高低限价；在发生多空踩踏时执行兜底与物理级熔断（冻结）。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-purple-500 pl-3">我最怕遇到什么？</h3>
-          <p>纯流水票据空转涉及洗钱红线被封杀；上下游全跑到线下去做“飞单交易”把平台当免费比价看板；大户爆仓资金链穿透平台。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-purple-500 pl-3">我有交集的角色</h3>
-          <p>俯视与掌控【买卖家、资方、库方】全链路规则。</p>
-        </div>
-      </div>
-    </div>
-
-
-    <!-- 5. 资金方 -->
-    <div class="persona-card card-top-yellow">
-      <h2 class="text-[22px] font-black flex items-center text-yellow-500 mb-8 border-none">
-        <i class="fas fa-dollar-sign mr-3 text-xl"></i>资金方
-      </h2>
-      
-      <div class="space-y-7 text-[13px] leading-relaxed text-gray-600">
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-yellow-500 pl-3">我是谁？</h3>
-          <p>产业链抽水泵。包括产业基金、合作银行与三方财险。靠资金杠杆与无情的风控赚取利息和服务差。</p>
-        </div>
-        
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-yellow-500 pl-3">我关心什么？</h3>
-          <ul class="list-disc pl-4 space-y-1.5 marker:text-gray-300">
-            <li><strong class="text-slate-800">闪电变现能力：</strong>一旦黑天鹅降临，冻结在库的货品能否直接原价处置？</li>
-            <li><strong class="text-slate-800">四流合一：</strong>商业合同、发票信息、资金传输、资金清算必须严丝合缝绝不留死角。</li>
-            <li><strong class="text-slate-800">底层信用挂钩：</strong>极度依赖平台管理方的担保与信用兜底。</li>
-          </ul>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-yellow-500 pl-3">我要完成的任务</h3>
-          <p>模型化审批大额白条分期授信；机器般坚决执行系统的账户冻结、预警斩仓指令，绝不通融。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-yellow-500 pl-3">我最怕遇到什么？</h3>
-          <p>质押现货不知所踪引发假根崩盘；行业下行底价直接打穿底裤，甩卖所得覆盖不住坏账。</p>
-        </div>
-
-        <div>
-          <h3 class="font-bold text-[15px] mb-2.5 flex items-center text-slate-800 border-l-[4px] border-yellow-500 pl-3">我有交集的角色</h3>
-          <p>核准【买家】，为【卖家】垫款，下令【库方】死守大门，深度绑定【平台方】的风控模型。</p>
-        </div>
-      </div>
     </div>
 
   </main>
 
+  <script>
+    let lines = [];
+
+    function makeLabel(text, colorHex) {
+      return LeaderLine.captionLabel({
+        text: text, 
+        color: '#1e293b',
+        outlineColor: '#fff',
+        fontSize: '11px',
+        fontWeight: 'bold',
+        padding: '4px 8px',
+        borderRadius: '6px'
+      });
+    }
+
+    function initLines() {
+      // CLEAR old lines
+      lines.forEach(l => l.remove());
+      lines = [];
+
+      const Seller = document.getElementById('node-seller');
+      const Buyer = document.getElementById('node-buyer');
+      const Platform = document.getElementById('node-platform');
+      const Warehouse = document.getElementById('node-warehouse');
+      const Finance = document.getElementById('node-finance');
+
+      const S1 = document.getElementById('step-1');
+      const S2 = document.getElementById('step-2');
+      const S3 = document.getElementById('step-3');
+      const S4 = document.getElementById('step-4');
+
+      if (!Seller || !S1) return;
+
+      try {
+        // [1] 货主 -> 阶段1：提交指标让渡解释权
+        lines.push(new LeaderLine(Seller, S1, { color: '#3b82f6', size: 3, path: 'fluid', startSocket: 'bottom', endSocket: 'top', 
+          dropShadow: true, middleLabel: makeLabel('提交指标让渡初始解释权', '#3b82f6') }));
+        
+        // [2] 平台 -> 阶段2：平台掌控标品化
+        lines.push(new LeaderLine(Platform, S2, { color: '#a855f7', size: 3.5, path: 'straight', startSocket: 'bottom', endSocket: 'top', 
+          dash: {animation: true}, dropShadow: true, middleLabel: makeLabel('权威解释模型介入', '#a855f7') }));
+          
+        // [3] 平台 -> 阶段3：平台下达云锁指令
+        lines.push(new LeaderLine(Platform, S3, { color: '#eab308', size: 3, path: 'arc', startSocket: 'bottom', endSocket: 'top', 
+          dropShadow: true, middleLabel: makeLabel('跨机构下达云锁解押', '#eab308') }));
+
+        // [4] 库方 -> 阶段3：物理硬核实控闭环
+        lines.push(new LeaderLine(Warehouse, S3, { color: '#f97316', size: 3, path: 'fluid', startSocket: 'top', endSocket: 'bottom', 
+          dropShadow: true, middleLabel: makeLabel('账实相符/生成不可篡改仓单', '#f97316') }));
+
+        // [5] 资金 -> 阶段4：授信赋能加注
+        lines.push(new LeaderLine(Finance, S4, { color: '#eab308', size: 3, path: 'fluid', startSocket: 'top', endSocket: 'bottom', 
+          dropShadow: true, middleLabel: makeLabel('背书增信/白条支持放款', '#eab308') }));
+
+        // [6] 阶段4 -> 买家：完结
+        lines.push(new LeaderLine(S4, Buyer, { color: '#22c55e', size: 4, path: 'fluid', startSocket: 'top', endSocket: 'bottom', 
+          dash: {animation: true}, dropShadow: true, middleLabel: makeLabel('标准化资产货权交割', '#22c55e') }));
+
+      } catch (e) {
+        console.error("LeaderLine failed:", e);
+      }
+    }
+
+    // Delay slightly to ensure fonts and layout finish rendering
+    window.addEventListener('load', () => setTimeout(initLines, 400));
+    
+    // Maintain lines on resize
+    window.addEventListener('resize', () => {
+      lines.forEach(l => l.position());
+    });
+  </script>
 </body>
 </html>
