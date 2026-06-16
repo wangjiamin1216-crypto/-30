@@ -1,0 +1,1260 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>市场研究院 / 应用实验室首页</title>
+  <style>
+    :root {
+      --bg: #f1f3f7;
+      --panel: #ffffff;
+      --line: #e2e8f0;
+      --text: #17213a;
+      --muted: #667085;
+      --blue: #3047ff;
+      --blue-dark: #1e2fd6;
+      --cyan: #0ea5e9;
+      --green: #12b981;
+      --amber: #f59e0b;
+      --red: #ef4444;
+      --slate: #0f172a;
+      --slate-2: #111c2f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    button, input, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .shell {
+      min-height: 100vh;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 330px;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border: 3px solid var(--blue);
+      border-radius: 50%;
+      position: relative;
+      flex: none;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      left: 6px;
+      top: 5px;
+      width: 8px;
+      height: 8px;
+      border-left: 3px solid var(--blue);
+      border-bottom: 3px solid var(--blue);
+      transform: rotate(-45deg);
+    }
+
+    .brand-title {
+      font-size: 21px;
+      font-weight: 700;
+      color: var(--blue);
+      line-height: 1.1;
+    }
+
+    .brand-sub {
+      font-size: 10px;
+      color: var(--blue);
+      margin-top: 2px;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 42px;
+      height: 100%;
+      font-size: 17px;
+      color: #111827;
+      white-space: nowrap;
+    }
+
+    .nav a {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      border-bottom: 3px solid transparent;
+      padding-top: 3px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .nav a.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+      font-weight: 800;
+    }
+
+    .topbar {
+      height: 70px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 2px 10px rgba(17, 24, 39, .06);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .title-block {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 21px;
+      letter-spacing: 0;
+    }
+
+    .top-desc {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: none;
+    }
+
+    .time-chip, .user-chip {
+      height: 32px;
+      display: inline-flex;
+      align-items: center;
+      border: 1px solid var(--line);
+      background: #f8fafc;
+      border-radius: 4px;
+      padding: 0 10px;
+      color: #475569;
+      white-space: nowrap;
+    }
+
+    .user-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--cyan));
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .page {
+      padding: 20px 34px 34px;
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 18px;
+      align-items: start;
+      width: 100%;
+      max-width: none;
+      margin: 0;
+    }
+
+    .page-head {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .page-head-main {
+      display: flex;
+      align-items: baseline;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .page-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .hero-card {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .price-card {
+      grid-column: 9 / 13;
+      grid-row: 3;
+    }
+
+    .metric-card {
+      grid-column: 1 / 5;
+      grid-row: 3;
+    }
+
+    .question-card {
+      grid-column: 5 / 9;
+      grid-row: 3;
+    }
+
+    .scenario-card {
+      grid-column: 1 / 7;
+      grid-row: 4;
+    }
+
+    .experiment-card {
+      grid-column: 7 / 13;
+      grid-row: 4;
+    }
+
+    .summary-card, .todo-card, .report-card {
+      grid-column: span 4;
+      grid-row: 5;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      box-shadow: none;
+      overflow: hidden;
+    }
+
+    .card-head {
+      min-height: 52px;
+      padding: 13px 18px;
+      border-bottom: 1px solid #edf1f7;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .title-bar {
+      width: 5px;
+      height: 16px;
+      border-radius: 3px;
+      background: var(--blue);
+      flex: none;
+    }
+
+    .title-bar.green {
+      background: var(--green);
+    }
+
+    .title-bar.amber {
+      background: var(--amber);
+    }
+
+    .title-bar.cyan {
+      background: var(--cyan);
+    }
+
+    .more {
+      border: 1px solid #d8dcff;
+      background: #f8f9ff;
+      color: var(--blue);
+      height: 28px;
+      border-radius: 4px;
+      padding: 0 12px;
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .card-body {
+      padding: 16px 18px 18px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #17213a 0%, #243876 62%, #0ea5e9 100%);
+      color: #fff;
+      border: 0;
+      min-height: 248px;
+      position: relative;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      width: 190px;
+      height: 190px;
+      border: 1px solid rgba(255, 255, 255, .18);
+      border-radius: 50%;
+      box-shadow: inset 0 0 0 28px rgba(255, 255, 255, .03);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 20px;
+      min-height: 248px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 540px;
+      gap: 34px;
+      align-items: end;
+    }
+
+    .hero-kicker {
+      color: #bae6fd;
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 9px;
+    }
+
+    .hero-title {
+      font-size: 31px;
+      font-weight: 900;
+      line-height: 1.25;
+      max-width: 820px;
+    }
+
+    .hero-desc {
+      margin-top: 10px;
+      color: #dbeafe;
+      line-height: 1.65;
+      max-width: 780px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 0;
+    }
+
+    .hero-stat {
+      background: rgba(15, 23, 42, .32);
+      border: 1px solid rgba(255, 255, 255, .14);
+      border-radius: 6px;
+      padding: 13px;
+    }
+
+    .hero-stat span {
+      display: block;
+      color: #bfdbfe;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+
+    .hero-stat strong {
+      font-size: 25px;
+      font-family: Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    .metric-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: 30px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #edf1f7;
+      border-radius: 4px;
+      background: #fbfdff;
+    }
+
+    .rank {
+      width: 26px;
+      height: 26px;
+      border-radius: 5px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: #94a3b8;
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .rank.top {
+      background: var(--blue);
+    }
+
+    .metric-name {
+      font-weight: 900;
+      margin-bottom: 4px;
+    }
+
+    .metric-meta {
+      color: var(--muted);
+      font-size: 13px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .heat {
+      text-align: right;
+      min-width: 78px;
+    }
+
+    .heat strong {
+      display: block;
+      font-size: 22px;
+      color: #ef4444;
+      line-height: 1;
+    }
+
+    .heat span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .question-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .question {
+      border: 1px solid #edf1f7;
+      border-radius: 4px;
+      padding: 13px 14px;
+      background: #fff;
+    }
+
+    .question-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .question-title {
+      font-weight: 800;
+      line-height: 1.45;
+    }
+
+    .tag {
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+      background: #eef2ff;
+      color: var(--blue);
+    }
+
+    .tag.green {
+      color: #03996e;
+      background: #e9fff7;
+    }
+
+    .tag.amber {
+      color: #a05a00;
+      background: #fff7e6;
+    }
+
+    .tag.red {
+      color: #c91f37;
+      background: #fff1f2;
+    }
+
+    .question-foot {
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .scenario {
+      border: 1px solid #e5eaf3;
+      border-radius: 7px;
+      padding: 13px;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(180deg, #fff 0%, #fbfdff 100%);
+    }
+
+    .scenario h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+    }
+
+    .scenario p {
+      margin: 0 0 11px;
+      color: var(--muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chip {
+      border: 1px solid #dbe3f0;
+      background: #f8fafc;
+      color: #475569;
+      border-radius: 4px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .experiment {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-area {
+      border: 1px solid #e5eaf3;
+      background: #fbfdff;
+      border-radius: 7px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: #475569;
+      font-weight: 800;
+    }
+
+    .field input, .field select {
+      height: 34px;
+      border: 1px solid #d8deea;
+      border-radius: 4px;
+      background: #fff;
+      padding: 0 10px;
+      color: var(--text);
+      outline: none;
+      min-width: 0;
+    }
+
+    .field input:focus, .field select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(48, 71, 255, .08);
+    }
+
+    .primary-btn {
+      height: 36px;
+      border: 0;
+      border-radius: 4px;
+      padding: 0 14px;
+      color: #fff;
+      background: var(--blue);
+      font-weight: 900;
+      box-shadow: 0 8px 18px rgba(48, 71, 255, .18);
+    }
+
+    .secondary-btn {
+      height: 36px;
+      border: 1px solid #d8dcff;
+      border-radius: 4px;
+      padding: 0 14px;
+      color: var(--blue);
+      background: #fff;
+      font-weight: 800;
+    }
+
+    .match-box {
+      border: 1px solid #dbeafe;
+      background: linear-gradient(135deg, #eff6ff, #fff);
+      border-radius: 7px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100%;
+      min-width: 0;
+    }
+
+    .match-score {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .match-score strong {
+      font-size: 38px;
+      line-height: .95;
+      color: var(--blue);
+      font-family: Arial, sans-serif;
+    }
+
+    .match-score span {
+      color: var(--muted);
+      padding-bottom: 4px;
+      font-weight: 800;
+    }
+
+    .summary-line {
+      color: #334155;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .actions {
+      margin-top: auto;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .price-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .price-table th, .price-table td {
+      border-bottom: 1px solid #edf1f7;
+      padding: 13px 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .price-table th {
+      color: #64748b;
+      font-weight: 900;
+      background: #fbfdff;
+    }
+
+    .price-table td:nth-child(3), .price-table td:nth-child(4) {
+      font-family: Arial, sans-serif;
+      font-weight: 800;
+    }
+
+    .delta-up {
+      color: var(--red);
+    }
+
+    .delta-down {
+      color: var(--green);
+    }
+
+    .insight-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .insight {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      border: 1px solid #edf1f7;
+      border-radius: 6px;
+      padding: 10px;
+      background: #fbfdff;
+    }
+
+    .insight-no {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+      background: #e0f2fe;
+      color: #0369a1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 12px;
+    }
+
+    .insight strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .insight span {
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 12px;
+    }
+
+    .governance {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .gov-item {
+      border: 1px solid #e5eaf3;
+      border-radius: 6px;
+      padding: 11px;
+      background: #fbfdff;
+    }
+
+    .gov-item strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .gov-item span {
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1280px) {
+      .page {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .page-head, .hero-card, .price-card, .metric-card, .question-card, .scenario-card, .experiment-card, .summary-card, .todo-card, .report-card {
+        grid-column: auto;
+        grid-row: auto;
+      }
+
+      .page-head, .hero-card {
+        grid-column: 1 / -1;
+      }
+
+      .page-head {
+        order: 0;
+      }
+
+      .hero-card {
+        order: 1;
+      }
+
+      .metric-card {
+        order: 2;
+      }
+
+      .question-card {
+        order: 3;
+      }
+
+      .scenario-card {
+        order: 4;
+      }
+
+      .experiment-card {
+        order: 5;
+      }
+
+      .price-card {
+        order: 6;
+      }
+
+      .summary-card {
+        order: 7;
+      }
+
+      .todo-card {
+        order: 8;
+      }
+
+      .report-card {
+        order: 9;
+      }
+
+      .experiment {
+        grid-template-columns: 1fr;
+      }
+
+      .nav {
+        gap: 24px;
+      }
+
+      .brand {
+        min-width: 220px;
+      }
+
+      .topbar {
+        padding: 0 18px;
+      }
+
+      .top-actions .user-chip {
+        display: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .topbar {
+        height: auto;
+        padding: 14px 16px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+
+      .nav {
+        width: 100%;
+        overflow-x: auto;
+        gap: 24px;
+      }
+
+      .nav a {
+        height: 40px;
+      }
+
+      .page {
+        grid-template-columns: 1fr;
+        padding: 14px 16px 22px;
+      }
+
+      .page-head, .hero-card, .price-card, .metric-card, .question-card, .scenario-card, .experiment-card, .summary-card, .todo-card, .report-card {
+        grid-column: 1;
+        grid-row: auto;
+      }
+
+      .scenario-grid, .experiment, .governance, .hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .page-head, .page-head-main, .title-block {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="brand-title">佬司机大宗</div>
+          <div class="brand-sub">指标驱动交易平台</div>
+        </div>
+      </div>
+      <nav class="nav" aria-label="主导航">
+        <a href="#">首页</a>
+        <a href="#">云仓</a>
+        <a href="#">拍卖管理</a>
+        <a href="#">订单处理</a>
+        <a href="#">买家中心</a>
+        <a href="#" class="active">市场研究院</a>
+        <a href="#">合同管理</a>
+      </nav>
+      <div class="top-actions">
+        <div class="user-chip">西安和硕物流科技有限公司</div>
+        <div class="user-avatar">李</div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page">
+        <div class="page-head">
+          <div class="page-head-main">
+            <h1>市场研究院 / 应用实验室</h1>
+            <div class="top-desc">把指标讨论、相近价格、需求组合沉淀为可复用成交能力</div>
+          </div>
+          <div class="page-tools">
+            <div class="time-chip">2026年05月13日 星期三</div>
+            <button class="more">指标库</button>
+            <button class="more">实验室</button>
+          </div>
+        </div>
+
+        <section class="card hero hero-card">
+          <div class="hero-content">
+            <div>
+              <div class="hero-kicker">研究院首页第一版原型</div>
+              <div class="hero-title">从“卖一批煤”升级为“围绕指标定义更容易成交的需求”</div>
+              <div class="hero-desc">聚焦热值、水分、硫分、灰分等煤炭交易高频指标，将买家问题、卖家可调整范围和相近成交价形成研究摘要，反哺商品发布、询价议价和需求匹配。</div>
+            </div>
+            <div class="hero-stats">
+              <div class="hero-stat"><span>今日指标讨论</span><strong>286</strong></div>
+              <div class="hero-stat"><span>需求实验</span><strong>42</strong></div>
+              <div class="hero-stat"><span>可参考货源</span><strong>118</strong></div>
+              <div class="hero-stat"><span>待人工复核</span><strong>7</strong></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card price-card">
+          <div class="card-head">
+            <h2 class="card-title"><span class="title-bar green"></span>相近指标价格参考</h2>
+            <button class="more">价格明细</button>
+          </div>
+          <div class="card-body">
+            <table class="price-table">
+              <thead>
+                <tr>
+                  <th>指标组合</th>
+                  <th>区域</th>
+                  <th>参考价</th>
+                  <th>周变化</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>热值 5200 / 硫≤0.8 / 水≤12</td>
+                  <td>榆林</td>
+                  <td>815-835</td>
+                  <td class="delta-up">+2.4%</td>
+                </tr>
+                <tr>
+                  <td>热值 5000 / 硫≤1.0 / 水≤14</td>
+                  <td>鄂尔多斯</td>
+                  <td>760-790</td>
+                  <td class="delta-up">+1.1%</td>
+                </tr>
+                <tr>
+                  <td>热值 5500 / 硫≤0.6 / 水≤10</td>
+                  <td>府谷</td>
+                  <td>850-880</td>
+                  <td class="delta-down">-0.6%</td>
+                </tr>
+                <tr>
+                  <td>低灰低硫气化煤组合</td>
+                  <td>山西</td>
+                  <td>920-970</td>
+                  <td class="delta-up">+3.2%</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="insight-list" style="margin-top:12px;">
+              <div class="insight">
+                <span class="insight-no">控</span>
+                <div>
+                  <strong>价格参考边界</strong>
+                  <span>仅用于相近指标比价，不自动改价；当化验单过期或波动超过 5% 时需人工复核。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card metric-card">
+          <div class="card-head">
+            <h2 class="card-title"><span class="title-bar"></span>高频指标排行</h2>
+            <button class="more">查看指标库</button>
+          </div>
+          <div class="card-body">
+            <div class="metric-list">
+              <div class="metric-row">
+                <div class="rank top">1</div>
+                <div>
+                  <div class="metric-name">发热量 Qnet,ar</div>
+                  <div class="metric-meta"><span>主区间 5000-5500 kcal/kg</span><span>成交影响高</span></div>
+                </div>
+                <div class="heat"><strong>91</strong><span>热度</span></div>
+              </div>
+              <div class="metric-row">
+                <div class="rank top">2</div>
+                <div>
+                  <div class="metric-name">全水 Mt</div>
+                  <div class="metric-meta"><span>买家常问是否可降至 12%</span><span>履约影响高</span></div>
+                </div>
+                <div class="heat"><strong>84</strong><span>热度</span></div>
+              </div>
+              <div class="metric-row">
+                <div class="rank top">3</div>
+                <div>
+                  <div class="metric-name">全硫 St,ad</div>
+                  <div class="metric-meta"><span>环保约束敏感</span><span>议价影响高</span></div>
+                </div>
+                <div class="heat"><strong>79</strong><span>热度</span></div>
+              </div>
+              <div class="metric-row">
+                <div class="rank">4</div>
+                <div>
+                  <div class="metric-name">灰分 Aad</div>
+                  <div class="metric-meta"><span>掺烧场景关注</span><span>质量异议高频</span></div>
+                </div>
+                <div class="heat"><strong>66</strong><span>热度</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card question-card">
+          <div class="card-head">
+            <h2 class="card-title"><span class="title-bar green"></span>高频讨论问题</h2>
+            <button class="more">沉淀为问答</button>
+          </div>
+          <div class="card-body">
+            <div class="question-list">
+              <div class="question">
+                <div class="question-top">
+                  <div class="question-title">热值 5000 的货源，是否有稳定批次能提升到 5200？</div>
+                  <span class="tag red">议价敏感</span>
+                </div>
+                <div class="question-foot"><span>买家：电厂/供热企业</span><span>关联货源 23 个</span></div>
+              </div>
+              <div class="question">
+                <div class="question-top">
+                  <div class="question-title">硫分能否控制在 0.8 以下，并提供第三方化验单？</div>
+                  <span class="tag amber">需复核</span>
+                </div>
+                <div class="question-foot"><span>买家：化工/冶金</span><span>近7天提及 37 次</span></div>
+              </div>
+              <div class="question">
+                <div class="question-top">
+                  <div class="question-title">水分偏高时，结算是否按到厂复检结果扣吨或扣价？</div>
+                  <span class="tag green">规则沉淀</span>
+                </div>
+                <div class="question-foot"><span>买卖双方共性问题</span><span>建议进入合同条款模板</span></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card scenario-card">
+          <div class="card-head">
+            <h2 class="card-title"><span class="title-bar cyan"></span>应用场景建议</h2>
+            <button class="more">生成场景报告</button>
+          </div>
+          <div class="card-body">
+            <div class="scenario-grid">
+              <article class="scenario">
+                <h3>电厂锅炉掺烧</h3>
+                <p>建议优先匹配热值 5000-5500、硫分低于 0.8、水分不高于 14 的稳定批次，关注到厂复检与扣价规则。</p>
+                <div class="chips">
+                  <span class="chip">热值优先</span>
+                  <span class="chip">低硫</span>
+                  <span class="chip">稳定供货</span>
+                </div>
+              </article>
+              <article class="scenario">
+                <h3>化工气化用煤</h3>
+                <p>建议关注灰熔点、灰分、固定碳与粒度稳定性，价格参考应按相近指标组合而非单一热值。</p>
+                <div class="chips">
+                  <span class="chip">灰熔点</span>
+                  <span class="chip">低灰</span>
+                  <span class="chip">粒度</span>
+                </div>
+              </article>
+              <article class="scenario">
+                <h3>建材窑炉燃料</h3>
+                <p>建议在热值、挥发分和到厂运距之间做综合匹配，可接受一定指标波动但需明确批次边界。</p>
+                <div class="chips">
+                  <span class="chip">成本敏感</span>
+                  <span class="chip">运距</span>
+                  <span class="chip">批次边界</span>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="card experiment-card">
+          <div class="card-head">
+            <h2 class="card-title"><span class="title-bar amber"></span>需求实验入口</h2>
+            <button class="more">进入实验室</button>
+          </div>
+          <div class="card-body">
+            <div class="experiment">
+              <div class="form-area">
+                <div class="field-grid">
+                  <div class="field">
+                    <label for="coalType">煤种</label>
+                    <select id="coalType">
+                      <option>动力煤</option>
+                      <option>无烟煤</option>
+                      <option>喷吹煤</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="scene">应用场景</label>
+                    <select id="scene">
+                      <option>电厂锅炉掺烧</option>
+                      <option>化工气化</option>
+                      <option>建材窑炉</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="calorie">目标热值</label>
+                    <input id="calorie" value="5200 kcal/kg">
+                  </div>
+                  <div class="field">
+                    <label for="sulfur">硫分上限</label>
+                    <input id="sulfur" value="≤0.8%">
+                  </div>
+                  <div class="field">
+                    <label for="water">水分上限</label>
+                    <input id="water" value="≤12%">
+                  </div>
+                  <div class="field">
+                    <label for="stock">需求量</label>
+                    <input id="stock" value="3 万吨/月">
+                  </div>
+                </div>
+              </div>
+              <div class="match-box">
+                <div class="match-score"><strong>86</strong><span>匹配指数</span></div>
+                <div class="summary-line">当前组合在平台现有货源中可匹配 18 个批次，其中 6 个批次需卖家确认水分扣价规则，2 个批次需补充第三方化验单。</div>
+                <div class="chips">
+                  <span class="chip">推荐询价：神木/府谷货源</span>
+                  <span class="chip">价格参考：780-835 元/吨</span>
+                  <span class="chip">风控：需人工复核化验单</span>
+                </div>
+                <div class="actions">
+                  <button class="primary-btn">生成结构化需求</button>
+                  <button class="secondary-btn">查看相近货源</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card summary-card">
+          <div class="card-head">
+            <h2 class="card-title"><span class="title-bar"></span>研究结论摘要</h2>
+            <button class="more">同步到卖家建议</button>
+          </div>
+          <div class="card-body">
+            <div class="governance">
+              <div class="gov-item">
+                <strong>指标表达建议</strong>
+                <span>卖家发布煤炭货源时，应补齐热值、水分、硫分、灰分、挥发分和化验时间，缺失字段影响推荐排序。</span>
+              </div>
+              <div class="gov-item">
+                <strong>审批与审计</strong>
+                <span>研究院输出仅作为参考，进入商品页前需平台运营审核，所有采纳动作记录操作日志。</span>
+              </div>
+              <div class="gov-item">
+                <strong>异常处理</strong>
+                <span>价格波动超过 5% 或化验单过期时，标记需人工复核，禁止直接作为报价依据。</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card todo-card">
+          <div class="card-head">
+            <h2 class="card-title"><span class="title-bar amber"></span>应用实验待办</h2>
+            <button class="more">处理待办</button>
+          </div>
+          <div class="card-body">
+            <div class="insight-list">
+              <div class="insight">
+                <span class="insight-no">1</span>
+                <div>
+                  <strong>复核 7 条 AI 提取的指标问题</strong>
+                  <span>来源于买家咨询和卖家回复，需运营确认是否沉淀为公开问答。</span>
+                </div>
+              </div>
+              <div class="insight">
+                <span class="insight-no">2</span>
+                <div>
+                  <strong>补齐 12 个货源的化验单有效期</strong>
+                  <span>缺少化验时间将降低相近价格参考可信度，并触发风控提示。</span>
+                </div>
+              </div>
+              <div class="insight">
+                <span class="insight-no">3</span>
+                <div>
+                  <strong>确认热值 5200 组合的推荐卖家</strong>
+                  <span>需结合库存、运距、历史履约和价格区间后再同步到需求实验结果。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card report-card">
+          <div class="card-head">
+            <h2 class="card-title"><span class="title-bar cyan"></span>汇报口径</h2>
+          </div>
+          <div class="card-body">
+            <div class="insight-list">
+              <div class="insight">
+                <span class="insight-no">研</span>
+                <div>
+                  <strong>研究院不是资讯模块</strong>
+                  <span>它沉淀交易过程中围绕指标产生的问题、价格和应用知识。</span>
+                </div>
+              </div>
+              <div class="insight">
+                <span class="insight-no">用</span>
+                <div>
+                  <strong>应用实验室不是自动成交</strong>
+                  <span>它帮助买家定义需求、帮助卖家判断可调整范围，最终仍回到交易链路确认。</span>
+                </div>
+              </div>
+              <div class="insight">
+                <span class="insight-no">控</span>
+                <div>
+                  <strong>所有结论都要有权限和审计边界</strong>
+                  <span>价格参考、AI 提取和推荐结论必须可追溯、可复核、可撤回。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+</body>
+</html>

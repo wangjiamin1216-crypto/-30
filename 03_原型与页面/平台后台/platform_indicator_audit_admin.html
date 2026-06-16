@@ -1,0 +1,1721 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>平台指标商品审核后台</title>
+  <style>
+    :root {
+      --blue: #1688f0;
+      --blue-dark: #0870d1;
+      --blue-soft: #eaf5ff;
+      --orange: #ff8a1c;
+      --green: #17a66a;
+      --red: #e5484d;
+      --yellow: #b97800;
+      --ink: #17233d;
+      --text: #4f5f76;
+      --muted: #8592a7;
+      --line: #dfe6f1;
+      --line-soft: #edf1f7;
+      --bg: #f2f5f9;
+      --panel: #ffffff;
+      --shade: #f7f9fc;
+      --nav: #ffffff;
+      --shadow: 0 10px 28px rgba(23, 35, 61, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      color: var(--text);
+      background: var(--bg);
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    button,
+    input,
+    select,
+    textarea { font: inherit; }
+
+    button { cursor: pointer; }
+
+    .app {
+      min-width: 1320px;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 68px;
+      background: var(--nav);
+      border-bottom: 1px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      flex-shrink: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 150px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border: 3px solid var(--blue);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .brand-mark::before,
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      background: var(--blue);
+      border-radius: 999px;
+      left: 14px;
+      top: 8px;
+      width: 3px;
+      height: 18px;
+      transform-origin: 50% 2px;
+    }
+
+    .brand-mark::before { transform: rotate(120deg); }
+    .brand-mark::after { transform: rotate(240deg); }
+
+    .brand-title {
+      color: var(--blue);
+      font-weight: 900;
+      font-size: 18px;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .brand-sub {
+      color: #7fbaf0;
+      font-size: 8px;
+      margin-top: 3px;
+      letter-spacing: .04em;
+      white-space: nowrap;
+    }
+
+    .nav {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 64px;
+      margin-left: 24px;
+      flex: 1;
+    }
+
+    .nav a {
+      color: #5f6e84;
+      text-decoration: none;
+      height: 100%;
+      display: inline-flex;
+      align-items: center;
+      font-weight: 800;
+      font-size: 18px;
+      border-bottom: 3px solid transparent;
+      padding-top: 3px;
+    }
+
+    .nav a.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+
+    .account {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: #6d7889;
+      white-space: nowrap;
+    }
+
+    .bell {
+      color: #0f172a;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+
+    .main {
+      padding: 18px 22px 22px;
+      height: calc(100vh - 68px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 34px;
+      flex-shrink: 0;
+      margin-bottom: 12px;
+    }
+
+    .title-row h1 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 20px;
+      line-height: 1;
+      font-weight: 900;
+    }
+
+    .title-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .summary {
+      height: 62px;
+      border-radius: 4px;
+      background: #eef2f7;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      align-items: center;
+      padding: 0 22px;
+      gap: 18px;
+      flex-shrink: 0;
+      margin-bottom: 18px;
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      color: #778398;
+      font-weight: 800;
+    }
+
+    .summary-item strong {
+      color: #36445c;
+      font-size: 18px;
+    }
+
+    .summary-item .warn { color: var(--orange); }
+    .summary-item .ok { color: var(--green); }
+
+    .workspace {
+      background: var(--panel);
+      border-radius: 5px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      flex: 1;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 18px;
+      overflow: hidden;
+    }
+
+    .left-pane {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid var(--line);
+      padding-right: 18px;
+    }
+
+    .filter-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      flex-shrink: 0;
+      margin-bottom: 12px;
+    }
+
+    .search,
+    .select {
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      background: #fff;
+      color: #69778e;
+      padding: 0 10px;
+      outline: none;
+      min-width: 0;
+    }
+
+    .search:focus,
+    .select:focus,
+    textarea:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(22, 136, 240, .10);
+    }
+
+    .quick-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+      flex-shrink: 0;
+    }
+
+    .quick-tabs button {
+      height: 32px;
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 5px;
+      color: #69778e;
+      font-weight: 800;
+      font-size: 12px;
+    }
+
+    .quick-tabs button.active {
+      color: #fff;
+      border-color: var(--blue);
+      background: var(--blue);
+    }
+
+    .task-list {
+      min-height: 0;
+      flex: 1;
+      overflow: auto;
+      padding-right: 2px;
+    }
+
+    .task-card {
+      position: relative;
+      width: 100%;
+      border: 0;
+      text-align: left;
+      background: #f0f3f8;
+      color: var(--ink);
+      border-radius: 5px;
+      padding: 12px 12px 11px;
+      margin-bottom: 10px;
+      transition: background .15s ease, color .15s ease, box-shadow .15s ease;
+    }
+
+    .task-card.active {
+      background: var(--blue);
+      color: #fff;
+      box-shadow: 0 8px 18px rgba(22, 136, 240, .24);
+    }
+
+    .task-card.active::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      transform: translateY(-50%);
+      border-top: 10px solid transparent;
+      border-bottom: 10px solid transparent;
+      border-left: 10px solid var(--blue);
+    }
+
+    .task-main {
+      font-weight: 900;
+      line-height: 1.4;
+      margin-bottom: 7px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .task-card.active .task-sub,
+    .task-card.active .task-meta { color: rgba(255, 255, 255, .86); }
+
+    .task-sub {
+      color: #69778e;
+      line-height: 1.4;
+      margin-bottom: 8px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .task-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #8b96a8;
+      font-size: 12px;
+      gap: 8px;
+    }
+
+    .right-pane {
+      min-width: 0;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .detail-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .detail-title h2 {
+      margin: 0;
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.2;
+      font-weight: 900;
+    }
+
+    .detail-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .state-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 24px;
+      padding: 3px 9px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .tag.review { color: var(--blue); background: var(--blue-soft); }
+    .tag.reject { color: var(--red); background: #fff0f0; }
+    .tag.online { color: var(--green); background: #eaf8f1; }
+    .tag.offline { color: #778398; background: #eff2f6; }
+    .tag.warn { color: var(--yellow); background: #fff7e6; }
+    .tag.dark { color: #263348; background: #eef2f7; }
+
+    .btn {
+      height: 34px;
+      border-radius: 5px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #526179;
+      padding: 0 14px;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn.primary { color: #fff; border-color: var(--blue); background: var(--blue); }
+    .btn.primary:hover { background: var(--blue-dark); }
+    .btn.danger { color: #fff; border-color: var(--red); background: var(--red); }
+    .btn.success { color: #fff; border-color: var(--green); background: var(--green); }
+    .btn.ghost { color: var(--blue); border-color: #b8dcff; background: #f5fbff; }
+    .btn:disabled { opacity: .45; cursor: not-allowed; }
+
+    .tabs {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding-top: 12px;
+      border-bottom: 1px solid var(--line);
+      flex-shrink: 0;
+    }
+
+    .tabs button {
+      height: 36px;
+      border: 0;
+      background: transparent;
+      color: #68778e;
+      font-weight: 900;
+      padding: 0 18px;
+      border-bottom: 3px solid transparent;
+    }
+
+    .tabs button.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+
+    .detail-body {
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+      padding-top: 14px;
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(360px, .88fr);
+      gap: 14px;
+      align-items: start;
+    }
+
+    .detail-grid > div:nth-child(2) {
+      position: sticky;
+      top: 0;
+      align-self: start;
+      z-index: 2;
+    }
+
+    .section {
+      border: 1px solid var(--line);
+      background: #fff;
+      border-radius: 5px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .section-title {
+      height: 42px;
+      background: #f7f9fc;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .section-title small {
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .section-content { padding: 14px; }
+
+    .kv-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-top: 1px solid var(--line-soft);
+      border-left: 1px solid var(--line-soft);
+    }
+
+    .kv {
+      min-height: 44px;
+      display: grid;
+      grid-template-columns: 112px minmax(0, 1fr);
+      border-right: 1px solid var(--line-soft);
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .kv .k {
+      background: #f8fafc;
+      color: #7b8798;
+      padding: 12px 10px;
+      font-weight: 800;
+    }
+
+    .kv .v {
+      padding: 12px 10px;
+      color: #42516a;
+      font-weight: 800;
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .metric-table,
+    .log-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      color: #526179;
+    }
+
+    .metric-table th,
+    .metric-table td,
+    .log-table th,
+    .log-table td {
+      border: 1px solid var(--line);
+      padding: 10px 11px;
+      text-align: left;
+      vertical-align: top;
+      line-height: 1.45;
+    }
+
+    .metric-table th,
+    .log-table th {
+      background: #f3f6fa;
+      color: #38465d;
+      font-weight: 900;
+    }
+
+    .metric-value {
+      color: var(--ink);
+      font-weight: 900;
+    }
+
+    .issue-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .issue {
+      border: 1px solid #ffe0b8;
+      background: #fffaf3;
+      color: #7a4a00;
+      border-radius: 5px;
+      padding: 10px 12px;
+      line-height: 1.55;
+      font-weight: 800;
+    }
+
+    .issue.ok {
+      border-color: #bfedd6;
+      background: #f0fbf5;
+      color: #16704a;
+    }
+
+    .attachment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .attachment {
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .attachment-preview {
+      height: 128px;
+      background: #e9eef6;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .attachment-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .attachment-preview.doc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #526179;
+      font-weight: 900;
+      font-size: 28px;
+    }
+
+    .attachment-info {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .attachment-name {
+      color: var(--ink);
+      font-weight: 900;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .audit-box {
+      border-color: var(--line);
+      background: #fff;
+    }
+
+    .audit-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding-top: 12px;
+    }
+
+    .audit-actions.admin {
+      grid-template-columns: 1fr 1fr 1fr;
+      padding-top: 10px;
+    }
+
+    .review-path {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      padding: 10px 11px;
+      border: 1px solid var(--line);
+      background: #fbfcfe;
+      border-radius: 5px;
+      color: #526179;
+      font-weight: 900;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .path-node {
+      padding: 5px 9px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+      color: var(--blue);
+      white-space: nowrap;
+    }
+
+    .arrow { color: #9badc4; }
+
+    .audit-subtitle {
+      color: #38465d;
+      font-weight: 900;
+      margin: 0 0 8px;
+    }
+
+    .audit-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 12px 0 0;
+    }
+
+    .empty-state {
+      min-height: 360px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+      color: #8490a4;
+      background: #fbfcfe;
+      border: 1px dashed var(--line);
+      border-radius: 5px;
+      font-weight: 800;
+    }
+
+    .hidden { display: none !important; }
+
+    .modal-mask {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .44);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 20px;
+    }
+
+    .modal-mask.show { display: flex; }
+
+    .modal {
+      width: min(680px, 100%);
+      max-height: calc(100vh - 60px);
+      overflow: auto;
+      background: #fff;
+      border-radius: 6px;
+      box-shadow: 0 24px 60px rgba(15, 23, 42, .24);
+    }
+
+    .modal.large { width: min(920px, 100%); }
+
+    .modal-head {
+      height: 54px;
+      padding: 0 18px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--ink);
+      font-weight: 900;
+      font-size: 17px;
+    }
+
+    .modal-body { padding: 18px; }
+
+    .modal-foot {
+      min-height: 60px;
+      padding: 12px 18px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      border: 1px solid var(--line);
+      border-radius: 5px;
+      padding: 11px;
+      resize: vertical;
+      outline: none;
+      color: #42516a;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .form-row label {
+      display: block;
+      margin-bottom: 7px;
+      color: #38465d;
+      font-weight: 900;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      min-width: 280px;
+      border-radius: 5px;
+      background: #0f172a;
+      color: #fff;
+      padding: 13px 16px;
+      box-shadow: 0 16px 40px rgba(15, 23, 42, .24);
+      display: none;
+      z-index: 80;
+      font-weight: 800;
+    }
+
+    .toast.show { display: block; }
+
+    .preview-image {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: 5px;
+      border: 1px solid var(--line);
+      background: #eef2f7;
+      display: block;
+    }
+
+    .preview-doc {
+      height: 420px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(#fff, #fff) padding-box,
+        linear-gradient(135deg, #e9f3ff, #fff7e8) border-box;
+      border-radius: 5px;
+      padding: 34px;
+      color: #526179;
+    }
+
+    .doc-page {
+      height: 100%;
+      border: 1px solid #d8dee9;
+      background: #fff;
+      padding: 28px;
+      box-shadow: 0 8px 18px rgba(23, 35, 61, .08);
+    }
+
+    .doc-line {
+      height: 10px;
+      background: #e9edf5;
+      border-radius: 99px;
+      margin: 14px 0;
+    }
+
+    .doc-line.short { width: 68%; }
+    .doc-line.tiny { width: 42%; }
+
+    @media (max-width: 1500px) {
+      .nav { gap: 42px; }
+      .workspace { grid-template-columns: 300px 1fr; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .detail-grid > div:nth-child(2) { position: static; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="brand-title">佬司机</div>
+          <div class="brand-sub">LOGISTICS MODULE</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <a href="#">工作台</a>
+        <a class="active" href="#">交易</a>
+        <a href="#">财务</a>
+        <a href="#">后市场</a>
+        <a href="#">运营</a>
+        <a href="#">数据</a>
+        <a href="#">用户</a>
+        <a href="#">平台</a>
+      </nav>
+      <div class="account">
+        <span class="bell">铃 (20)</span>
+        <span>平台审核员 17628372627⌄</span>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="title-row">
+        <h1>指标商品审核</h1>
+        <div class="title-actions">
+          <button class="btn ghost" id="showLogsBtn">审核日志</button>
+          <button class="btn primary" id="exportBtn">导出</button>
+        </div>
+      </div>
+
+      <section class="summary" id="summary"></section>
+
+      <section class="workspace">
+        <aside class="left-pane">
+          <div class="filter-grid">
+            <input class="search" id="keyword" placeholder="商品名称 / 卖家企业">
+            <select class="select" id="category">
+              <option value="全部">全部分类</option>
+              <option value="煤炭">煤炭</option>
+              <option value="焦化">焦化</option>
+              <option value="化工">化工</option>
+            </select>
+            <input class="search" id="metricSearch" placeholder="核心指标">
+            <select class="select" id="roleSelect">
+              <option value="admin">平台管理员</option>
+              <option value="auditor">平台审核人员</option>
+            </select>
+          </div>
+          <div class="quick-tabs" id="statusTabs">
+            <button class="active" data-status="待审核">待审核</button>
+            <button data-status="审核驳回">驳回</button>
+            <button data-status="已上架">上架</button>
+            <button data-status="已下架">下架</button>
+          </div>
+          <div class="task-list" id="taskList"></div>
+        </aside>
+
+        <section class="right-pane">
+          <div class="detail-head">
+            <div class="detail-title">
+              <h2 id="detailName">-</h2>
+              <p id="detailSub">-</p>
+            </div>
+            <div class="state-row" id="detailState"></div>
+          </div>
+
+          <div class="tabs" id="detailTabs">
+            <button class="active" data-tab="audit">审核详情</button>
+            <button data-tab="attachments">图片 / 附件</button>
+            <button data-tab="history">历史修改</button>
+            <button data-tab="logs">审核日志</button>
+          </div>
+
+          <div class="detail-body">
+            <div id="emptyDetail" class="empty-state hidden">
+              <strong>当前没有符合条件的指标商品</strong>
+              <span>请调整状态、分类或搜索条件后重新查看。</span>
+            </div>
+
+            <div id="tabAudit">
+              <div class="detail-grid">
+                <div>
+                  <section class="section">
+                    <div class="section-title">
+                      <span>基础信息</span>
+                      <small id="versionText">-</small>
+                    </div>
+                    <div class="section-content">
+                      <div class="kv-grid" id="baseInfo"></div>
+                    </div>
+                  </section>
+
+                  <section class="section">
+                    <div class="section-title">
+                      <span>指标信息</span>
+                      <small>指标优先审核</small>
+                    </div>
+                    <div class="section-content">
+                      <table class="metric-table" id="metricTable"></table>
+                    </div>
+                  </section>
+
+                  <section class="section">
+                    <div class="section-title">
+                      <span>库存 / 吨位与经营信息</span>
+                      <small>支撑可经营判断</small>
+                    </div>
+                    <div class="section-content">
+                      <div class="kv-grid" id="tradeInfo"></div>
+                    </div>
+                  </section>
+                </div>
+
+                <div>
+                  <section class="section audit-box">
+                    <div class="section-title">
+                      <span>审核操作</span>
+                      <small>按状态机执行</small>
+                    </div>
+                    <div class="section-content">
+                      <div class="audit-subtitle">状态流转</div>
+                      <div class="review-path" id="statePath"></div>
+                      <div class="audit-subtitle">审核校验</div>
+                      <div class="issue-list" id="issueList"></div>
+                      <div class="audit-divider"></div>
+                      <div class="audit-actions" id="auditActions"></div>
+                      <div class="audit-actions admin" id="adminActions"></div>
+                    </div>
+                  </section>
+
+                  <section class="section" style="margin-top:14px;">
+                    <div class="section-title">
+                      <span>卖家信息</span>
+                      <small>只展示审核所需摘要</small>
+                    </div>
+                    <div class="section-content">
+                      <div class="kv-grid" id="sellerInfo"></div>
+                    </div>
+                  </section>
+                </div>
+              </div>
+            </div>
+
+            <div id="tabAttachments" class="hidden">
+              <section class="section">
+                <div class="section-title">
+                  <span>图片 / 附件预览</span>
+                  <small>仅用于审核判断</small>
+                </div>
+                <div class="section-content">
+                  <div class="attachment-grid" id="attachmentGrid"></div>
+                </div>
+              </section>
+            </div>
+
+            <div id="tabHistory" class="hidden">
+              <section class="section">
+                <div class="section-title">
+                  <span>历史修改记录</span>
+                  <small>影响审核主版本的变更必须可追溯</small>
+                </div>
+                <div class="section-content">
+                  <table class="log-table" id="historyTable"></table>
+                </div>
+              </section>
+            </div>
+
+            <div id="tabLogs" class="hidden">
+              <section class="section">
+                <div class="section-title">
+                  <span>审核日志</span>
+                  <small>只追加，不覆盖</small>
+                </div>
+                <div class="section-content">
+                  <table class="log-table" id="logTable"></table>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <div class="modal-mask" id="actionModal">
+    <div class="modal">
+      <div class="modal-head">
+        <span id="modalTitle">审核操作</span>
+        <button class="btn" data-close>关闭</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="form-row" id="reasonRow">
+            <label id="reasonLabel">驳回原因</label>
+            <select class="select" id="reasonSelect" style="width:100%;height:38px;">
+              <option value="">请选择原因</option>
+              <option>核心指标缺失或不完整</option>
+              <option>库存 / 可售吨位异常</option>
+              <option>检测报告或资质材料缺失</option>
+              <option>报价、交付或交易信息不完整</option>
+              <option>商品信息与指标信息存在冲突</option>
+              <option>平台规则要求下架</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label id="opinionLabel">审核意见</label>
+            <textarea id="opinionText" placeholder="请填写审核意见。驳回和强制下架时必须填写清楚原因，供卖家修改或追溯。"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button class="btn" data-close>取消</button>
+        <button class="btn primary" id="confirmAction">确认提交</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="previewModal">
+    <div class="modal large">
+      <div class="modal-head">
+        <span id="previewTitle">附件预览</span>
+        <button class="btn" data-close>关闭</button>
+      </div>
+      <div class="modal-body" id="previewBody"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const productImage = "../png/无烟煤图片.png";
+
+    const stateClass = {
+      "待审核": "review",
+      "审核驳回": "reject",
+      "已上架": "online",
+      "已下架": "offline"
+    };
+
+    const products = [
+      {
+        id: "IG202605210031",
+        name: "动力煤 5500 指标商品",
+        seller: "陕西煤业化工集团神木天元化工有限公司",
+        sellerId: "ENT6108210001",
+        category: "煤炭",
+        status: "待审核",
+        submitTime: "2026-05-21 09:18",
+        version: "V3",
+        owner: "张明",
+        updateTime: "2026-05-21 09:03",
+        createdAt: "2026-05-19 14:22",
+        core: "发热量 5500 kcal/kg；全硫 ≤0.8%；灰分 ≤10%",
+        stock: "50,000 吨",
+        saleTons: "32,000 吨",
+        minOrder: "500 吨",
+        price: "600 元/吨",
+        priceType: "固定价",
+        priceUntil: "2026-06-20",
+        productionArea: "陕西省榆林市神木市",
+        deliveryArea: "陕西榆林、内蒙古鄂尔多斯",
+        tradeMode: "在线询价 / 议价",
+        deliveryMode: "矿区自提 / 平台承运",
+        remark: "支持按吨位分批交付，核心指标以第三方检测报告为准。",
+        sellerState: "企业状态正常；经营权限有效",
+        metrics: [
+          ["发热量", "5500", "kcal/kg", "5400", "5600", "核心", "检测口径：收到基低位发热量"],
+          ["全硫分", "0.8", "%", "0", "1.0", "核心", "低硫煤，适用于电煤客户"],
+          ["灰分", "10", "%", "0", "12", "核心", "以批次检测为准"],
+          ["全水分", "15", "%", "0", "18", "普通", "雨季可能浮动"]
+        ],
+        issues: [
+          { type: "ok", text: "基础信息、核心指标、库存和交付信息完整，可进入人工审核判断。" },
+          { type: "warn", text: "价格有效期距离当前提交时间较短，建议审核时确认卖家经营备注。" }
+        ],
+        attachments: [
+          { type: "image", name: "商品图片-动力煤堆场.jpg" },
+          { type: "doc", name: "第三方检测报告.pdf" },
+          { type: "doc", name: "企业经营资质.pdf" },
+          { type: "doc", name: "规格说明书.pdf" }
+        ],
+        history: [
+          ["2026-05-21 09:02", "张明", "库存 / 可售吨位", "库存 48000 吨", "库存 50000 吨；可售 32000 吨", "V3"],
+          ["2026-05-21 08:48", "张明", "指标说明", "未填写", "补充检测口径与容差说明", "V2"]
+        ],
+        logs: [
+          ["2026-05-21 09:18", "张明", "重新提交", "审核驳回", "待审核", "已按驳回意见补充检测报告", "IG202605210031"]
+        ]
+      },
+      {
+        id: "IG202605210029",
+        name: "低硫无烟煤 6200 指标商品",
+        seller: "宁夏中宁能源供应链有限公司",
+        sellerId: "ENT6405210028",
+        category: "煤炭",
+        status: "待审核",
+        submitTime: "2026-05-21 08:41",
+        version: "V1",
+        owner: "赵青",
+        updateTime: "2026-05-21 08:38",
+        createdAt: "2026-05-20 18:12",
+        core: "发热量 6200 kcal/kg；全硫 ≤0.5%；固定碳 ≥70%",
+        stock: "18,000 吨",
+        saleTons: "20,000 吨",
+        minOrder: "1,000 吨",
+        price: "760 元/吨",
+        priceType: "区间价",
+        priceUntil: "2026-06-08",
+        productionArea: "宁夏中卫市",
+        deliveryArea: "宁夏、甘肃、陕西",
+        tradeMode: "在线议价",
+        deliveryMode: "站台交付",
+        remark: "可按站台批次发货。",
+        sellerState: "企业状态正常；经营权限有效",
+        metrics: [
+          ["发热量", "6200", "kcal/kg", "6100", "6300", "核心", "收到基低位发热量"],
+          ["全硫分", "0.5", "%", "0", "0.8", "核心", "低硫指标"],
+          ["固定碳", "70", "%", "68", "75", "核心", "无烟煤核心指标"]
+        ],
+        issues: [
+          { type: "warn", text: "可售吨位 20,000 吨大于库存数量 18,000 吨，需要卖家修正或补充特殊经营口径。" },
+          { type: "warn", text: "区间价缺少上限/下限说明，审核驳回时需明确补充要求。" }
+        ],
+        attachments: [
+          { type: "image", name: "商品图片-无烟煤.jpg" },
+          { type: "doc", name: "检测报告.pdf" }
+        ],
+        history: [
+          ["2026-05-21 08:37", "赵青", "报价方式", "固定价 740 元/吨", "区间价 760 元/吨", "V1"]
+        ],
+        logs: [
+          ["2026-05-21 08:41", "赵青", "提交审核", "草稿", "待审核", "首次提交审核", "IG202605210029"]
+        ]
+      },
+      {
+        id: "IG202605200118",
+        name: "兰炭中料 25-40mm 指标商品",
+        seller: "府谷县恒源兰炭有限公司",
+        sellerId: "ENT6108220176",
+        category: "焦化",
+        status: "审核驳回",
+        submitTime: "2026-05-20 16:20",
+        version: "V2",
+        owner: "李楠",
+        updateTime: "2026-05-20 17:32",
+        createdAt: "2026-05-20 10:28",
+        core: "固定碳 ≥82%；挥发分 ≤8%；粒度 25-40mm",
+        stock: "8,600 吨",
+        saleTons: "5,000 吨",
+        minOrder: "200 吨",
+        price: "980 元/吨",
+        priceType: "固定价",
+        priceUntil: "2026-06-10",
+        productionArea: "陕西府谷",
+        deliveryArea: "华北、西北",
+        tradeMode: "在线议价",
+        deliveryMode: "汽运",
+        remark: "按批次出库。",
+        sellerState: "企业状态正常；经营权限有效",
+        metrics: [
+          ["固定碳", "82", "%", "80", "85", "核心", "干基固定碳"],
+          ["挥发分", "8", "%", "0", "9", "核心", "干基挥发分"],
+          ["粒度", "25-40", "mm", "25", "40", "核心", "中料粒度"]
+        ],
+        issues: [
+          { type: "warn", text: "已驳回：检测报告缺少最近批次编号，卖家需替换附件后重新提交。" }
+        ],
+        attachments: [
+          { type: "doc", name: "旧检测报告.pdf" },
+          { type: "image", name: "兰炭中料.jpg" }
+        ],
+        history: [
+          ["2026-05-20 17:31", "李楠", "附件", "未上传检测报告", "上传旧检测报告.pdf", "V2"]
+        ],
+        logs: [
+          ["2026-05-20 17:48", "王审核", "审核驳回", "待审核", "审核驳回", "驳回原因：检测报告缺少最近批次编号", "IG202605200118"]
+        ]
+      },
+      {
+        id: "IG202605190052",
+        name: "动力煤 5000 指标商品",
+        seller: "内蒙古准格尔旗长协能源有限公司",
+        sellerId: "ENT1506220071",
+        category: "煤炭",
+        status: "已上架",
+        submitTime: "2026-05-19 11:22",
+        version: "V4",
+        owner: "陈星",
+        updateTime: "2026-05-19 13:11",
+        createdAt: "2026-05-18 15:04",
+        core: "发热量 5000 kcal/kg；全水分 ≤16%；灰分 ≤13%",
+        stock: "80,000 吨",
+        saleTons: "60,000 吨",
+        minOrder: "1,000 吨",
+        price: "520 元/吨",
+        priceType: "固定价",
+        priceUntil: "2026-06-30",
+        productionArea: "内蒙古鄂尔多斯",
+        deliveryArea: "蒙西、华北",
+        tradeMode: "在线询价 / 议价",
+        deliveryMode: "铁路发运",
+        remark: "长协客户优先。",
+        sellerState: "企业状态正常；经营权限有效",
+        metrics: [
+          ["发热量", "5000", "kcal/kg", "4900", "5100", "核心", "收到基低位"],
+          ["全水分", "16", "%", "0", "18", "核心", "批次浮动"],
+          ["灰分", "13", "%", "0", "14", "核心", "以检测报告为准"]
+        ],
+        issues: [
+          { type: "ok", text: "已上架商品，买家可查看并发起询价、议价。" }
+        ],
+        attachments: [
+          { type: "image", name: "动力煤5000.jpg" },
+          { type: "doc", name: "检测报告.pdf" },
+          { type: "doc", name: "规格说明.pdf" }
+        ],
+        history: [
+          ["2026-05-19 12:58", "陈星", "价格有效期", "2026-06-15", "2026-06-30", "V4"]
+        ],
+        logs: [
+          ["2026-05-19 13:12", "王审核", "审核通过", "待审核", "已上架", "指标、库存、附件完整，准予上架", "IG202605190052"]
+        ]
+      },
+      {
+        id: "IG202605180077",
+        name: "甲醇 99.9% 指标商品",
+        seller: "榆林清洁能源化工有限公司",
+        sellerId: "ENT6108000120",
+        category: "化工",
+        status: "已下架",
+        submitTime: "2026-05-18 10:09",
+        version: "V5",
+        owner: "黄越",
+        updateTime: "2026-05-20 09:20",
+        createdAt: "2026-05-16 09:06",
+        core: "纯度 ≥99.9%；水分 ≤0.05%；色度 ≤10",
+        stock: "3,200 吨",
+        saleTons: "0 吨",
+        minOrder: "30 吨",
+        price: "2,150 元/吨",
+        priceType: "固定价",
+        priceUntil: "2026-05-25",
+        productionArea: "陕西榆林",
+        deliveryArea: "西北、华北",
+        tradeMode: "在线询价",
+        deliveryMode: "罐车交付",
+        remark: "因可售吨位为 0 下架。",
+        sellerState: "企业状态正常；经营权限有效",
+        metrics: [
+          ["纯度", "99.9", "%", "99.8", "100", "核心", "工业级甲醇"],
+          ["水分", "0.05", "%", "0", "0.08", "核心", "国标检测口径"]
+        ],
+        issues: [
+          { type: "warn", text: "已下架商品，不允许买家发起新的询价、议价。" }
+        ],
+        attachments: [
+          { type: "doc", name: "检测报告.pdf" },
+          { type: "doc", name: "危化品经营许可.pdf" }
+        ],
+        history: [
+          ["2026-05-20 09:19", "系统规则", "可售吨位", "120 吨", "0 吨", "V5"]
+        ],
+        logs: [
+          ["2026-05-20 09:20", "平台管理员", "平台强制下架", "已上架", "已下架", "可售吨位为 0，停止新增询价入口", "IG202605180077"]
+        ]
+      }
+    ];
+
+    const state = {
+      selectedId: products[0].id,
+      status: "待审核",
+      tab: "audit",
+      role: "admin",
+      action: null
+    };
+
+    const $ = (id) => document.getElementById(id);
+
+    function statusTag(status) {
+      return `<span class="tag ${stateClass[status] || "dark"}">${status}</span>`;
+    }
+
+    function renderSummary() {
+      const counts = {
+        review: products.filter(p => p.status === "待审核").length,
+        rejected: products.filter(p => p.status === "审核驳回").length,
+        online: products.filter(p => p.status === "已上架").length,
+        offline: products.filter(p => p.status === "已下架").length
+      };
+      $("summary").innerHTML = `
+        <div class="summary-item">待审核：<strong class="warn">${counts.review}</strong></div>
+        <div class="summary-item">审核驳回：<strong>${counts.rejected}</strong></div>
+        <div class="summary-item">已上架：<strong class="ok">${counts.online}</strong></div>
+        <div class="summary-item">已下架：<strong>${counts.offline}</strong></div>
+        <div class="summary-item">今日审核日志：<strong>${products.reduce((sum, p) => sum + p.logs.length, 0)}</strong></div>
+      `;
+    }
+
+    function getFilteredProducts() {
+      const keyword = $("keyword").value.trim();
+      const metric = $("metricSearch").value.trim();
+      const category = $("category").value;
+      return products.filter(p => {
+        const matchStatus = p.status === state.status;
+        const matchCategory = category === "全部" || p.category === category;
+        const matchKeyword = !keyword || p.name.includes(keyword) || p.seller.includes(keyword) || p.id.includes(keyword);
+        const matchMetric = !metric || p.core.includes(metric);
+        return matchStatus && matchCategory && matchKeyword && matchMetric;
+      });
+    }
+
+    function renderList() {
+      const list = getFilteredProducts();
+      if (!list.some(p => p.id === state.selectedId)) {
+        state.selectedId = list[0]?.id || null;
+      }
+      $("taskList").innerHTML = list.map(p => `
+        <button class="task-card ${p.id === state.selectedId ? "active" : ""}" data-id="${p.id}">
+          <div class="task-main">${p.name}</div>
+          <div class="task-sub">${p.seller}</div>
+          <div class="task-meta">
+            <span>${p.category} · ${p.submitTime.slice(5, 16)}</span>
+            ${statusTag(p.status)}
+          </div>
+        </button>
+      `).join("");
+      document.querySelectorAll(".task-card").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.selectedId = btn.dataset.id;
+          render();
+        });
+      });
+    }
+
+    function currentProduct() {
+      return products.find(p => p.id === state.selectedId);
+    }
+
+    function kv(items) {
+      return items.map(([k, v]) => `
+        <div class="kv">
+          <div class="k">${k}</div>
+          <div class="v">${v}</div>
+        </div>
+      `).join("");
+    }
+
+    function renderDetail() {
+      const p = currentProduct();
+      const hasDetail = Boolean(p);
+      $("emptyDetail").classList.toggle("hidden", hasDetail);
+      ["tabAudit", "tabAttachments", "tabHistory", "tabLogs"].forEach(id => $(id).classList.add("hidden"));
+      if (!hasDetail) {
+        $("detailName").textContent = "无待处理商品";
+        $("detailSub").textContent = "当前筛选条件下没有指标商品";
+        $("detailState").innerHTML = "";
+        return;
+      }
+
+      $("tab" + state.tab[0].toUpperCase() + state.tab.slice(1)).classList.remove("hidden");
+      $("detailName").textContent = p.name;
+      $("detailSub").textContent = `${p.seller} · ${p.id} · 提交时间 ${p.submitTime}`;
+      $("detailState").innerHTML = `
+        ${statusTag(p.status)}
+        <span class="tag dark">${p.category}</span>
+        <span class="tag dark">${p.version}</span>
+      `;
+      $("versionText").textContent = `待审核版本 ${p.version}`;
+
+      $("baseInfo").innerHTML = kv([
+        ["指标商品 ID", p.id],
+        ["当前状态", statusTag(p.status)],
+        ["商品名称", p.name],
+        ["商品品类", p.category],
+        ["创建时间", p.createdAt],
+        ["提交审核时间", p.submitTime],
+        ["提交审核人", p.owner],
+        ["最近修改时间", p.updateTime]
+      ]);
+
+      $("metricTable").innerHTML = `
+        <thead>
+          <tr>
+            <th style="width:16%">指标名称</th>
+            <th style="width:14%">指标值</th>
+            <th style="width:12%">单位</th>
+            <th style="width:18%">容差</th>
+            <th style="width:12%">标记</th>
+            <th>指标说明</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${p.metrics.map(m => `
+            <tr>
+              <td class="metric-value">${m[0]}</td>
+              <td class="metric-value">${m[1]}</td>
+              <td>${m[2]}</td>
+              <td>${m[3]} - ${m[4]}</td>
+              <td>${m[5] === "核心" ? '<span class="tag review">核心</span>' : '<span class="tag dark">普通</span>'}</td>
+              <td>${m[6]}</td>
+            </tr>
+          `).join("")}
+        </tbody>
+      `;
+
+      $("tradeInfo").innerHTML = kv([
+        ["库存数量", p.stock],
+        ["可售吨位", p.saleTons],
+        ["最小起售数量", p.minOrder],
+        ["报价方式", p.priceType],
+        ["报价金额", p.price],
+        ["价格有效期", p.priceUntil],
+        ["生产区域", p.productionArea],
+        ["交付区域", p.deliveryArea],
+        ["交易方式", p.tradeMode],
+        ["交付方式", p.deliveryMode],
+        ["经营备注", p.remark],
+        ["核心指标摘要", p.core]
+      ]);
+
+      $("sellerInfo").innerHTML = kv([
+        ["卖家企业 ID", p.sellerId],
+        ["卖家企业", p.seller],
+        ["企业状态摘要", p.sellerState],
+        ["提交审核人", p.owner]
+      ]);
+
+      $("issueList").innerHTML = p.issues.map(issue => `
+        <div class="issue ${issue.type === "ok" ? "ok" : ""}">${issue.text}</div>
+      `).join("");
+
+      $("statePath").innerHTML = statePathHtml(p.status);
+      renderActions(p);
+      renderAttachments(p);
+      renderHistory(p);
+      renderLogs(p);
+    }
+
+    function statePathHtml(status) {
+      if (status === "待审核") {
+        return `<span class="path-node">待审核</span><span class="arrow">→</span><span class="path-node">已上架</span><span class="arrow">或</span><span class="path-node">审核驳回</span>`;
+      }
+      if (status === "审核驳回") {
+        return `<span class="path-node">审核驳回</span><span class="arrow">→ 卖家修改并重新提交 →</span><span class="path-node">待审核</span>`;
+      }
+      if (status === "已上架") {
+        return `<span class="path-node">已上架</span><span class="arrow">→ 平台管理员强制下架 →</span><span class="path-node">已下架</span>`;
+      }
+      return `<span class="path-node">已下架</span><span class="arrow">历史可追溯；不可直接恢复已上架</span>`;
+    }
+
+    function renderActions(p) {
+      const canAudit = p.status === "待审核";
+      const isAdmin = state.role === "admin";
+      $("auditActions").innerHTML = `
+        <button class="btn success" data-action="approve" ${canAudit ? "" : "disabled"}>审核通过</button>
+        <button class="btn danger" data-action="reject" ${canAudit ? "" : "disabled"}>审核驳回</button>
+      `;
+      $("adminActions").innerHTML = `
+        <button class="btn ghost" data-tab-jump="logs">查看日志</button>
+        <button class="btn" data-tab-jump="attachments">预览附件</button>
+        <button class="btn danger" data-action="offline" ${isAdmin && p.status === "已上架" ? "" : "disabled"}>强制下架</button>
+      `;
+      document.querySelectorAll("[data-action]").forEach(btn => {
+        btn.addEventListener("click", () => openAction(btn.dataset.action));
+      });
+      document.querySelectorAll("[data-tab-jump]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.tab = btn.dataset.tabJump;
+          renderTabs();
+          renderDetail();
+        });
+      });
+    }
+
+    function renderAttachments(p) {
+      $("attachmentGrid").innerHTML = p.attachments.map((item, index) => `
+        <div class="attachment">
+          <div class="attachment-preview ${item.type === "doc" ? "doc" : ""}">
+            ${item.type === "image" ? `<img src="${productImage}" alt="${item.name}">` : "PDF"}
+          </div>
+          <div class="attachment-info">
+            <div class="attachment-name">${item.name}</div>
+            <button class="btn ghost" data-preview="${index}">预览</button>
+          </div>
+        </div>
+      `).join("");
+      document.querySelectorAll("[data-preview]").forEach(btn => {
+        btn.addEventListener("click", () => openPreview(p.attachments[Number(btn.dataset.preview)]));
+      });
+    }
+
+    function renderHistory(p) {
+      $("historyTable").innerHTML = `
+        <thead>
+          <tr>
+            <th style="width:15%">修改时间</th>
+            <th style="width:12%">修改人</th>
+            <th style="width:16%">修改字段</th>
+            <th>修改前</th>
+            <th>修改后</th>
+            <th style="width:10%">版本</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${p.history.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join("")}</tr>`).join("")}
+        </tbody>
+      `;
+    }
+
+    function renderLogs(p) {
+      $("logTable").innerHTML = `
+        <thead>
+          <tr>
+            <th style="width:15%">审核时间</th>
+            <th style="width:12%">审核人</th>
+            <th style="width:13%">操作类型</th>
+            <th style="width:10%">原状态</th>
+            <th style="width:10%">新状态</th>
+            <th>审核意见 / 原因</th>
+            <th style="width:16%">商品 ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${p.logs.map(row => `<tr>${row.map((cell, i) => `<td>${i === 3 || i === 4 ? statusTag(cell) : cell}</td>`).join("")}</tr>`).join("")}
+        </tbody>
+      `;
+    }
+
+    function renderTabs() {
+      document.querySelectorAll("#detailTabs button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.tab === state.tab);
+      });
+    }
+
+    function renderStatusTabs() {
+      document.querySelectorAll("#statusTabs button").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.status === state.status);
+      });
+    }
+
+    function openAction(action) {
+      const p = currentProduct();
+      if (!p) return;
+      state.action = action;
+      const titleMap = {
+        approve: "审核通过",
+        reject: "审核驳回",
+        offline: "平台强制下架"
+      };
+      $("modalTitle").textContent = `${titleMap[action]} · ${p.name}`;
+      $("reasonRow").classList.toggle("hidden", action === "approve");
+      $("reasonLabel").textContent = action === "offline" ? "强制下架原因" : "驳回原因";
+      $("opinionLabel").textContent = action === "approve" ? "审核意见" : "审核意见（必填）";
+      $("reasonSelect").value = "";
+      $("opinionText").value = action === "approve" ? "指标、库存、附件材料满足平台审核要求，准予上架。" : "";
+      $("confirmAction").className = action === "reject" || action === "offline" ? "btn danger" : "btn success";
+      $("confirmAction").textContent = titleMap[action];
+      $("actionModal").classList.add("show");
+    }
+
+    function submitAction() {
+      const p = currentProduct();
+      if (!p || !state.action) return;
+      const reason = $("reasonSelect").value;
+      const opinion = $("opinionText").value.trim();
+      if ((state.action === "reject" || state.action === "offline") && (!reason || !opinion)) {
+        showToast("驳回或强制下架必须填写原因和意见。");
+        return;
+      }
+      const now = "2026-05-21 14:" + String(Math.floor(10 + Math.random() * 49)).padStart(2, "0");
+      if (state.action === "approve") {
+        const old = p.status;
+        p.status = "已上架";
+        p.logs.unshift([now, state.role === "admin" ? "平台管理员" : "平台审核人员", "审核通过", old, p.status, opinion || "审核通过", p.id]);
+        state.status = "已上架";
+        showToast("审核通过，指标商品已进入已上架。");
+      }
+      if (state.action === "reject") {
+        const old = p.status;
+        p.status = "审核驳回";
+        p.logs.unshift([now, state.role === "admin" ? "平台管理员" : "平台审核人员", "审核驳回", old, p.status, `${reason}：${opinion}`, p.id]);
+        p.issues.unshift({ type: "warn", text: `已驳回：${reason}。${opinion}` });
+        state.status = "审核驳回";
+        showToast("审核驳回已记录，卖家可修改后重新提交。");
+      }
+      if (state.action === "offline") {
+        const old = p.status;
+        p.status = "已下架";
+        p.logs.unshift([now, "平台管理员", "平台强制下架", old, p.status, `${reason}：${opinion}`, p.id]);
+        p.issues.unshift({ type: "warn", text: `已强制下架：${reason}。${opinion}` });
+        state.status = "已下架";
+        showToast("平台强制下架已记录，商品进入已下架。");
+      }
+      closeModals();
+      render();
+    }
+
+    function openPreview(item) {
+      $("previewTitle").textContent = item.name;
+      $("previewBody").innerHTML = item.type === "image"
+        ? `<img class="preview-image" src="${productImage}" alt="${item.name}">`
+        : `<div class="preview-doc"><div class="doc-page"><h3>${item.name}</h3><div class="doc-line"></div><div class="doc-line short"></div><div class="doc-line"></div><div class="doc-line"></div><div class="doc-line tiny"></div><p style="margin-top:32px;color:#7b8798;font-weight:800;">附件预览仅用于审核判断，不扩展为完整文件中心。</p></div></div>`;
+      $("previewModal").classList.add("show");
+    }
+
+    function closeModals() {
+      document.querySelectorAll(".modal-mask").forEach(m => m.classList.remove("show"));
+    }
+
+    let toastTimer;
+    function showToast(text) {
+      $("toast").textContent = text;
+      $("toast").classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => $("toast").classList.remove("show"), 2400);
+    }
+
+    function render() {
+      renderSummary();
+      renderStatusTabs();
+      renderList();
+      renderTabs();
+      renderDetail();
+    }
+
+    $("keyword").addEventListener("input", render);
+    $("metricSearch").addEventListener("input", render);
+    $("category").addEventListener("change", render);
+    $("roleSelect").addEventListener("change", (event) => {
+      state.role = event.target.value;
+      renderDetail();
+      showToast(state.role === "admin" ? "已切换为平台管理员，可强制下架。" : "已切换为平台审核人员，不可强制下架。");
+    });
+
+    document.querySelectorAll("#statusTabs button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.status = btn.dataset.status;
+        state.tab = "audit";
+        render();
+      });
+    });
+
+    document.querySelectorAll("#detailTabs button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.tab = btn.dataset.tab;
+        renderTabs();
+        renderDetail();
+      });
+    });
+
+    document.querySelectorAll("[data-close]").forEach(btn => btn.addEventListener("click", closeModals));
+    document.querySelectorAll(".modal-mask").forEach(mask => {
+      mask.addEventListener("click", (event) => {
+        if (event.target === mask) closeModals();
+      });
+    });
+    $("confirmAction").addEventListener("click", submitAction);
+    $("showLogsBtn").addEventListener("click", () => {
+      state.tab = "logs";
+      renderTabs();
+      renderDetail();
+    });
+    $("exportBtn").addEventListener("click", () => showToast("已生成当前筛选结果导出任务。"));
+
+    render();
+  </script>
+</body>
+</html>

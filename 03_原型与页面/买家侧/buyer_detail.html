@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>买家指标货源详情</title>
+  <style>
+    :root {
+      --blue: #3047ff;
+      --blue-dark: #1e2fd6;
+      --orange: #ff7a00;
+      --green: #12b981;
+      --red: #ff4d4f;
+      --text: #17213a;
+      --muted: #6b7280;
+      --line: #d8deea;
+      --bg: #f1f3f7;
+      --card: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      height: 70px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 2px 8px rgba(17, 24, 39, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 330px;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border: 3px solid var(--blue);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .brand-mark::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-left: 3px solid var(--blue);
+      border-bottom: 3px solid var(--blue);
+      position: absolute;
+      left: 6px;
+      top: 5px;
+      transform: rotate(-45deg);
+    }
+
+    .brand-name {
+      color: var(--blue);
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .brand-sub {
+      color: var(--blue);
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 54px;
+      font-size: 17px;
+      color: #111827;
+      height: 100%;
+    }
+
+    .nav a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      border-bottom: 3px solid transparent;
+      padding-top: 3px;
+    }
+
+    .nav a.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: #1f2a44;
+      white-space: nowrap;
+    }
+
+    .link-blue {
+      color: var(--blue);
+    }
+
+    .page {
+      padding: 20px 34px 34px;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .company {
+      font-size: 21px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notice {
+      background: #fff;
+      border-radius: 4px;
+      padding: 8px 14px;
+      color: #667085;
+      min-width: 530px;
+    }
+
+    .btn {
+      border: 1px solid var(--blue);
+      color: var(--blue);
+      background: #fff;
+      border-radius: 4px;
+      height: 34px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .btn.primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn.warning {
+      background: #ffc86c;
+      border-color: #ffc86c;
+      color: #fff;
+    }
+
+    .btn.ghost {
+      border-color: #d7dcff;
+      background: #f8f9ff;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 3px;
+      background: #e9fff7;
+      color: #03996e;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .tag.blue {
+      background: #eef2ff;
+      color: var(--blue);
+    }
+
+    .tag.orange {
+      background: #fff3e8;
+      color: var(--orange);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #edf0f6;
+      border-radius: 4px;
+    }
+
+    .panel {
+      padding: 22px 24px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 362px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 22px;
+      padding: 22px;
+      margin-bottom: 18px;
+    }
+
+    .photo {
+      height: 292px;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #111827;
+      position: relative;
+    }
+
+    .photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo .badge {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--orange);
+      color: #fff;
+      padding: 9px 14px;
+      border-radius: 4px 0 4px 0;
+      font-weight: 700;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    h1 {
+      font-size: 26px;
+      margin: 0 0 10px;
+      line-height: 1.25;
+    }
+
+    .subline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: #647087;
+      margin-bottom: 18px;
+    }
+
+    .price {
+      color: var(--orange);
+      font-size: 34px;
+      font-weight: 800;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .price small {
+      color: #17213a;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-bottom: 0;
+      border-right: 0;
+    }
+
+    .hero-metric {
+      padding: 13px 14px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      min-height: 76px;
+    }
+
+    .hero-metric span {
+      display: block;
+      color: #697386;
+      margin-bottom: 8px;
+      font-size: 12px;
+    }
+
+    .hero-metric strong {
+      color: var(--blue);
+      font-size: 20px;
+    }
+
+    .hero-metric.good strong {
+      color: var(--green);
+    }
+
+    .summary {
+      background: #f8faff;
+      border: 1px solid #e4e8ff;
+      border-radius: 4px;
+      padding: 12px 14px;
+      color: #465169;
+      line-height: 1.7;
+      margin-top: 14px;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      border: 1px solid var(--line);
+      padding: 11px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: #f6f8ff;
+      color: #3047ff;
+      width: 34%;
+    }
+
+    td strong {
+      color: #17213a;
+    }
+
+    .compare-table td:nth-child(2),
+    .compare-table td:nth-child(3) {
+      text-align: center;
+    }
+
+    .good {
+      color: var(--green);
+      font-weight: 700;
+    }
+
+    .warn {
+      color: var(--orange);
+      font-weight: 700;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .step {
+      border: 1px solid #dfe5ff;
+      background: #f8faff;
+      border-radius: 4px;
+      padding: 12px 10px;
+      min-height: 76px;
+      position: relative;
+    }
+
+    .step strong {
+      display: block;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+
+    .step span {
+      color: #687287;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+      position: sticky;
+      top: 90px;
+    }
+
+    .price-card {
+      display: grid;
+      gap: 10px;
+    }
+
+    .price-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 11px 0;
+      border-bottom: 1px solid #edf0f6;
+    }
+
+    .price-line:last-child {
+      border-bottom: 0;
+    }
+
+    .price-line b {
+      color: var(--orange);
+    }
+
+    .chat-box {
+      border: 1px solid #dfe5ff;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .chat-head {
+      background: #f6f8ff;
+      padding: 12px;
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .chat-body {
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+      min-height: 184px;
+    }
+
+    .bubble {
+      background: #f7f8fb;
+      border-radius: 4px;
+      padding: 10px 12px;
+      color: #465169;
+      line-height: 1.6;
+    }
+
+    .bubble.me {
+      background: #eef2ff;
+      color: #2537d4;
+    }
+
+    .quick-prompts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid #d7ddea;
+      border-radius: 4px;
+      padding: 0 10px;
+      color: #17213a;
+      outline: none;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .service {
+      border: 1px solid #e2e7f0;
+      border-radius: 4px;
+      padding: 14px;
+      min-height: 104px;
+      background: #fff;
+    }
+
+    .service strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .service span {
+      color: #687287;
+      line-height: 1.6;
+    }
+
+    .footer {
+      height: 74px;
+      background: #2f2f2f;
+      color: #8d8d8d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 1280px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side-stack {
+        position: static;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero {
+        grid-template-columns: 320px 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div>
+        <div class="brand-name">传司机 ｜ 大宗交易平台</div>
+        <div class="brand-sub">LOGISTICS MOGUL　　BLOCK TRADE PLATFORM</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a href="buyer_listing.html">找货源</a>
+      <a class="active" href="buyer_detail.html">指标详情</a>
+      <a href="#">采购订单</a>
+      <a href="#chat">企业沟通</a>
+    </nav>
+    <div class="user">
+      <span>🔔（8）</span>
+      <span>西安秦川能源采购有限公司</span>
+      <a class="link-blue" href="#">企业中心</a>
+      <a class="link-blue" href="#">退出</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div class="company">指标货源详情 <span class="tag blue">看指标｜比指标｜聊指标</span></div>
+      <div class="notice">📌 该货源近 7 日被 18 家买家查看，当前库存可覆盖约 3.6 个标准采购批次。</div>
+      <a class="btn" href="buyer_listing.html">返回列表</a>
+    </div>
+
+    <section class="layout">
+      <div>
+        <section class="card hero">
+          <div class="photo">
+            <img src="../png/无烟煤图片.png" alt="府谷低硫动力煤">
+            <span class="badge">匹配 96%</span>
+          </div>
+          <div>
+            <div class="title-row">
+              <div>
+                <h1>府谷低硫动力煤 5500 大卡</h1>
+                <div class="subline">
+                  <span class="tag blue">平台验真</span>
+                  <span class="tag">检测报告齐全</span>
+                  <span class="tag orange">支持议价</span>
+                  <span>陕西煤业化工股份有限公司</span>
+                  <span>商品 ID：SM-5500-202605</span>
+                </div>
+              </div>
+              <div class="price">735 <small>元/吨</small></div>
+            </div>
+
+            <div class="hero-grid">
+              <div class="hero-metric good"><span>收到基低位发热量</span><strong>5,580</strong></div>
+              <div class="hero-metric good"><span>全硫分</span><strong>0.48%</strong></div>
+              <div class="hero-metric"><span>全水分</span><strong>10.8%</strong></div>
+              <div class="hero-metric"><span>灰分</span><strong>13.6%</strong></div>
+              <div class="hero-metric"><span>挥发分</span><strong>31.2%</strong></div>
+              <div class="hero-metric"><span>固定碳</span><strong>54.1%</strong></div>
+              <div class="hero-metric"><span>可售库存</span><strong>18,000 吨</strong></div>
+              <div class="hero-metric"><span>起订量</span><strong>1,000 吨</strong></div>
+            </div>
+
+            <div class="summary">
+              指标摘要：热值达到目标区间上沿，硫分低于采购阈值，水分处于可接受范围。若采购 5,000 吨以上，建议重点沟通阶梯价、批次检测报告、火车发运排期与水分超标扣罚规则。
+            </div>
+
+            <div class="action-row">
+              <a class="btn primary" href="#chat">立即沟通</a>
+              <button class="btn warning" type="button">发起询价</button>
+              <button class="btn" type="button">加入对比</button>
+              <button class="btn ghost" type="button">☆ 收藏</button>
+            </div>
+          </div>
+        </section>
+
+        <div class="content-grid">
+          <section class="card panel">
+            <h2 class="section-title">完整指标</h2>
+            <table>
+              <tr><th>收到基低位发热量</th><td><strong>5,580 kcal/kg</strong>，较目标值高 80 kcal/kg</td></tr>
+              <tr><th>全硫分</th><td><strong>0.48%</strong>，低于买家阈值 0.60%，具备低硫优势</td></tr>
+              <tr><th>全水分</th><td><strong>10.8%</strong>，卖家承诺批次波动不超过 ±1.2%</td></tr>
+              <tr><th>灰分</th><td><strong>13.6%</strong>，处于同类货源中位水平</td></tr>
+              <tr><th>空干基挥发分</th><td><strong>31.2%</strong>，适合工业锅炉稳定燃烧</td></tr>
+              <tr><th>检测材料</th><td>2026-05-08 第三方检测报告，支持查看原件与批次复检</td></tr>
+            </table>
+          </section>
+
+          <section class="card panel">
+            <h2 class="section-title">交易条件</h2>
+            <table>
+              <tr><th>价格类型</th><td>火车板价，可按吨位议价</td></tr>
+              <tr><th>可售库存</th><td><strong>18,000 吨</strong></td></tr>
+              <tr><th>起订量</th><td>1,000 吨，5,000 吨以上可谈阶梯价</td></tr>
+              <tr><th>提货地</th><td>陕西府谷煤场</td></tr>
+              <tr><th>交付方式</th><td>平台物流可承接，预计 2-4 天发运</td></tr>
+              <tr><th>付款条件</th><td>合同签署后预付 20%，支持平台授信申请</td></tr>
+            </table>
+          </section>
+        </div>
+
+        <section class="card panel" style="margin-bottom: 18px;">
+          <h2 class="section-title">指标对比 <span class="tag blue">默认容差 ±5%</span></h2>
+          <table class="compare-table">
+            <tr>
+              <th>对比维度</th>
+              <th>当前货源</th>
+              <th>榆林 5200 火车板</th>
+              <th>神木 6100 精煤</th>
+            </tr>
+            <tr>
+              <td>热值</td>
+              <td class="good">5,580</td>
+              <td>5,230</td>
+              <td class="good">6,120</td>
+            </tr>
+            <tr>
+              <td>硫分</td>
+              <td class="good">0.48%</td>
+              <td>0.55%</td>
+              <td class="warn">0.72%</td>
+            </tr>
+            <tr>
+              <td>当前报价</td>
+              <td>735 元/吨</td>
+              <td class="good">698 元/吨</td>
+              <td>812 元/吨</td>
+            </tr>
+            <tr>
+              <td>综合建议</td>
+              <td class="good">最接近目标指标</td>
+              <td>成本更低，水分需确认</td>
+              <td>热值最优，需谈价格</td>
+            </tr>
+          </table>
+        </section>
+
+        <section class="card panel">
+          <h2 class="section-title">交易推进路径</h2>
+          <div class="timeline">
+            <div class="step"><strong>1. 指标确认</strong><span>围绕热值、硫分、水分确认容差</span></div>
+            <div class="step"><strong>2. 发起询价</strong><span>提交吨位、期望价、交付日期</span></div>
+            <div class="step"><strong>3. 卖家报价</strong><span>形成报价卡，保留历史版本</span></div>
+            <div class="step"><strong>4. 订单确认</strong><span>锁定指标、吨位、价格和交付方式</span></div>
+            <div class="step"><strong>5. 合同履约</strong><span>合同、物流、资金状态联动</span></div>
+          </div>
+        </section>
+      </div>
+
+      <aside class="side-stack">
+        <section class="card panel">
+          <h2 class="section-title">价格参考</h2>
+          <div class="price-card">
+            <div class="price-line"><span>当前报价</span><b>735 元/吨</b></div>
+            <div class="price-line"><span>同指标近 7 日</span><b>720-748 元/吨</b></div>
+            <div class="price-line"><span>同区域中位价</span><b>741 元/吨</b></div>
+            <div class="price-line"><span>低硫溢价参考</span><b>+18 元/吨</b></div>
+            <div class="price-line"><span>5,000 吨议价建议</span><b>725-730 元/吨</b></div>
+          </div>
+        </section>
+
+        <section class="card panel" id="chat">
+          <h2 class="section-title">立即沟通 <span class="tag blue">聊指标</span></h2>
+          <div class="chat-box">
+            <div class="chat-head">与陕西煤业化工股份有限公司沟通</div>
+            <div class="chat-body">
+              <div class="bubble">卖家：当前批次热值 5,580 左右，检测报告可发您确认。</div>
+              <div class="bubble me">买家：如果采购 5,000 吨，硫分和水分是否支持写入合同扣罚条款？</div>
+              <div class="bubble">系统建议：可继续追问水分波动范围、阶梯价、发运排期。</div>
+            </div>
+          </div>
+
+          <div class="quick-prompts">
+            <button class="btn ghost" type="button">问硫分波动</button>
+            <button class="btn ghost" type="button">问阶梯价</button>
+            <button class="btn ghost" type="button">问发运排期</button>
+          </div>
+
+          <div class="form-row">
+            <input class="input" value="采购吨位：5000 吨" aria-label="采购吨位">
+            <input class="input" value="期望价：728 元/吨" aria-label="期望价">
+          </div>
+          <button class="btn primary" type="button" style="width: 100%;">发送指标咨询</button>
+        </section>
+
+        <section class="card panel">
+          <h2 class="section-title">服务能力</h2>
+          <div class="service-grid" style="grid-template-columns: 1fr;">
+            <div class="service">
+              <strong>平台物流</strong>
+              <span>府谷煤场至西安方向可承接，预计 2-4 天发运，支持运单跟踪。</span>
+            </div>
+            <div class="service">
+              <strong>金融授信</strong>
+              <span>买家企业经营分 82，可试算 300 万采购授信额度。</span>
+            </div>
+            <div class="service">
+              <strong>风控留痕</strong>
+              <span>查看详情、加入对比、发起沟通和询价动作均进入审计日志。</span>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">copyright©2026 西安和硕供应链管理有限公司</footer>
+</body>
+</html>

@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>企业中心</title>
+  <link rel="stylesheet" href="./seller-prototype.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-title">佬司机 | 大宗交易平台</div>
+        <div class="brand-sub">LOGISTICS MODULE · BLOCK TRADE PLATFORM</div>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="./seller_workbench_overview.html">工作台</a>
+      <a href="./seller_all_products.html">全部商品</a>
+      <a href="./seller_contract_signing.html">签约场景</a>
+      <a href="./seller_shipping_scene.html">发货场景</a>
+    </nav>
+    <div class="top-actions">
+      <div class="icon-btn">🔔<span class="badge-dot">20</span></div>
+      <span>西安禾硕数字科技有限公司</span>
+      <a class="active-link" href="./seller_enterprise_center.html">企业中心</a>
+      <span>退出</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div class="page-title">
+        <div>
+          <h1>企业中心</h1>
+          <p>承接企业主体资料、资质证明、开票收款信息、联系人与通知规则，作为签约和发货的基础信息页。</p>
+        </div>
+      </div>
+      <div class="page-meta">
+        <span class="pill blue">认证完成 92%</span>
+        <span class="pill orange">待补 2 项</span>
+        <a class="btn primary" href="./seller_workbench_overview.html">返回工作台</a>
+      </div>
+    </div>
+
+    <section class="layout-2col">
+      <article class="card pad">
+        <div class="section-title">
+          <div>
+            <h2>企业基础资料</h2>
+            <p>当前卖家在平台签约、开票、发货时统一引用的主体信息。</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn">查看历史版本</button>
+            <button class="btn primary">编辑资料</button>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>企业名称</label><input value="西安和硕物流科技有限公司" readonly></div>
+          <div class="field"><label>统一社会信用代码</label><input value="91610113MA6T..." readonly></div>
+          <div class="field"><label>法人代表</label><input value="李某某" readonly></div>
+          <div class="field"><label>企业联系人</label><input value="张经理 138****8899" readonly></div>
+          <div class="field"><label>办公地址</label><input value="陕西省西安市高新区科技二路 66 号" readonly></div>
+          <div class="field"><label>企业邮箱</label><input value="seller@heshuo.com" readonly></div>
+          <div class="field full"><label>主营说明</label><textarea readonly>主营动力煤、喷吹煤、焦煤等大宗工业品的供应、配销与运输协同服务。</textarea></div>
+        </div>
+      </article>
+
+      <aside class="stack">
+        <section class="card pad">
+          <div class="section-title">
+            <div>
+              <h3>资质状态</h3>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="mini-card">
+              <div class="k">营业执照</div>
+              <div style="margin-top:10px;"><span class="status green">已上传</span></div>
+            </div>
+            <div class="mini-card">
+              <div class="k">开户许可证</div>
+              <div style="margin-top:10px;"><span class="status green">已上传</span></div>
+            </div>
+            <div class="mini-card">
+              <div class="k">一般纳税人证明</div>
+              <div style="margin-top:10px;"><span class="status orange">待补充</span></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card pad">
+          <div class="section-title">
+            <div>
+              <h3>通知与权限</h3>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="mini-card">
+              <div class="k">签约通知</div>
+              <div style="margin-top:8px;">短信 + 站内消息</div>
+            </div>
+            <div class="mini-card">
+              <div class="k">发货通知</div>
+              <div style="margin-top:8px;">站内消息 + 企业沟通中心</div>
+            </div>
+            <div class="mini-card">
+              <div class="k">售后通知</div>
+              <div style="margin-top:8px;">高优先级提醒开启</div>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="grid-2" style="margin-top:18px;">
+      <article class="card pad">
+        <div class="section-title">
+          <div>
+            <h2>开票与收款信息</h2>
+            <p>供签约场景、订单确认和财务流程直接调用。</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>开户银行</label><input value="中国银行西安高新支行" readonly></div>
+          <div class="field"><label>银行账号</label><input value="6217 **** **** 9201" readonly></div>
+          <div class="field"><label>发票类型</label><input value="增值税专用发票" readonly></div>
+          <div class="field"><label>税率</label><input value="13%" readonly></div>
+        </div>
+      </article>
+
+      <article class="card pad">
+        <div class="section-title">
+          <div>
+            <h2>常用联系人</h2>
+            <p>发货、签约、售后等场景引用的企业联系人。</p>
+          </div>
+          <button class="btn">新增联系人</button>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr><th>姓名</th><th>岗位</th><th>电话</th><th>场景</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="primary-text">张经理</td><td>销售负责人</td><td>138****8899</td><td>商品报价 / 企业沟通</td></tr>
+            <tr><td class="primary-text">王主管</td><td>合同专员</td><td>137****6632</td><td>合同签署 / 文件回传</td></tr>
+            <tr><td class="primary-text">赵师傅</td><td>发运协调</td><td>136****7731</td><td>装车 / 发货 / 异常处理</td></tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+  </main>
+</body>
+</html>

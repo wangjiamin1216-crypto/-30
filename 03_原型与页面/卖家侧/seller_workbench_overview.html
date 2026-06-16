@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>卖家工作台总览</title>
+  <link rel="stylesheet" href="./seller-prototype.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-title">佬司机 | 大宗交易平台</div>
+        <div class="brand-sub">LOGISTICS MODULE · BLOCK TRADE PLATFORM</div>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a class="active" href="./seller_workbench_overview.html">工作台</a>
+      <a href="./seller_all_products.html">全部商品</a>
+      <a href="./seller_contract_signing.html">签约场景</a>
+      <a href="./seller_shipping_scene.html">发货场景</a>
+    </nav>
+    <div class="top-actions">
+      <div class="icon-btn">
+        🔔
+        <span class="badge-dot">20</span>
+      </div>
+      <span>西安禾硕数字科技有限公司</span>
+      <a href="./seller_enterprise_center.html">企业中心</a>
+      <span>退出</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div class="page-title">
+        <div>
+          <h1>卖家工作台总览</h1>
+          <p>承接当前主推商品、待办流转、剩余原型页面入口与交易后链路管理。</p>
+        </div>
+      </div>
+      <div class="page-meta">
+        <span class="pill">企业：西安和硕物流科技有限公司</span>
+        <span class="pill blue">经营分 86</span>
+        <span class="pill orange">经营等级 中级</span>
+        <a class="btn primary" href="./seller_all_products.html">查看全部商品</a>
+      </div>
+    </div>
+
+    <div class="notice">
+      <span>当前原型已完成卖家工作台主页面和企业沟通中心，以下补齐：全部商品、草稿箱、企业中心、签约、发货场景。</span>
+      <div class="section-actions">
+        <a class="btn ghost" href="./seller_drafts.html">进入草稿箱</a>
+        <a class="btn ghost" href="./seller_enterprise_center.html">进入企业中心</a>
+      </div>
+    </div>
+
+    <section class="stat-strip">
+      <div class="stat-box">
+        <div class="label">咨询待办</div>
+        <div class="value">10</div>
+        <div class="subaction"><a class="btn" href="./seller_workbench_overview.html#comm">去回复</a></div>
+      </div>
+      <div class="stat-box">
+        <div class="label">订单待办</div>
+        <div class="value">21</div>
+        <div class="subaction"><a class="btn" href="./seller_contract_signing.html">去确认</a></div>
+      </div>
+      <div class="stat-box">
+        <div class="label">合同待办</div>
+        <div class="value">03</div>
+        <div class="subaction"><a class="btn" href="./seller_contract_signing.html">去签约</a></div>
+      </div>
+      <div class="stat-box">
+        <div class="label">商品待办</div>
+        <div class="value">100</div>
+        <div class="subaction"><a class="btn" href="./seller_all_products.html">补库存</a></div>
+      </div>
+      <div class="stat-box">
+        <div class="label">售后待办</div>
+        <div class="value">10</div>
+        <div class="subaction"><a class="btn" href="./seller_shipping_scene.html">去处理</a></div>
+      </div>
+    </section>
+
+    <section class="grid-3">
+      <article class="card pad">
+        <div class="section-title">
+          <div>
+            <h2>当前主推商品</h2>
+            <p>保持与现有工作台同一商品经营主线，剩余页统一围绕这类商品卡展开。</p>
+          </div>
+          <a class="btn" href="./seller_all_products.html">查看全部商品</a>
+        </div>
+        <div class="product-card">
+          <div class="cover">
+            <img src="../png/无烟煤图片.png" alt="动力煤5500">
+            <span class="tag solid-orange">紧俏</span>
+          </div>
+          <div class="body">
+            <h3 class="name">动力煤5500</h3>
+            <div class="product-meta">
+              <div>起售价：<strong style="color:#ff8a34;">600 元/吨</strong></div>
+              <div>库存：50000 吨</div>
+              <div>热值：5500kcal/kg</div>
+              <div>全硫分：0.8%</div>
+              <div>全水分：15%</div>
+              <div>固定碳：50%</div>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card pad">
+        <div class="section-title">
+          <div>
+            <h2>剩余原型入口</h2>
+            <p>直接进入已补齐的剩余页面，不影响当前主页面分布。</p>
+          </div>
+        </div>
+        <div class="stack">
+          <a class="btn primary" href="./seller_all_products.html">查看全部商品</a>
+          <a class="btn ghost" href="./seller_drafts.html">草稿箱</a>
+          <a class="btn ghost" href="./seller_enterprise_center.html">企业中心</a>
+          <a class="btn ghost" href="./seller_contract_signing.html">签约场景</a>
+          <a class="btn ghost" href="./seller_shipping_scene.html">发货场景</a>
+        </div>
+      </article>
+
+      <article class="card pad" id="comm">
+        <div class="section-title">
+          <div>
+            <h2>企业沟通中心承接说明</h2>
+            <p>已完成的企业会话弹层继续作为所有交易推进前置入口。</p>
+          </div>
+        </div>
+        <div class="stack">
+          <div class="mini-card">
+            <div class="k">企业会话</div>
+            <div class="v" style="font-size:24px;">按企业聚合</div>
+            <div style="margin-top:10px;color:var(--muted);font-size:13px;">包含历史咨询、报价方案、改价记录、转订单动作。</div>
+          </div>
+          <div class="mini-card">
+            <div class="k">页面衔接方式</div>
+            <div style="margin-top:10px;font-weight:700;">沟通完成后进入签约场景或发货场景</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card pad" style="margin-top:18px;">
+      <div class="section-title">
+        <div>
+          <h2>剩余页面覆盖范围</h2>
+          <p>仅补齐你明确提出的剩余卖家端页面，不新增额外业务支线。</p>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>页面</th>
+            <th>本次补齐重点</th>
+            <th>与现有工作台关系</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="primary-text">查看全部商品</td>
+            <td>商品列表、筛选、状态、批量操作、商品详情侧栏。</td>
+            <td>承接工作台中“查看全部商品”入口和商品待办处理。</td>
+          </tr>
+          <tr>
+            <td class="primary-text">草稿箱</td>
+            <td>草稿商品卡、完成度、缺失项、继续编辑、发布前检查。</td>
+            <td>承接工作台中“草稿箱”入口和未完成发布流程。</td>
+          </tr>
+          <tr>
+            <td class="primary-text">企业中心</td>
+            <td>企业资料、资质信息、开票与收款、联系人、通知设置。</td>
+            <td>承接顶部企业中心入口，服务签约与发货基础信息。</td>
+          </tr>
+          <tr>
+            <td class="primary-text">签约场景</td>
+            <td>合同阶段、订单确认、签章文件、待签约清单、流程时间线。</td>
+            <td>承接工作台“合同待办”“成交进度”的签约节点。</td>
+          </tr>
+          <tr>
+            <td class="primary-text">发货场景</td>
+            <td>待发货订单、发运信息、装车计划、物流节点、售后处理。</td>
+            <td>承接工作台“物流服务”“售后待办”的后半链路。</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

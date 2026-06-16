@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>买家询价议价页面</title>
+  <link rel="stylesheet" href="buyer-indicator.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="buyer_indicator_listing.html">
+      <span class="brand-icon"></span>
+      <span>
+        <span class="brand-title">传司机 ｜ 大宗交易平台</span>
+        <span class="brand-sub">LOGISTICS MOGUL　　BLOCK TRADE PLATFORM</span>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <a href="buyer_indicator_listing.html">找货源</a>
+      <a href="buyer_indicator_detail.html">指标详情</a>
+      <a class="active" href="buyer_negotiation.html">询价议价</a>
+    </nav>
+    <div class="userbar">
+      <span class="bell">铃 <b>(8)</b></span>
+      <span>西安秦川能源采购有限公司</span>
+      <a class="link" href="#">企业中心</a>
+      <a href="#">退出</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="account-row">
+      <div class="account-left">
+        <div class="company">企业沟通中心</div>
+        <span class="tag">表单式询价/议价</span>
+        <span class="tag green" id="statusPill">待卖家响应</span>
+      </div>
+      <div class="notice">当前议价单：府谷低硫动力煤 5500｜<b>状态变化会生成系统卡片和审计日志</b></div>
+      <a class="btn" href="buyer_indicator_detail.html">查看商品详情</a>
+    </section>
+
+    <section class="layout chat">
+      <aside class="card panel">
+        <h2 class="section-title">会话列表</h2>
+        <div class="mini-list">
+          <div class="mini-item">
+            <div><strong>陕西煤业化工</strong><span>府谷低硫 5500｜待卖家响应</span></div>
+            <span class="tag green">当前</span>
+          </div>
+          <div class="mini-item" id="seller-reply">
+            <div><strong>山西美锦钢铁</strong><span>动力煤 5200｜卖家已修改</span></div>
+            <span class="tag orange">待确认</span>
+          </div>
+          <div class="mini-item">
+            <div><strong>榆林丰源煤炭</strong><span>5200 火车板｜已拒绝</span></div>
+            <span class="tag">历史</span>
+          </div>
+        </div>
+      </aside>
+
+      <section class="card chat-shell">
+        <div class="chat-head">
+          <div>
+            <h2 class="section-title" style="margin: 0;">陕西煤业化工股份有限公司 <span class="tag green">已上架</span></h2>
+            <div class="sub-title">商品：府谷低硫动力煤 5500｜报价 735 元/吨｜可售 18000 吨</div>
+          </div>
+          <div class="action-grid" style="width: 240px;">
+            <a class="btn" href="buyer_indicator_detail.html">商品详情</a>
+            <button class="btn gray" id="withdrawBtn">撤回</button>
+          </div>
+        </div>
+
+        <div class="chat-body" id="chatBody">
+          <div class="bubble-row">
+            <div class="avatar">卖</div>
+            <div class="bubble">当前批次热值 5580 左右，检测报告可以按批次提供，5000 吨以上可沟通阶梯价。</div>
+          </div>
+
+          <div class="bubble-row me">
+            <div class="form-card">
+              <h3>议价卡｜买家报价方案</h3>
+              <div class="form-lines">
+                <div><span>商品</span><b>府谷低硫动力煤 5500</b></div>
+                <div><span>采购量</span><b>5000 吨</b></div>
+                <div><span>期望价格</span><b>728 元/吨</b></div>
+                <div><span>期望调整指标</span><b>全水分 ≤ 11.5%</b></div>
+                <div><span>交货地</span><b>西安灞桥电厂</b></div>
+                <div><span>备注</span><b>希望写入水分超标扣罚</b></div>
+              </div>
+            </div>
+            <div class="avatar blue">买</div>
+          </div>
+
+          <div class="bubble-row">
+            <div class="avatar">系</div>
+            <div class="bubble">系统状态：议价单已提交，当前状态从“草稿”流转为“待卖家响应”。</div>
+          </div>
+
+          <div class="bubble-row">
+            <div class="avatar">卖</div>
+            <div class="form-card">
+              <h3>卖家回复卡｜修改报价方案</h3>
+              <div class="form-lines">
+                <div><span>回复价格</span><b>732 元/吨</b></div>
+                <div><span>可承接量</span><b>5000 吨</b></div>
+                <div><span>可接受指标</span><b>全水分 ≤ 12%</b></div>
+                <div><span>交付方式</span><b>汽运到厂</b></div>
+                <div><span>有效期</span><b>24 小时</b></div>
+              </div>
+              <div class="action-grid" style="margin-top: 12px;">
+                <button class="btn primary" id="acceptBtn">接受方案</button>
+                <button class="btn gray" id="rejectBtn">拒绝</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-compose">
+          <div class="compose-actions">
+            <button class="btn primary" data-mode="bargain">议价卡</button>
+            <button class="btn" data-mode="inquiry">询价卡</button>
+            <button class="btn gray" data-mode="text">文本</button>
+          </div>
+          <textarea class="textarea" rows="3" id="messageInput" placeholder="请输入内容，关键价格、指标、吨位请使用表单卡片固化"></textarea>
+          <div style="display: flex; justify-content: flex-end; margin-top: 10px;">
+            <button class="btn primary" id="sendTextBtn">发送</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="card panel">
+          <h2 class="section-title">发起询价/议价</h2>
+          <div class="tabs">
+            <div class="tab active" data-form="bargainForm">议价</div>
+            <div class="tab" data-form="inquiryForm">询价</div>
+          </div>
+
+          <form class="quote-form" id="bargainForm">
+            <div class="form-grid">
+              <div class="field"><label>采购量</label><input class="input" value="5000 吨"></div>
+              <div class="field"><label>期望价格</label><input class="input" value="728 元/吨"></div>
+              <div class="field"><label>调整指标</label><input class="input" value="全水分 ≤ 11.5%"></div>
+              <div class="field"><label>交货地</label><input class="input" value="西安灞桥电厂"></div>
+            </div>
+            <div class="field"><label>备注</label><textarea class="textarea" rows="4">希望提供批次检测报告，并写入水分超标扣罚规则。</textarea></div>
+            <button class="btn primary block" type="button" id="submitBargain">发送议价卡</button>
+          </form>
+
+          <form class="quote-form" id="inquiryForm" style="display: none;">
+            <div class="form-grid">
+              <div class="field"><label>采购量</label><input class="input" value="3000 吨"></div>
+              <div class="field"><label>交货地</label><input class="input" value="西安"></div>
+            </div>
+            <div class="field"><label>关注指标</label><input class="input" value="硫分、水分、批次检测"></div>
+            <div class="field"><label>询价备注</label><textarea class="textarea" rows="4">请确认 3000 吨到厂价和火运排期。</textarea></div>
+            <button class="btn primary block" type="button" id="submitInquiry">发送询价卡</button>
+          </form>
+        </section>
+
+        <section class="card panel">
+          <h2 class="section-title">议价状态机</h2>
+          <div class="status-flow" id="statusFlow">
+            <div class="status-item done"><strong>草稿</strong><span>买家填写表单</span></div>
+            <div class="status-item active"><strong>待卖家响应</strong><span>买家已提交，等待卖家处理</span></div>
+            <div class="status-item"><strong>卖家已修改</strong><span>卖家可调整价格、指标、交付</span></div>
+            <div class="status-item"><strong>待买家确认</strong><span>买家确认或拒绝卖家方案</span></div>
+            <div class="status-item"><strong>议价成功</strong><span>卖家可发起订单成交</span></div>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">copyright©2026 西安和硕供应链管理有限公司</footer>
+
+  <script>
+    function addSystem(text) {
+      var row = document.createElement("div");
+      row.className = "bubble-row";
+      row.innerHTML = '<div class="avatar">系</div><div class="bubble">' + text + '</div>';
+      document.getElementById("chatBody").appendChild(row);
+      row.scrollIntoView({ behavior: "smooth", block: "end" });
+    }
+
+    document.querySelectorAll(".tab").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        document.querySelectorAll(".tab").forEach(function (item) { item.classList.remove("active"); });
+        tab.classList.add("active");
+        document.getElementById("bargainForm").style.display = tab.dataset.form === "bargainForm" ? "grid" : "none";
+        document.getElementById("inquiryForm").style.display = tab.dataset.form === "inquiryForm" ? "grid" : "none";
+      });
+    });
+
+    document.getElementById("submitBargain").addEventListener("click", function () {
+      addSystem("系统状态：已发送新版本议价卡，状态保持“待卖家响应”，等待卖家处理。");
+      document.getElementById("statusPill").textContent = "待卖家响应";
+    });
+
+    document.getElementById("submitInquiry").addEventListener("click", function () {
+      addSystem("系统状态：已发送询价卡，卖家将围绕价格、吨位、交付和指标口径回复。");
+      document.getElementById("statusPill").textContent = "待卖家响应";
+    });
+
+    document.getElementById("acceptBtn").addEventListener("click", function () {
+      addSystem("系统状态：买家已接受卖家修改方案，议价状态流转为“议价成功”。卖家可发起订单成交。");
+      document.getElementById("statusPill").textContent = "议价成功";
+      document.querySelectorAll(".status-item").forEach(function (item) { item.classList.remove("active"); });
+      document.querySelectorAll(".status-item")[4].classList.add("active");
+    });
+
+    document.getElementById("rejectBtn").addEventListener("click", function () {
+      addSystem("系统状态：买家已拒绝卖家方案，议价状态流转为“已拒绝”。");
+      document.getElementById("statusPill").textContent = "已拒绝";
+    });
+
+    document.getElementById("withdrawBtn").addEventListener("click", function () {
+      addSystem("系统状态：买家已撤回当前议价单，卖家不可继续处理该议价。");
+      document.getElementById("statusPill").textContent = "已撤回";
+    });
+
+    document.getElementById("sendTextBtn").addEventListener("click", function () {
+      var value = document.getElementById("messageInput").value || "请卖家确认当前报价有效期。";
+      var row = document.createElement("div");
+      row.className = "bubble-row me";
+      row.innerHTML = '<div class="bubble">' + value + '</div><div class="avatar blue">买</div>';
+      document.getElementById("chatBody").appendChild(row);
+      document.getElementById("messageInput").value = "";
+      row.scrollIntoView({ behavior: "smooth", block: "end" });
+    });
+  </script>
+</body>
+</html>

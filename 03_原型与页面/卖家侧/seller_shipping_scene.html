@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>发货场景</title>
+  <link rel="stylesheet" href="./seller-prototype.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-title">佬司机 | 大宗交易平台</div>
+        <div class="brand-sub">LOGISTICS MODULE · BLOCK TRADE PLATFORM</div>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="./seller_workbench_overview.html">工作台</a>
+      <a href="./seller_all_products.html">全部商品</a>
+      <a href="./seller_contract_signing.html">签约场景</a>
+      <a class="active" href="./seller_shipping_scene.html">发货场景</a>
+    </nav>
+    <div class="top-actions">
+      <div class="icon-btn">🔔<span class="badge-dot">20</span></div>
+      <span>西安禾硕数字科技有限公司</span>
+      <a href="./seller_enterprise_center.html">企业中心</a>
+      <span>退出</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div class="page-title">
+        <div>
+          <h1>发货场景</h1>
+          <p>承接签约完成后的待发货、运输中、已签收与售后处理，不打断现有物流服务分布。</p>
+        </div>
+      </div>
+      <div class="page-meta">
+        <span class="pill orange">待发货 1</span>
+        <span class="pill blue">运输中 2</span>
+        <span class="pill">售后待处理 10</span>
+        <a class="btn primary" href="./seller_workbench_overview.html">返回工作台</a>
+      </div>
+    </div>
+
+    <section class="grid-3" style="margin-bottom:18px;">
+      <div class="mini-card">
+        <div class="k">待发货</div>
+        <div class="v">1</div>
+      </div>
+      <div class="mini-card">
+        <div class="k">运输中</div>
+        <div class="v">2</div>
+      </div>
+      <div class="mini-card">
+        <div class="k">售后处理中</div>
+        <div class="v">10</div>
+      </div>
+    </section>
+
+    <section class="layout-2col">
+      <article class="card pad">
+        <div class="section-title">
+          <div>
+            <h2>当前发货任务</h2>
+            <p>沿用工作台物流服务的信息结构，把发货场景单独展开。</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn">查看运单</button>
+            <button class="btn primary">确认发货</button>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="field"><label>订单号</label><input value="X237880003" readonly></div>
+          <div class="field"><label>商品</label><input value="动力煤5500" readonly></div>
+          <div class="field"><label>发货企业</label><input value="陕西煤业运输工业园区兴榆路 6 号" readonly></div>
+          <div class="field"><label>收货企业</label><input value="山西美锦钢铁集团有限公司" readonly></div>
+          <div class="field"><label>发货数量</label><input value="10000 吨" readonly></div>
+          <div class="field"><label>预计装车时间</label><input value="2026-05-13 14:00" readonly></div>
+          <div class="field full"><label>发货备注</label><textarea readonly>本次发货为签约后首批发运，需优先保证热值与全硫分与签约版本一致，异常需先同步买家后调整。</textarea></div>
+        </div>
+      </article>
+
+      <aside class="stack">
+        <section class="card pad">
+          <div class="section-title">
+            <div>
+              <h3>物流节点</h3>
+            </div>
+          </div>
+          <div class="timeline">
+            <div class="timeline-item current">
+              <div class="primary-text">待发货</div>
+              <div class="time">等待卖家确认装车</div>
+            </div>
+            <div class="timeline-item">
+              <div class="primary-text">运输中</div>
+              <div class="time">平台物流接单后进入</div>
+            </div>
+            <div class="timeline-item">
+              <div class="primary-text">已签收</div>
+              <div class="time">买家收货确认后进入</div>
+            </div>
+            <div class="timeline-item">
+              <div class="primary-text">售后处理（如有）</div>
+              <div class="time">退款/补货/争议处理</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card pad">
+          <div class="section-title">
+            <div>
+              <h3>售后处理</h3>
+              <p>保持轻量，不抢发货主区，只承接异常后处理。</p>
+            </div>
+          </div>
+          <div class="stack">
+            <div class="mini-card">
+              <div class="k">最新售后单</div>
+              <div style="margin-top:8px;font-weight:700;">订单 X237870112 买家申请退款</div>
+              <div style="margin-top:6px;color:var(--muted);font-size:13px;">当前状态：待卖家确认原因并给出处理方案</div>
+            </div>
+            <div class="footer-actions">
+              <button class="btn">忽略</button>
+              <button class="btn primary">立即跟进</button>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="card pad" style="margin-top:18px;">
+      <div class="section-title">
+        <div>
+          <h2>历史发运与签收</h2>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>订单号</th>
+            <th>商品</th>
+            <th>数量</th>
+            <th>当前状态</th>
+            <th>最近节点</th>
+            <th>操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="primary-text">X237870091</td>
+            <td>动力煤3000</td>
+            <td>8000 吨</td>
+            <td><span class="status blue">运输中</span></td>
+            <td>已于 05-12 18:32 离场</td>
+            <td><button class="btn">查看进度</button></td>
+          </tr>
+          <tr>
+            <td class="primary-text">X237860045</td>
+            <td>动力煤6200</td>
+            <td>6000 吨</td>
+            <td><span class="status green">已签收</span></td>
+            <td>05-11 10:12 买家签收</td>
+            <td><button class="btn success">查看回单</button></td>
+          </tr>
+          <tr>
+            <td class="primary-text">X237850032</td>
+            <td>喷吹煤5000</td>
+            <td>10000 吨</td>
+            <td><span class="status red">售后处理中</span></td>
+            <td>买家提出数量争议</td>
+            <td><button class="btn warn">去处理</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</body>
+</html>

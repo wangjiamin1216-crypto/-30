@@ -1,0 +1,1609 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>卖家工作台 1:1 复原</title>
+  <style>
+    :root {
+      --blue: #3047ff;
+      --blue-dark: #1e2fd6;
+      --blue-light: #eef2ff;
+      --orange: #ff8a34;
+      --green: #16a34a;
+      --red: #ff4d4f;
+      --yellow: #ffb93f;
+      --text: #1f2a44;
+      --muted: #7c8799;
+      --line: #d8deea;
+      --bg: #f1f3f7;
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #e9edf5;
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      color: var(--text);
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .stage-wrap {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .stage {
+      width: 1920px;
+      height: 1080px;
+      background: var(--bg);
+      transform-origin: center center;
+      transform: scale(var(--scale, 1));
+      box-shadow: 0 30px 90px rgba(32, 52, 108, 0.16);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      height: 70px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      flex: 0 0 auto;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 280px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      border: 3px solid var(--blue);
+      border-radius: 50%;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 5px;
+      width: 10px;
+      height: 10px;
+      border-left: 3px solid var(--blue);
+      border-bottom: 3px solid var(--blue);
+      transform: rotate(-45deg);
+    }
+
+    .brand-name {
+      color: var(--blue);
+      font-size: 19px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .brand-sub {
+      color: #8da7ff;
+      font-size: 9px;
+      margin-top: 3px;
+      letter-spacing: .08em;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 62px;
+      height: 100%;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      border-bottom: 3px solid transparent;
+      font-size: 17px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .nav a.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .notice-icon {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #f7f9ff;
+      color: var(--blue);
+      border: 1px solid var(--line);
+    }
+
+    .notice-count {
+      position: absolute;
+      top: -3px;
+      right: -5px;
+      min-width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--red);
+      color: #fff;
+      font-size: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 4px;
+    }
+
+    .page {
+      flex: 1 1 auto;
+      min-height: 0;
+      width: 100%;
+      padding: 20px 34px 34px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .company-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex: 0 0 auto;
+    }
+
+    .company-name {
+      font-size: 16px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .company-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: #374151;
+      font-size: 13px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .company-right strong {
+      font-size: 15px;
+    }
+
+    .rights {
+      color: #f59e0b;
+    }
+
+    .rights a {
+      color: var(--blue);
+      font-weight: 700;
+      margin-left: 4px;
+    }
+
+    .message-tip {
+      align-self: flex-end;
+      width: 530px;
+      max-width: 100%;
+      background: #fff;
+      border: 1px solid #ffe2bb;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 15px;
+      box-shadow: 0 8px 20px rgba(17, 24, 39, .06);
+      color: #60697a;
+      font-size: 13px;
+      flex: 0 0 auto;
+    }
+
+    .message-tip .left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    .message-tip .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--yellow);
+      flex: 0 0 auto;
+    }
+
+    .message-tip .reply {
+      color: var(--blue);
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+
+    .top-strip {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 430px;
+      gap: 18px;
+      flex: 0 0 auto;
+      min-height: 118px;
+    }
+
+    .todo-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      border-radius: 12px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #6793ff 0%, #4d77f3 100%);
+      color: #fff;
+      height: 100%;
+    }
+
+    .todo-card {
+      padding: 13px 15px 10px;
+      border-right: 1px solid rgba(255,255,255,.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 116px;
+    }
+
+    .todo-card:last-child { border-right: 0; }
+
+    .todo-label {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .todo-main {
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .todo-main strong {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .todo-btn {
+      margin-top: 8px;
+      width: 76px;
+      height: 32px;
+      border-radius: 7px;
+      border: none;
+      background: #fff;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 8px 18px rgba(35, 53, 104, .04);
+    }
+
+    .summary-card {
+      padding: 16px 18px;
+      overflow: hidden;
+    }
+
+    .summary-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .summary-head h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+
+    .summary-head p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .switches {
+      display: inline-flex;
+      border: 1px solid #d8e3ff;
+      border-radius: 8px;
+      overflow: hidden;
+      flex: 0 0 auto;
+    }
+
+    .switches span {
+      min-width: 42px;
+      height: 30px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--blue);
+      background: #fff;
+    }
+
+    .switches span.active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .overview-list {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+
+    .overview-item {
+      min-width: 0;
+    }
+
+    .overview-item .label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .overview-item .value {
+      font-size: 24px;
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 5px;
+      white-space: nowrap;
+    }
+
+    .overview-item .sub {
+      font-size: 11px;
+      color: #9aa3b2;
+      line-height: 1.2;
+    }
+
+    .sub .up { color: var(--red); }
+    .sub .down { color: var(--green); }
+
+    .main-layout {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 430px;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .left-stack, .right-stack {
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow: hidden;
+    }
+
+    .product-panel {
+      padding: 12px;
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: 320px 1fr 1fr;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .product-card {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #fff;
+      position: relative;
+    }
+
+    .product-image {
+      height: 188px;
+      background: #0f172a;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .corner-tag {
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 6px 10px;
+      background: var(--orange);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      border-bottom-right-radius: 8px;
+    }
+
+    .img-edit {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      padding: 5px 10px;
+      background: rgba(255,255,255,.94);
+      border-radius: 6px;
+      color: #4b5563;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .price-belt {
+      position: absolute;
+      left: 8px;
+      bottom: 8px;
+      padding: 7px 8px;
+      border-radius: 8px;
+      background: rgba(17, 24, 39, .76);
+      color: #fff;
+      font-size: 11px;
+      line-height: 1.45;
+    }
+
+    .stock-badge {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      padding: 5px 8px;
+      border-radius: 6px;
+      background: var(--red);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .product-body {
+      padding: 12px 13px 11px;
+    }
+
+    .product-name {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .product-info-list {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 8px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+
+    .product-info-list strong {
+      color: var(--text);
+      font-size: 13px;
+    }
+
+    .metric-block,
+    .detail-block {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .block-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .block-head h4 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .mini-btn {
+      height: 28px;
+      padding: 0 10px;
+      border-radius: 8px;
+      border: 1px solid #cfd9ff;
+      background: #fff;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .metric-list, .detail-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .metric-row, .detail-row {
+      display: grid;
+      grid-template-columns: 78px 1fr 52px;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+
+    .metric-row .name,
+    .detail-row .name {
+      color: var(--blue-dark);
+      font-weight: 700;
+    }
+
+    .metric-row .value,
+    .detail-row .value {
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 13px;
+    }
+
+    .cap {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .detail-row.price .value { color: var(--red); }
+    .detail-row.low .value { color: var(--green); }
+    .detail-row.min .value { color: var(--orange); }
+
+    .lower-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .supplement-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .supplement-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .supplement-links a {
+      color: var(--blue);
+      text-decoration: underline;
+      font-weight: 700;
+    }
+
+    .upload-box {
+      min-height: 92px;
+      border: 2px dashed #bdd1ff;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .upload-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      font-weight: 800;
+    }
+
+    .desc-box textarea {
+      width: 100%;
+      height: 92px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 12px;
+      resize: none;
+      outline: none;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    .product-actions {
+      display: flex;
+      gap: 12px;
+      flex: 0 0 auto;
+    }
+
+    .main-btn {
+      min-width: 96px;
+      height: 36px;
+      padding: 0 14px;
+      border-radius: 9px;
+      border: 1px solid #d4defa;
+      background: #fff;
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .main-btn.primary {
+      background: var(--blue);
+      border-color: var(--blue);
+      color: #fff;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .stats-card {
+      background: #f8faff;
+      border: 1px solid #edf2fb;
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      min-height: 96px;
+    }
+
+    .stats-card .label {
+      color: #6c778a;
+      font-size: 12px;
+      margin-bottom: 6px;
+    }
+
+    .stats-card .value {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 5px;
+      line-height: 1.2;
+    }
+
+    .stats-card .compare {
+      font-size: 11px;
+      color: #97a1b0;
+      line-height: 1.35;
+    }
+
+    .stats-card .compare .up { color: var(--red); }
+    .stats-card .compare .down { color: var(--green); }
+
+    .suggest-card, .progress-card, .rank-card {
+      padding: 12px 14px;
+      overflow: hidden;
+    }
+
+    .suggest-card {
+      flex: 0 0 276px;
+    }
+
+    .progress-card {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .rank-card {
+      flex: 0 0 204px;
+    }
+
+    .score-ring {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #fff 56%, transparent 57%), conic-gradient(#ff8474 0 72deg, #ffe3de 72deg 360deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff7562;
+      font-weight: 800;
+      font-size: 11px;
+      flex: 0 0 auto;
+    }
+
+    .suggest-top {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .suggest-track {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .track-node {
+      flex: 1;
+      height: 42px;
+      border-radius: 10px;
+      background: #f7f8fc;
+      border: 1px solid #eef1f7;
+      padding: 7px 8px;
+      font-size: 10px;
+      color: #9aa3b2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      min-width: 0;
+    }
+
+    .track-node.active {
+      background: #fff5f4;
+      color: #ff6f61;
+      border-color: #ffd1cb;
+    }
+
+    .arrow {
+      color: #b8bfd0;
+      font-weight: 800;
+      font-size: 11px;
+      flex: 0 0 auto;
+    }
+
+    .suggest-item {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .suggest-item:last-child { margin-bottom: 0; }
+
+    .suggest-index {
+      position: absolute;
+      left: -1px;
+      top: 10px;
+      width: 4px;
+      height: 28px;
+      border-radius: 999px;
+      background: var(--blue);
+    }
+
+    .suggest-item h5 {
+      margin: 0 0 4px;
+      font-size: 13px;
+    }
+
+    .suggest-item p {
+      margin: 0;
+      color: #637084;
+      font-size: 11px;
+      line-height: 1.5;
+      padding-right: 84px;
+    }
+
+    .suggest-actions {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .suggest-link {
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .jump-btn {
+      width: 70px;
+      height: 28px;
+      border-radius: 8px;
+      border: none;
+      background: var(--blue);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      flex: 0 0 auto;
+    }
+
+    .progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      flex: 0 0 auto;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 38px;
+      margin: 8px 0 6px;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 13px;
+      top: 4px;
+      bottom: 4px;
+      width: 4px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #7ba2ff 0%, #2f54eb 100%);
+    }
+
+    .time-node {
+      position: relative;
+      padding-bottom: 18px;
+    }
+
+    .time-node:last-child { padding-bottom: 0; }
+
+    .time-node::before {
+      content: "";
+      position: absolute;
+      left: -28px;
+      top: 1px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      border: 3px solid var(--blue);
+      z-index: 1;
+    }
+
+    .time-node .title {
+      color: var(--blue);
+      font-weight: 700;
+      margin-bottom: 2px;
+      font-size: 13px;
+    }
+
+    .time-node .meta {
+      color: #7d8595;
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    .done-ring {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: radial-gradient(circle at center, #fff 55%, transparent 56%), conic-gradient(#3f6df6 0 288deg, #d9e5ff 288deg 360deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue);
+      font-size: 15px;
+      font-weight: 800;
+      margin: 6px auto 4px;
+      flex: 0 0 auto;
+    }
+
+    .progress-bottom {
+      text-align: center;
+      color: var(--blue);
+      font-weight: 700;
+      font-size: 14px;
+      flex: 0 0 auto;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr 420px 220px;
+      gap: 10px;
+      flex: 0 0 auto;
+    }
+
+    .manage-card, .balance-card, .logistics-card, .contract-card {
+      padding: 12px 14px;
+      min-height: 196px;
+      overflow: hidden;
+    }
+
+    .section-mini-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .section-mini-title h4 {
+      margin: 0;
+      font-size: 15px;
+    }
+
+    .upload-tile {
+      min-height: 132px;
+      border: 2px dashed #bdd1ff;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #f9fbff 0%, #ffffff 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 11px;
+      padding: 8px;
+      margin-bottom: 8px;
+    }
+
+    .upload-tile .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .manage-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .manage-actions .main-btn {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .balance-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      align-items: flex-start;
+    }
+
+    .balance-top h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+    }
+
+    .balance-total {
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .balance-meta {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.65;
+    }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 11px;
+      margin-top: 8px;
+    }
+
+    .toggle {
+      width: 38px;
+      height: 22px;
+      background: var(--blue);
+      border-radius: 999px;
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .toggle::after {
+      content: "";
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      position: absolute;
+      top: 3px;
+      right: 3px;
+    }
+
+    .balance-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .warn {
+      background: #ffbe63;
+      border-color: #ffbe63;
+      color: #fff;
+    }
+
+    .logistics-tabs {
+      display: inline-flex;
+      border: 1px solid #dbe5ff;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .logistics-tabs span {
+      min-width: 84px;
+      height: 30px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--blue);
+      font-size: 12px;
+      font-weight: 700;
+      border-right: 1px solid #dbe5ff;
+    }
+
+    .logistics-tabs span:last-child { border-right: 0; }
+    .logistics-tabs span.active {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .shipping-box {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .shipping-row {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 8px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .shipping-row:last-child { border-bottom: 0; }
+
+    .ship-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .ship-icon.send { background: var(--green); }
+    .ship-icon.receive { background: var(--red); }
+
+    .ship-main {
+      line-height: 1.45;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .ship-main strong {
+      display: block;
+      font-size: 12px;
+      margin-bottom: 2px;
+      color: var(--text);
+    }
+
+    .contract-upload {
+      min-height: 132px;
+      border: 2px dashed #c7d7ff;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-align: center;
+      color: var(--muted);
+      background: #fafdff;
+      font-size: 11px;
+      padding: 8px;
+    }
+
+    .contract-upload .uicon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--blue);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .rank-products {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .rank-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .rank-item .thumb {
+      height: 92px;
+      overflow: hidden;
+      position: relative;
+      background: #111827;
+    }
+
+    .rank-item .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .rank-item .body {
+      padding: 8px;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+
+    .rank-item .body strong {
+      display: block;
+      font-size: 12px;
+      color: var(--text);
+    }
+
+    .rank-item .price {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ff8a34;
+      margin: 4px 0 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="stage-wrap">
+    <div class="stage">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark"></div>
+          <div>
+            <div class="brand-name">佬司机 | 大宗交易平台</div>
+            <div class="brand-sub">LOGISTICS MODULE · BLOCK TRADE PLATFORM</div>
+          </div>
+        </div>
+        <nav class="nav">
+          <a class="active" href="#">工作台</a>
+          <a href="#">大宗商品</a>
+          <a href="#">拍卖中心</a>
+        </nav>
+        <div class="top-actions">
+          <div class="notice-icon">🔔<span class="notice-count">20</span></div>
+          <span>西安禾硕数字科技有限公司</span>
+          <span>企业中心</span>
+          <span>退出</span>
+        </div>
+      </header>
+
+      <main class="page">
+        <div class="company-bar">
+          <div class="company-name">西安和硕物流科技有限公司 <span style="font-size:12px;color:#9aa3b2;">▼</span></div>
+          <div class="company-right">
+            <span>经营分 <strong>86</strong></span>
+            <span>经营等级 <strong>中级</strong></span>
+            <span class="rights">当前权益 <strong>二档</strong> 流量扶持中 <a href="#">去获取更多商品曝光流量 &gt;</a></span>
+          </div>
+        </div>
+
+        <div class="message-tip">
+          <div class="left"><span class="dot"></span><span>禾硕物流（买家）：最低起售量还能谈吗？　14:20</span></div>
+          <div class="reply">回复</div>
+        </div>
+
+        <section class="top-strip">
+          <div class="todo-row">
+            <div class="todo-card">
+              <div>
+                <div class="todo-label">◷ 咨询待办</div>
+                <div class="todo-main">待响应询价 <strong>10</strong> 件</div>
+              </div>
+              <button class="todo-btn">去回复</button>
+            </div>
+            <div class="todo-card">
+              <div>
+                <div class="todo-label">◷ 订单待办</div>
+                <div class="todo-main">待确认订单 <strong>21</strong> 个</div>
+              </div>
+              <button class="todo-btn">去确认</button>
+            </div>
+            <div class="todo-card">
+              <div>
+                <div class="todo-label">◷ 合同待办</div>
+                <div class="todo-main">待签署合同 <strong>03</strong> 份</div>
+              </div>
+              <button class="todo-btn">去签约</button>
+            </div>
+            <div class="todo-card">
+              <div>
+                <div class="todo-label">◷ 商品待办</div>
+                <div class="todo-main">商品库存不足 <strong>100</strong> 吨</div>
+              </div>
+              <button class="todo-btn">补库存</button>
+            </div>
+            <div class="todo-card">
+              <div>
+                <div class="todo-label">◷ 售后待办</div>
+                <div class="todo-main">退款/售后处理 <strong>10</strong> 单</div>
+              </div>
+              <button class="todo-btn">去回复</button>
+            </div>
+          </div>
+
+          <div class="card summary-card">
+            <div class="summary-head">
+              <div>
+                <h3>经营数据总览</h3>
+                <p>自定义数据　更新时间：2026/04/21 16:32:32</p>
+              </div>
+              <div class="switches">
+                <span class="active">年</span>
+                <span>月</span>
+                <span>周</span>
+              </div>
+            </div>
+            <div class="overview-list">
+              <div class="overview-item"><div class="label">在售商品数</div><div class="value">3</div><div class="sub">昨日 持平</div></div>
+              <div class="overview-item"><div class="label">成交金额</div><div class="value">120,000.00</div><div class="sub">昨日 <span class="up">20% ↑</span></div></div>
+              <div class="overview-item"><div class="label">成交订单量</div><div class="value">45</div><div class="sub">昨日 <span class="down">14.5% ↓</span></div></div>
+              <div class="overview-item"><div class="label">成交买家数</div><div class="value">5</div><div class="sub">昨日 <span class="down">5.8% ↓</span></div></div>
+              <div class="overview-item"><div class="label">商品总访客数</div><div class="value">36</div><div class="sub">昨日 <span class="up">51.85% ↑</span></div></div>
+              <div class="overview-item"><div class="label">商品总查看次数</div><div class="value">15245</div><div class="sub">昨日 <span class="up">6.4% ↑</span></div></div>
+              <div class="overview-item"><div class="label">商品总评价数</div><div class="value">271</div><div class="sub">昨日 <span class="up">2.5% ↑</span></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="main-layout">
+          <div class="left-stack">
+            <div class="card product-panel">
+              <div class="product-grid">
+                <div class="product-card">
+                  <div class="product-image">
+                    <img src="../png/无烟煤图片.png" alt="动力煤5500">
+                    <div class="corner-tag">紧俏</div>
+                    <div class="img-edit">编辑</div>
+                    <div class="price-belt">近 7 天成交区间：580–650元/吨<br>近 7 天成交均价：590元/吨</div>
+                    <div class="stock-badge">库存不足</div>
+                  </div>
+                  <div class="product-body">
+                    <div class="product-name">动力煤5500</div>
+                    <div class="product-info-list">
+                      <div><strong style="color:#ff8a34;">600</strong> 元/吨</div><div>起售价</div>
+                      <div><strong>50000</strong> 吨</div><div>库存数量</div>
+                      <div><strong>府谷</strong></div><div>产地区域</div>
+                      <div><strong>ID 3771734618</strong></div><div><span style="display:inline-flex;align-items:center;justify-content:center;height:24px;padding:0 8px;border-radius:7px;background:var(--blue);color:#fff;font-size:11px;font-weight:700;">已上架/已下架/审核中</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="metric-block">
+                  <div class="block-head">
+                    <h4>商品指标</h4>
+                    <button class="mini-btn">新增指标</button>
+                  </div>
+                  <div class="metric-list">
+                    <div class="metric-row"><div class="name">发热量</div><div class="value">5500kcal/kg</div><div class="cap"></div></div>
+                    <div class="metric-row"><div class="name">全硫分</div><div class="value">0.8% ★</div><div class="cap">可提升</div></div>
+                    <div class="metric-row"><div class="name">挥发分</div><div class="value">30%</div><div class="cap">可协商</div></div>
+                    <div class="metric-row"><div class="name">全水分</div><div class="value">15%</div><div class="cap">可协商</div></div>
+                    <div class="metric-row"><div class="name">灰分</div><div class="value">30%</div><div class="cap">当前不可调</div></div>
+                    <div class="metric-row"><div class="name">固定碳</div><div class="value">50%</div><div class="cap">当前不可调</div></div>
+                  </div>
+                </div>
+
+                <div class="detail-block">
+                  <div class="block-head">
+                    <h4>价格有效期：<span style="color:var(--orange);font-weight:800;">2026.04.17 23:59:59</span></h4>
+                  </div>
+                  <div class="detail-list">
+                    <div class="detail-row"><div class="name">卖方名称</div><div class="value" style="color:var(--text);font-size:12px;">陕西煤业化工股份有限公司</div><div></div></div>
+                    <div class="detail-row price"><div class="name">最高标价</div><div class="value">800元/吨</div><div></div></div>
+                    <div class="detail-row low"><div class="name">最低标价</div><div class="value">550元/吨</div><div></div></div>
+                    <div class="detail-row min"><div class="name">最小起售数量</div><div class="value">100吨</div><div></div></div>
+                    <div class="detail-row"><div class="name">交易方式</div><div class="value" style="color:var(--text);font-size:12px;">预付+尾款</div><div></div></div>
+                    <div class="detail-row"><div class="name">交付方式</div><div class="value" style="color:var(--text);font-size:12px;">买家自提</div><div></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lower-row">
+                <div class="supplement-wrap">
+                  <div class="detail-block">
+                    <div class="block-head"><h4>补充材料</h4></div>
+                    <div class="supplement-links">
+                      <a href="#">《动力煤检测报告》.pdf</a>
+                      <a href="#">《第三方检测报告》.pdf</a>
+                    </div>
+                  </div>
+                  <div class="detail-block">
+                    <div class="upload-box">
+                      <div class="upload-icon">↑</div>
+                      <div>点击上传文件到这里</div>
+                      <div style="font-size:11px;">支持的文件类型：word、pdf</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="detail-block desc-box">
+                  <div class="block-head"><h4>商品说明</h4></div>
+                  <textarea placeholder="请输入商品的交易特点、指标优势，以及促进成交率的说明。"></textarea>
+                </div>
+              </div>
+
+              <div class="product-actions">
+                <button class="main-btn primary">保存并发布</button>
+                <button class="main-btn">保存草稿</button>
+              </div>
+
+              <div class="stats-row">
+                <div class="stats-card"><div class="label">商品售卖次数</div><div class="value">6 次</div><div class="compare">较上周期 <span class="down">14.5% ↓</span></div></div>
+                <div class="stats-card"><div class="label">商品售卖总量</div><div class="value">300 万吨</div><div class="compare">较上周期 <span class="up">6.4% ↑</span></div></div>
+                <div class="stats-card"><div class="label">商品售卖总额</div><div class="value">130,000.00 元</div><div class="compare">较上周期 <span class="up">2.3% ↑</span></div></div>
+                <div class="stats-card"><div class="label">被查看次数</div><div class="value">1255 次</div><div class="compare">较上周期 <span class="down">14.5% ↓</span></div></div>
+                <div class="stats-card"><div class="label">点击转化率</div><div class="value">10.46%</div><div class="compare">较上周期 <span class="down">8.24% ↓</span></div></div>
+                <div class="stats-card"><div class="label">上次成交买家</div><div class="value" style="font-size:12px;">西安禾硕物流科技有限公司</div><div class="compare">热值：近7天被问18次<br>全硫分：近7天被问13次</div></div>
+              </div>
+            </div>
+
+            <div class="bottom-grid">
+              <div class="card manage-card">
+                <div class="section-mini-title"><h4>商品管理</h4></div>
+                <div class="upload-tile">
+                  <div class="icon">↑</div>
+                  <div style="font-size:18px;font-weight:800;color:var(--text);">点击上传</div>
+                  <div>商品图片单张大小不超过5M，最多可上传9张<br>支持JPG、PNG格式</div>
+                </div>
+                <div class="manage-actions">
+                  <button class="main-btn primary">保存并发布</button>
+                  <button class="main-btn">保存草稿</button>
+                </div>
+              </div>
+
+              <div class="card balance-card">
+                <div class="balance-top">
+                  <div>
+                    <h4>可用余额</h4>
+                    <div class="balance-total">￥ 2,518,454.00 <span style="font-size:13px;color:var(--blue);font-weight:700;margin-left:6px;">收支明细 &gt;</span></div>
+                    <div class="balance-meta">可提现余额：2,110,000.00　-　冻结金额：0.00　+　保证金：408,454.00　+　应收金额：0.00</div>
+                    <div class="toggle-row"><span>可用余额预警</span><span class="toggle"></span><span>阈值 ¥10,000.00</span></div>
+                  </div>
+                  <div style="display:flex;gap:8px;">
+                    <button class="mini-btn">资金记录</button>
+                    <button class="mini-btn">交易记录</button>
+                  </div>
+                </div>
+                <div class="balance-actions">
+                  <button class="main-btn primary">充值</button>
+                  <button class="main-btn warn">提现</button>
+                </div>
+              </div>
+
+              <div class="card logistics-card">
+                <div class="section-mini-title"><h4>物流服务</h4></div>
+                <div class="logistics-tabs">
+                  <span class="active">待发货1</span>
+                  <span>运输中2</span>
+                  <span>已签收1</span>
+                </div>
+                <div class="shipping-box">
+                  <div class="shipping-row">
+                    <div class="ship-icon send">发</div>
+                    <div class="ship-main"><strong>陕西煤业运输工业园区兴榆路6号</strong>榆林市　榆阳区</div>
+                    <div style="text-align:right;font-size:11px;line-height:1.45;">买家：山西美锦钢铁集团有限公司<br>商品：动力煤3000　商品数量：100 吨</div>
+                  </div>
+                  <div class="shipping-row">
+                    <div class="ship-icon receive">收</div>
+                    <div class="ship-main"><strong>山西省美锦钢铁集团有限公司</strong>太原市　小店区</div>
+                    <button class="main-btn primary">前往发货</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card contract-card">
+                <div class="section-mini-title"><h4>合同管理</h4><button class="mini-btn">管理</button></div>
+                <div class="contract-upload">
+                  <div class="uicon">📄</div>
+                  <div>点击上传文件到这里</div>
+                  <div style="font-size:11px;">支持的文件类型：word、pdf</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="right-stack">
+            <div class="card suggest-card">
+              <div class="summary-head">
+                <div>
+                  <h3 style="margin:0;">指标经营建议</h3>
+                  <p>根据平台分析给出的建议，请持续优化，获得商品曝光，提升成交！</p>
+                </div>
+              </div>
+              <div class="suggest-top">
+                <div class="score-ring">20分</div>
+                <div class="suggest-track">
+                  <div class="track-node active"><strong>4项</strong><span>影响成交转化</span></div>
+                  <div class="arrow">→</div>
+                  <div class="track-node"><strong>3项</strong><span>影响成交效率</span></div>
+                  <div class="arrow">→</div>
+                  <div class="track-node"><strong>3项</strong><span>其他</span></div>
+                </div>
+              </div>
+              <div class="suggest-item">
+                <div class="suggest-index"></div>
+                <h5>高价值指标未突出</h5>
+                <p>当前高价值指标：全硫分 0.8%，同类货源中优于 78% 的卖家，近 7 天“全硫分”相关咨询占比 34%。</p>
+                <div class="suggest-actions">
+                  <span class="suggest-link">建议在标题和摘要中前置突出“全硫分”</span>
+                  <button class="jump-btn">去优化</button>
+                </div>
+              </div>
+              <div class="suggest-item">
+                <div class="suggest-index"></div>
+                <h5>买家关注信息缺失</h5>
+                <p>近期买家多次询问“该指标是否可继续优化”，当前页面未说明可调整范围。</p>
+                <div class="suggest-actions">
+                  <span class="suggest-link">建议补充“指标是否可调”和“可调整方向”</span>
+                  <button class="jump-btn">去完善</button>
+                </div>
+              </div>
+              <div class="suggest-item">
+                <div class="suggest-index"></div>
+                <h5>当前溢价依据不清晰</h5>
+                <p>相近指标货源成交均价约为 570 元/吨，当前报价高出市场均值约 4.1%。</p>
+                <div class="suggest-actions">
+                  <span class="suggest-link">建议补充检测报告和指标优势说明，支撑当前报价</span>
+                  <button class="jump-btn">去完善</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="card progress-card">
+              <div class="progress-top">
+                <div>
+                  <h3 style="margin:0;font-size:16px;">成交进度</h3>
+                  <p style="margin:4px 0 0;color:var(--muted);font-size:12px;">订单编号：X237880003　4-13</p>
+                </div>
+                <div style="font-size:16px;color:#9aa3b2;">⌄</div>
+              </div>
+              <div style="color:var(--blue);font-weight:700;margin-bottom:4px;font-size:13px;">客户名称：府谷兴茂镁业有限公司</div>
+              <div class="timeline">
+                <div class="time-node"><div class="title">询价</div><div class="meta">04月12日14:22:35</div></div>
+                <div class="time-node"><div class="title">报价</div><div class="meta">04月12日14:56:35</div></div>
+                <div class="time-node"><div class="title">订单确认</div><div class="meta">04月12日15:22:35</div></div>
+                <div class="time-node"><div class="title">合同签署</div><div class="meta">04月12日17:22:35</div></div>
+                <div class="time-node"><div class="title">商品发货</div><div class="meta">当前推进节点</div></div>
+              </div>
+              <div class="done-ring">80%</div>
+              <div class="progress-bottom">交易完成</div>
+            </div>
+
+            <div class="card rank-card">
+              <div class="section-mini-title">
+                <h4>同类指标商品销售排行</h4>
+                <button class="mini-btn">推荐商品</button>
+              </div>
+              <div class="rank-products">
+                <div class="rank-item">
+                  <div class="thumb"><img src="../png/无烟煤图片.png" alt=""><span style="position:absolute;top:8px;left:8px;padding:4px 8px;border-radius:999px;background:var(--red);color:#fff;font-size:10px;font-weight:700;">热卖</span></div>
+                  <div class="body"><strong>动力煤5500</strong><div class="price">750<span style="font-size:11px;font-weight:600;">元/吨</span></div><div>10 万吨　库存数量</div><div style="color:#ff8a34;margin-top:4px;">最新成交：830元/吨</div></div>
+                </div>
+                <div class="rank-item">
+                  <div class="thumb"><img src="../png/无烟煤图片.png" alt=""><span style="position:absolute;top:8px;left:8px;padding:4px 8px;border-radius:999px;background:var(--red);color:#fff;font-size:10px;font-weight:700;">热卖</span></div>
+                  <div class="body"><strong>动力煤3000</strong><div class="price">620<span style="font-size:11px;font-weight:600;">元/吨</span></div><div>65 万吨　库存数量</div><div style="color:#ff8a34;margin-top:4px;">最新成交：750元/吨</div></div>
+                </div>
+                <div class="rank-item">
+                  <div class="thumb"><img src="../png/无烟煤图片.png" alt=""><span style="position:absolute;top:8px;left:8px;padding:4px 8px;border-radius:999px;background:var(--red);color:#fff;font-size:10px;font-weight:700;">热卖</span></div>
+                  <div class="body"><strong>动力煤3500</strong><div class="price">700<span style="font-size:11px;font-weight:600;">元/吨</span></div><div>19 万吨　库存数量</div><div style="color:#ff8a34;margin-top:4px;">最新成交：800元/吨</div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script>
+    (function () {
+      const stage = document.querySelector('.stage');
+      function fit() {
+        const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+        stage.style.setProperty('--scale', scale);
+      }
+      fit();
+      window.addEventListener('resize', fit);
+    })();
+  </script>
+</body>
+</html>

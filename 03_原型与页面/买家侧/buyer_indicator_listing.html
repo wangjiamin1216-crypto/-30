@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>买家指标商品列表主页</title>
+  <link rel="stylesheet" href="buyer-indicator.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="buyer_indicator_listing.html">
+      <span class="brand-icon"></span>
+      <span>
+        <span class="brand-title">传司机 ｜ 大宗交易平台</span>
+        <span class="brand-sub">LOGISTICS MOGUL　　BLOCK TRADE PLATFORM</span>
+      </span>
+    </a>
+    <nav class="main-nav">
+      <a class="active" href="buyer_indicator_listing.html">找货源</a>
+      <a href="buyer_indicator_detail.html">指标详情</a>
+      <a href="buyer_negotiation.html">询价议价</a>
+    </nav>
+    <div class="userbar">
+      <span class="bell">铃 <b>(8)</b></span>
+      <span>西安秦川能源采购有限公司</span>
+      <a class="link" href="#">企业中心</a>
+      <a href="#">退出</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="account-row">
+      <div class="account-left">
+        <div class="company">西安秦川能源采购有限公司</div>
+        <div class="score">采购经营分 <strong>82</strong></div>
+        <div class="score">采购等级 <strong>中级</strong></div>
+      </div>
+      <div class="notice">东硕物流（买家）：低硫动力煤近 7 日均价下探，<b>建议优先议价 5000 吨以上货源</b></div>
+    </section>
+
+    <section class="blue-strip">
+      <div class="todo">
+        <div class="todo-title">询价待回复</div>
+        <div class="todo-main">待卖家响应 <strong>6</strong> 条</div>
+        <a class="btn" href="buyer_negotiation.html">去跟进</a>
+      </div>
+      <div class="todo">
+        <div class="todo-title">议价待确认</div>
+        <div class="todo-main">卖家已修改 <strong>3</strong> 条</div>
+        <a class="btn" href="buyer_negotiation.html#seller-reply">去确认</a>
+      </div>
+      <div class="todo">
+        <div class="todo-title">指标已匹配</div>
+        <div class="todo-main">可采购货源 <strong>26</strong> 个</div>
+        <a class="btn" href="#goods">看货源</a>
+      </div>
+      <div class="todo">
+        <div class="todo-title">价格机会</div>
+        <div class="todo-main">低于均价 <strong>9</strong> 个</div>
+        <a class="btn" href="#price-ref">看参考</a>
+      </div>
+      <div class="todo">
+        <div class="todo-title">比较池</div>
+        <div class="todo-main">已加入 <strong id="compareCount">2</strong> 个</div>
+        <a class="btn" href="#compare">去比较</a>
+      </div>
+    </section>
+
+    <section class="layout">
+      <aside class="card panel">
+        <h2 class="section-title">指标筛选 <span class="tag green">已上架</span></h2>
+        <div class="filter-block">
+          <div class="filter-label">煤炭品类</div>
+          <div class="chips">
+            <button class="chip active">动力煤</button>
+            <button class="chip">无烟煤</button>
+            <button class="chip">焦煤</button>
+            <button class="chip">兰炭</button>
+          </div>
+        </div>
+        <div class="filter-block">
+          <div class="filter-label">发热量 kcal/kg</div>
+          <div class="range">
+            <input class="input" value="5000">
+            <input class="input" value="6200">
+          </div>
+        </div>
+        <div class="filter-block">
+          <div class="filter-label">全硫分</div>
+          <div class="chips">
+            <button class="chip active">≤0.6%</button>
+            <button class="chip">0.6-1.0%</button>
+            <button class="chip">1.0-1.5%</button>
+          </div>
+        </div>
+        <div class="filter-block">
+          <div class="filter-label">全水分</div>
+          <div class="chips">
+            <button class="chip active">≤12%</button>
+            <button class="chip">12-16%</button>
+            <button class="chip">16-20%</button>
+          </div>
+        </div>
+        <div class="filter-block">
+          <div class="filter-label">采购吨位</div>
+          <div class="range">
+            <input class="input" value="1000">
+            <input class="input" value="30000">
+          </div>
+        </div>
+        <div class="filter-block">
+          <div class="filter-label">交货地</div>
+          <div class="chips">
+            <button class="chip active">西安</button>
+            <button class="chip">榆林</button>
+            <button class="chip">府谷</button>
+            <button class="chip">到厂</button>
+          </div>
+        </div>
+        <button class="btn primary block" id="filterBtn">按指标找货</button>
+      </aside>
+
+      <section>
+        <div class="card search-card">
+          <div class="search-row">
+            <input class="input" value="动力煤 低硫 5500 西安到厂" aria-label="搜索指标商品">
+            <button class="btn primary">搜索</button>
+            <button class="btn gray">重置</button>
+          </div>
+          <div class="summary-grid">
+            <div class="summary-box">目标热值<strong>≥ 5500 kcal/kg</strong></div>
+            <div class="summary-box">目标硫分<strong>≤ 0.6%</strong></div>
+            <div class="summary-box">参考价格<strong>680-760 元/吨</strong></div>
+            <div class="summary-box">建议沟通<strong>水分、运费、阶梯价</strong></div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <span id="resultText">共 26 条已上架货源，按指标匹配度排序</span>
+          <div class="sorts">
+            <button class="chip active">匹配度</button>
+            <button class="chip">价格</button>
+            <button class="chip">吨位</button>
+            <button class="chip">更新时间</button>
+          </div>
+        </div>
+
+        <div class="goods-list" id="goods">
+          <article class="card goods-card">
+            <a class="photo" href="buyer_indicator_detail.html">
+              <img src="../png/无烟煤图片.png" alt="府谷低硫动力煤">
+              <span class="badge">热卖</span>
+              <span class="match">匹配 96%</span>
+            </a>
+            <div>
+              <h2 class="goods-title"><a href="buyer_indicator_detail.html">府谷低硫动力煤 5500 大卡</a></h2>
+              <div class="meta">
+                <span class="tag">平台验真</span>
+                <span class="tag green">允许议价</span>
+                <span>陕西煤业化工股份有限公司</span>
+                <span>交货地：西安/府谷</span>
+              </div>
+              <p class="desc">热值稳定、硫分低，适合电厂与工业锅炉连续采购。检测报告齐全，支持围绕水分、扣罚和阶梯价议价。</p>
+              <div class="metric-grid">
+                <div class="metric good"><span>收到基低位发热量</span><strong>5580</strong></div>
+                <div class="metric good"><span>全硫分</span><strong>0.48%</strong></div>
+                <div class="metric"><span>全水分</span><strong>10.8%</strong></div>
+                <div class="metric"><span>灰分</span><strong>13.6%</strong></div>
+              </div>
+            </div>
+            <div class="trade-side">
+              <div>
+                <div class="price">735 <small>元/吨</small></div>
+                <div class="price-note">近 7 日同指标：<b>720-748</b><br>低于中位价 6 元/吨</div>
+                <div class="stock-grid">
+                  <div>可售吨位<strong>18000 吨</strong></div>
+                  <div>起订量<strong>1000 吨</strong></div>
+                </div>
+              </div>
+              <div class="action-grid">
+                <button class="btn gray compare-btn">加入比较</button>
+                <a class="btn" href="buyer_negotiation.html">询价</a>
+                <a class="btn primary wide" href="buyer_indicator_detail.html">看指标详情</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card goods-card">
+            <a class="photo" href="buyer_indicator_detail.html?goods=yl5200">
+              <img src="../png/lALPD02Ut6x7xo3NA6DNBoA_1664_928.png" alt="榆林动力煤">
+              <span class="badge">低价</span>
+              <span class="match">匹配 91%</span>
+            </a>
+            <div>
+              <h2 class="goods-title"><a href="buyer_indicator_detail.html?goods=yl5200">榆林动力煤 5200 大卡 火车板</a></h2>
+              <div class="meta">
+                <span class="tag">物流可承接</span>
+                <span class="tag orange">价格优势</span>
+                <span>榆林丰源煤炭有限公司</span>
+                <span>交货地：榆林/西安</span>
+              </div>
+              <p class="desc">价格低于同类均值，适合成本敏感采购场景。建议重点确认全水分波动、火车发运排期和到厂运费。</p>
+              <div class="metric-grid">
+                <div class="metric"><span>收到基低位发热量</span><strong>5230</strong></div>
+                <div class="metric good"><span>全硫分</span><strong>0.55%</strong></div>
+                <div class="metric"><span>全水分</span><strong>12.4%</strong></div>
+                <div class="metric"><span>灰分</span><strong>15.1%</strong></div>
+              </div>
+            </div>
+            <div class="trade-side">
+              <div>
+                <div class="price">698 <small>元/吨</small></div>
+                <div class="price-note">近 7 日同指标：<b>690-718</b><br>接近低位价格区间</div>
+                <div class="stock-grid">
+                  <div>可售吨位<strong>32000 吨</strong></div>
+                  <div>起订量<strong>3000 吨</strong></div>
+                </div>
+              </div>
+              <div class="action-grid">
+                <button class="btn gray compare-btn">加入比较</button>
+                <a class="btn" href="buyer_negotiation.html?type=inquiry">询价</a>
+                <a class="btn primary wide" href="buyer_indicator_detail.html?goods=yl5200">看指标详情</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="card panel" id="compare">
+          <h2 class="section-title">指标比较池 <span class="tag">2/5</span></h2>
+          <div class="mini-list">
+            <div class="mini-item">
+              <div><strong>府谷低硫 5500</strong><span>硫分 0.48%｜735 元/吨</span></div>
+              <span class="tag green">优先</span>
+            </div>
+            <div class="mini-item">
+              <div><strong>榆林 5200</strong><span>库存 3.2 万吨｜698 元/吨</span></div>
+              <span class="tag orange">低价</span>
+            </div>
+          </div>
+          <a class="btn primary block" style="margin-top: 14px;" href="buyer_indicator_detail.html#compare">查看对比</a>
+        </section>
+
+        <section class="card panel" id="price-ref">
+          <h2 class="section-title">同指标价格参考</h2>
+          <div class="line-list">
+            <div class="line-row"><span>府谷 5500 低硫</span><b>720-748</b></div>
+            <div class="line-row"><span>榆林 5200 火车板</span><b>690-718</b></div>
+            <div class="line-row"><span>神木 6100 精煤</span><b>798-826</b></div>
+            <div class="line-row"><span>低硫溢价参考</span><b>+18 元/吨</b></div>
+          </div>
+        </section>
+
+        <section class="card panel">
+          <h2 class="section-title">企业沟通中心</h2>
+          <div class="mini-list">
+            <div class="mini-item">
+              <div><strong>陕西煤业化工</strong><span>待卖家响应｜5000 吨｜728 元/吨</span></div>
+              <a class="btn" href="buyer_negotiation.html">跟进</a>
+            </div>
+            <div class="mini-item">
+              <div><strong>山西美锦钢铁</strong><span>卖家已修改｜680 元/吨</span></div>
+              <a class="btn" href="buyer_negotiation.html#seller-reply">确认</a>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">copyright©2026 西安和硕供应链管理有限公司</footer>
+
+  <script>
+    document.querySelectorAll(".chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        if (chip.parentElement.classList.contains("chips") || chip.parentElement.classList.contains("sorts")) {
+          chip.parentElement.querySelectorAll(".chip").forEach(function (item) {
+            item.classList.remove("active");
+          });
+        }
+        chip.classList.add("active");
+      });
+    });
+
+    document.querySelectorAll(".compare-btn").forEach(function (button) {
+      button.addEventListener("click", function () {
+        button.textContent = "已加入";
+        button.classList.add("primary");
+        document.getElementById("compareCount").textContent = "3";
+      });
+    });
+
+    document.getElementById("filterBtn").addEventListener("click", function () {
+      document.getElementById("resultText").textContent = "共 12 条已上架货源，已按低硫 + 高热值 + 西安交货筛选";
+    });
+  </script>
+</body>
+</html>

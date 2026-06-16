@@ -1,0 +1,866 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>买家指标货源列表</title>
+  <style>
+    :root {
+      --blue: #3047ff;
+      --blue-dark: #1e2fd6;
+      --orange: #ff7a00;
+      --green: #12b981;
+      --red: #ff4d4f;
+      --text: #17213a;
+      --muted: #6b7280;
+      --line: #d8deea;
+      --bg: #f1f3f7;
+      --card: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "PingFang SC", "Microsoft YaHei", Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      height: 70px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 2px 8px rgba(17, 24, 39, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 330px;
+    }
+
+    .brand-mark {
+      width: 26px;
+      height: 26px;
+      border: 3px solid var(--blue);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .brand-mark::after {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-left: 3px solid var(--blue);
+      border-bottom: 3px solid var(--blue);
+      position: absolute;
+      left: 6px;
+      top: 5px;
+      transform: rotate(-45deg);
+    }
+
+    .brand-name {
+      color: var(--blue);
+      font-size: 21px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .brand-sub {
+      color: var(--blue);
+      font-size: 10px;
+      line-height: 1;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 54px;
+      font-size: 17px;
+      color: #111827;
+      height: 100%;
+    }
+
+    .nav a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      border-bottom: 3px solid transparent;
+      padding-top: 3px;
+    }
+
+    .nav a.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      color: #1f2a44;
+      white-space: nowrap;
+    }
+
+    .link-blue {
+      color: var(--blue);
+    }
+
+    .page {
+      padding: 20px 34px 34px;
+    }
+
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .company {
+      font-size: 21px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .notice {
+      background: #fff;
+      border-radius: 4px;
+      padding: 8px 14px;
+      color: #667085;
+      min-width: 530px;
+    }
+
+    .btn {
+      border: 1px solid var(--blue);
+      color: var(--blue);
+      background: #fff;
+      border-radius: 4px;
+      height: 34px;
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .btn.primary {
+      background: var(--blue);
+      color: #fff;
+    }
+
+    .btn.ghost {
+      border-color: #d7dcff;
+      background: #f8f9ff;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 278px 1fr 320px;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid #edf0f6;
+      border-radius: 4px;
+    }
+
+    .panel {
+      padding: 22px 24px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 0 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      height: 22px;
+      padding: 0 8px;
+      border-radius: 3px;
+      background: #e9fff7;
+      color: #03996e;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .tag.blue {
+      background: #eef2ff;
+      color: var(--blue);
+    }
+
+    .tag.orange {
+      background: #fff3e8;
+      color: var(--orange);
+    }
+
+    .filter-group {
+      border-top: 1px solid #edf0f6;
+      padding-top: 16px;
+      margin-top: 16px;
+    }
+
+    .filter-group:first-of-type {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .filter-label {
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .filter-options {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      border: 1px solid #d7ddea;
+      color: #465169;
+      background: #fff;
+      border-radius: 4px;
+      padding: 6px 10px;
+      cursor: pointer;
+      min-height: 30px;
+    }
+
+    .chip.active {
+      border-color: var(--blue);
+      color: var(--blue);
+      background: #f4f6ff;
+      font-weight: 700;
+    }
+
+    .range {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .input {
+      width: 100%;
+      height: 34px;
+      border: 1px solid #d7ddea;
+      border-radius: 4px;
+      padding: 0 10px;
+      color: #17213a;
+      outline: none;
+    }
+
+    .input:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 2px rgba(48, 71, 255, 0.08);
+    }
+
+    .search-card {
+      padding: 18px 22px;
+      margin-bottom: 16px;
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-row .input {
+      height: 40px;
+      font-size: 15px;
+    }
+
+    .metric-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .metric-card {
+      background: #f8faff;
+      border: 1px solid #e4e8ff;
+      border-radius: 4px;
+      padding: 12px;
+    }
+
+    .metric-card strong {
+      display: block;
+      color: var(--blue);
+      font-size: 18px;
+      margin-top: 4px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      color: #5d667a;
+    }
+
+    .sorts {
+      display: flex;
+      gap: 8px;
+    }
+
+    .goods-list {
+      display: grid;
+      gap: 14px;
+    }
+
+    .goods {
+      display: grid;
+      grid-template-columns: 184px 1fr 214px;
+      gap: 18px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .goods-img {
+      height: 150px;
+      border-radius: 4px;
+      background: #111;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .goods-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: var(--orange);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px 0 4px 0;
+      font-weight: 700;
+    }
+
+    .goods h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .goods-sub {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      color: #687287;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .summary {
+      color: #465169;
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+
+    .indicator-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid var(--line);
+      border-bottom: 0;
+      border-right: 0;
+    }
+
+    .indicator {
+      padding: 9px 10px;
+      border-right: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+      min-height: 58px;
+    }
+
+    .indicator span {
+      color: #667085;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    .indicator strong {
+      color: var(--blue);
+      font-size: 16px;
+    }
+
+    .indicator.good strong {
+      color: var(--green);
+    }
+
+    .trade-box {
+      border-left: 1px solid #edf0f6;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .price {
+      color: var(--orange);
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1.2;
+    }
+
+    .price small {
+      font-size: 14px;
+      color: #17213a;
+      font-weight: 500;
+    }
+
+    .price-ref {
+      margin-top: 10px;
+      color: #5d667a;
+      line-height: 1.8;
+    }
+
+    .price-ref b {
+      color: var(--orange);
+    }
+
+    .stock {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .stock div {
+      background: #f7f8fb;
+      border: 1px solid #edf0f6;
+      border-radius: 4px;
+      padding: 8px;
+      color: #697386;
+    }
+
+    .stock strong {
+      display: block;
+      color: #17213a;
+      font-size: 16px;
+      margin-top: 4px;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .actions .btn.primary {
+      grid-column: span 2;
+    }
+
+    .side-stack {
+      display: grid;
+      gap: 18px;
+    }
+
+    .compare-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .compare-item {
+      border: 1px solid #e2e7f0;
+      border-radius: 4px;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .compare-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .market-line {
+      display: flex;
+      justify-content: space-between;
+      padding: 11px 0;
+      border-bottom: 1px solid #edf0f6;
+    }
+
+    .market-line:last-child {
+      border-bottom: 0;
+    }
+
+    .market-line b {
+      color: var(--orange);
+    }
+
+    .chat-card {
+      background: linear-gradient(135deg, #f7f9ff 0%, #ffffff 100%);
+      border-color: #dfe5ff;
+    }
+
+    .chat-card p {
+      color: #5f6b82;
+      line-height: 1.7;
+      margin: 0 0 14px;
+    }
+
+    .footer {
+      height: 74px;
+      background: #2f2f2f;
+      color: #8d8d8d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 1280px) {
+      .layout {
+        grid-template-columns: 250px 1fr;
+      }
+
+      .side-stack {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .goods {
+        grid-template-columns: 170px 1fr;
+      }
+
+      .trade-box {
+        grid-column: 1 / -1;
+        border-left: 0;
+        border-top: 1px solid #edf0f6;
+        padding-left: 0;
+        padding-top: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true"></div>
+      <div>
+        <div class="brand-name">传司机 ｜ 大宗交易平台</div>
+        <div class="brand-sub">LOGISTICS MOGUL　　BLOCK TRADE PLATFORM</div>
+      </div>
+    </div>
+    <nav class="nav">
+      <a class="active" href="buyer_listing.html">找货源</a>
+      <a href="buyer_detail.html">指标详情</a>
+      <a href="#">采购订单</a>
+      <a href="#">企业沟通</a>
+    </nav>
+    <div class="user">
+      <span>🔔（8）</span>
+      <span>西安秦川能源采购有限公司</span>
+      <a class="link-blue" href="#">企业中心</a>
+      <a class="link-blue" href="#">退出</a>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div class="company">西安秦川能源采购有限公司 <span class="tag blue">买家端</span></div>
+      <div class="notice">📌 神木能源：低硫动力煤价格较上周下探 20 元/吨，当前更适合锁定 5,000 吨以上批量采购。</div>
+      <a class="btn primary" href="#compare">指标对比池</a>
+    </div>
+
+    <section class="layout">
+      <aside class="card panel">
+        <h1 class="section-title">指标筛选 <span class="tag">已匹配 26</span></h1>
+
+        <div class="filter-group">
+          <div class="filter-label">商品品类</div>
+          <div class="filter-options">
+            <button class="chip active" type="button">动力煤</button>
+            <button class="chip" type="button">无烟煤</button>
+            <button class="chip" type="button">焦煤</button>
+            <button class="chip" type="button">兰炭</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-label">收到基低位发热量 kcal/kg</div>
+          <div class="range">
+            <input class="input" value="5000" aria-label="最低热值">
+            <input class="input" value="6200" aria-label="最高热值">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-label">全硫分 %</div>
+          <div class="filter-options">
+            <button class="chip active" type="button">≤0.6</button>
+            <button class="chip" type="button">0.6-1.0</button>
+            <button class="chip" type="button">1.0-1.5</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-label">全水分 %</div>
+          <div class="filter-options">
+            <button class="chip active" type="button">≤12</button>
+            <button class="chip" type="button">12-16</button>
+            <button class="chip" type="button">16-20</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-label">采购吨位</div>
+          <div class="range">
+            <input class="input" value="1000" aria-label="最低吨位">
+            <input class="input" value="30000" aria-label="最高吨位">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-label">交付与区域</div>
+          <div class="filter-options">
+            <button class="chip active" type="button">府谷</button>
+            <button class="chip" type="button">神木</button>
+            <button class="chip" type="button">榆林</button>
+            <button class="chip" type="button">火车板价</button>
+            <button class="chip" type="button">汽运到厂</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <button class="btn primary" type="button" style="width: 100%;">按指标找货</button>
+        </div>
+      </aside>
+
+      <section>
+        <div class="card search-card">
+          <div class="search-row">
+            <input class="input" value="动力煤 低硫 高热值 府谷" aria-label="搜索关键词">
+            <button class="btn primary" type="button">搜索</button>
+            <button class="btn" type="button">重置</button>
+          </div>
+          <div class="metric-strip">
+            <div class="metric-card">目标热值<strong>≥ 5,500 kcal/kg</strong></div>
+            <div class="metric-card">目标硫分<strong>≤ 0.6%</strong></div>
+            <div class="metric-card">参考价区间<strong>690-760 元/吨</strong></div>
+            <div class="metric-card">沟通重点<strong>水分、运费、吨位锁价</strong></div>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <span>共 26 条货源，已按指标匹配度优先排序</span>
+          <div class="sorts">
+            <button class="chip active" type="button">匹配度</button>
+            <button class="chip" type="button">价格</button>
+            <button class="chip" type="button">库存</button>
+            <button class="chip" type="button">更新时间</button>
+          </div>
+        </div>
+
+        <div class="goods-list">
+          <article class="card goods">
+            <a class="goods-img" href="buyer_detail.html?id=SM-5500">
+              <img src="../png/无烟煤图片.png" alt="府谷低硫动力煤">
+              <span class="badge">匹配 96%</span>
+            </a>
+            <div>
+              <h2><a href="buyer_detail.html?id=SM-5500">府谷低硫动力煤 5500 大卡</a></h2>
+              <div class="goods-sub">
+                <span class="tag blue">平台验真</span>
+                <span class="tag">可议价</span>
+                <span>陕西煤业化工股份有限公司</span>
+                <span>提货地：陕西府谷</span>
+              </div>
+              <p class="summary">适合电厂与工业锅炉连续采购，热值稳定、硫分低，支持按批次查看检测报告。买家高频关注的水分、灰分、运输方式已完整披露。</p>
+              <div class="indicator-grid">
+                <div class="indicator good"><span>收到基低位发热量</span><strong>5,580</strong></div>
+                <div class="indicator good"><span>全硫分</span><strong>0.48%</strong></div>
+                <div class="indicator"><span>全水分</span><strong>10.8%</strong></div>
+                <div class="indicator"><span>灰分</span><strong>13.6%</strong></div>
+              </div>
+            </div>
+            <div class="trade-box">
+              <div>
+                <div class="price">735 <small>元/吨</small></div>
+                <div class="price-ref">近 7 日同指标成交：<b>720-748 元/吨</b><br>当前价位：低于中位价 6 元/吨</div>
+                <div class="stock">
+                  <div>可售库存<strong>18,000 吨</strong></div>
+                  <div>起订量<strong>1,000 吨</strong></div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" type="button">☆ 收藏</button>
+                <button class="btn" type="button">加入对比</button>
+                <a class="btn primary" href="buyer_detail.html?id=SM-5500">看指标详情</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card goods">
+            <a class="goods-img" href="buyer_detail.html?id=YL-5200">
+              <img src="../png/lALPD02Ut6x7xo3NA6DNBoA_1664_928.png" alt="榆林动力煤">
+              <span class="badge">匹配 91%</span>
+            </a>
+            <div>
+              <h2><a href="buyer_detail.html?id=YL-5200">榆林动力煤 5200 大卡 火车板</a></h2>
+              <div class="goods-sub">
+                <span class="tag blue">物流可承接</span>
+                <span class="tag orange">价格优势</span>
+                <span>榆林丰源煤炭有限公司</span>
+                <span>提货地：榆林横山</span>
+              </div>
+              <p class="summary">价格低于同类均值，适合对硫分有基础要求、对采购成本敏感的场景。建议沟通水分容差与火车发运排期。</p>
+              <div class="indicator-grid">
+                <div class="indicator"><span>收到基低位发热量</span><strong>5,230</strong></div>
+                <div class="indicator good"><span>全硫分</span><strong>0.55%</strong></div>
+                <div class="indicator"><span>全水分</span><strong>12.4%</strong></div>
+                <div class="indicator"><span>灰分</span><strong>15.1%</strong></div>
+              </div>
+            </div>
+            <div class="trade-box">
+              <div>
+                <div class="price">698 <small>元/吨</small></div>
+                <div class="price-ref">近 7 日同指标成交：<b>690-718 元/吨</b><br>当前价位：接近低位区间</div>
+                <div class="stock">
+                  <div>可售库存<strong>32,000 吨</strong></div>
+                  <div>起订量<strong>3,000 吨</strong></div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" type="button">☆ 收藏</button>
+                <button class="btn" type="button">加入对比</button>
+                <a class="btn primary" href="buyer_detail.html?id=YL-5200">看指标详情</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="card goods">
+            <a class="goods-img" href="buyer_detail.html?id=SM-6100">
+              <img src="../png/卖家工作台.png" alt="神木高热值精煤">
+              <span class="badge">匹配 87%</span>
+            </a>
+            <div>
+              <h2><a href="buyer_detail.html?id=SM-6100">神木高热值精煤 6100 大卡</a></h2>
+              <div class="goods-sub">
+                <span class="tag blue">检测齐全</span>
+                <span class="tag">支持金融</span>
+                <span>神木鑫泰能源有限公司</span>
+                <span>提货地：神木锦界</span>
+              </div>
+              <p class="summary">热值优势明显，适合对热效率要求高的终端用户。价格高于目标区间，建议围绕吨位阶梯价与长期协议价沟通。</p>
+              <div class="indicator-grid">
+                <div class="indicator good"><span>收到基低位发热量</span><strong>6,120</strong></div>
+                <div class="indicator"><span>全硫分</span><strong>0.72%</strong></div>
+                <div class="indicator good"><span>全水分</span><strong>8.6%</strong></div>
+                <div class="indicator"><span>灰分</span><strong>11.9%</strong></div>
+              </div>
+            </div>
+            <div class="trade-box">
+              <div>
+                <div class="price">812 <small>元/吨</small></div>
+                <div class="price-ref">近 7 日同指标成交：<b>798-826 元/吨</b><br>当前价位：处于合理区间</div>
+                <div class="stock">
+                  <div>可售库存<strong>9,600 吨</strong></div>
+                  <div>起订量<strong>800 吨</strong></div>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn ghost" type="button">☆ 收藏</button>
+                <button class="btn" type="button">加入对比</button>
+                <a class="btn primary" href="buyer_detail.html?id=SM-6100">看指标详情</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="card panel" id="compare">
+          <h2 class="section-title">指标对比池 <span class="tag blue">3/5</span></h2>
+          <div class="compare-list">
+            <div class="compare-item">
+              <div><strong>府谷低硫 5500</strong><span>热值 +80｜硫分 -0.12｜735 元/吨</span></div>
+              <button class="btn" type="button">移除</button>
+            </div>
+            <div class="compare-item">
+              <div><strong>榆林动力煤 5200</strong><span>价格低 37｜库存 3.2 万吨</span></div>
+              <button class="btn" type="button">移除</button>
+            </div>
+            <div class="compare-item">
+              <div><strong>神木精煤 6100</strong><span>热值最优｜价格高 77</span></div>
+              <button class="btn" type="button">移除</button>
+            </div>
+          </div>
+          <button class="btn primary" type="button" style="width: 100%; margin-top: 14px;">生成指标对比</button>
+        </section>
+
+        <section class="card panel">
+          <h2 class="section-title">价格参考</h2>
+          <div class="market-line"><span>府谷 5500 低硫</span><b>720-748</b></div>
+          <div class="market-line"><span>榆林 5200 火车板</span><b>690-718</b></div>
+          <div class="market-line"><span>神木 6100 精煤</span><b>798-826</b></div>
+          <div class="market-line"><span>低硫溢价</span><b>+18 元/吨</b></div>
+        </section>
+
+        <section class="card panel chat-card">
+          <h2 class="section-title">聊指标</h2>
+          <p>已为当前筛选生成沟通问题：热值是否支持批次锁定、硫分波动范围、水分超标扣罚、5,000 吨以上阶梯价。</p>
+          <a class="btn primary" href="buyer_detail.html?id=SM-5500#chat" style="width: 100%;">立即沟通</a>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">copyright©2026 西安和硕供应链管理有限公司</footer>
+
+  <script>
+    document.querySelectorAll(".chip").forEach(function (chip) {
+      chip.addEventListener("click", function () {
+        var group = chip.parentElement;
+        if (group && group.classList.contains("filter-options")) {
+          group.querySelectorAll(".chip").forEach(function (item) {
+            item.classList.remove("active");
+          });
+        }
+        chip.classList.toggle("active");
+      });
+    });
+  </script>
+</body>
+</html>

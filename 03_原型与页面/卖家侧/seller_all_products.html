@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>查看全部商品</title>
+  <link rel="stylesheet" href="./seller-prototype.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div>
+        <div class="brand-title">佬司机 | 大宗交易平台</div>
+        <div class="brand-sub">LOGISTICS MODULE · BLOCK TRADE PLATFORM</div>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="./seller_workbench_overview.html">工作台</a>
+      <a class="active" href="./seller_all_products.html">全部商品</a>
+      <a href="./seller_contract_signing.html">签约场景</a>
+      <a href="./seller_shipping_scene.html">发货场景</a>
+    </nav>
+    <div class="top-actions">
+      <div class="icon-btn">🔔<span class="badge-dot">20</span></div>
+      <span>西安禾硕数字科技有限公司</span>
+      <a href="./seller_enterprise_center.html">企业中心</a>
+      <span>退出</span>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div class="page-title">
+        <div>
+          <h1>全部商品</h1>
+          <p>查看卖家当前全部在售、审核中、库存不足和已下架商品，并承接后续编辑与发布。</p>
+        </div>
+      </div>
+      <div class="page-meta">
+        <span class="pill blue">在售 32</span>
+        <span class="pill orange">待审核 6</span>
+        <span class="pill">库存不足 11</span>
+        <a class="btn primary" href="./seller_workbench_overview.html">返回工作台</a>
+      </div>
+    </div>
+
+    <section class="card pad" style="margin-bottom:18px;">
+      <div class="form-grid">
+        <div class="field">
+          <label>商品搜索</label>
+          <input value="动力煤 / 焦煤 / 型煤" readonly>
+        </div>
+        <div class="field">
+          <label>商品状态</label>
+          <select>
+            <option>全部状态</option>
+            <option>已上架</option>
+            <option>审核中</option>
+            <option>库存不足</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>价格区间</label>
+          <input value="550 - 900 元/吨" readonly>
+        </div>
+        <div class="field">
+          <label>库存区间</label>
+          <input value="100 吨 - 100000 吨" readonly>
+        </div>
+      </div>
+      <div class="footer-actions">
+        <button class="btn ghost">重置条件</button>
+        <button class="btn primary">筛选商品</button>
+      </div>
+    </section>
+
+    <section class="layout-2col">
+      <article class="card pad">
+        <div class="section-title">
+          <div>
+            <h2>商品列表</h2>
+            <p>列表页承接商品查看、批量处理、进入编辑等动作。</p>
+          </div>
+          <div class="section-actions">
+            <button class="btn">批量下架</button>
+            <button class="btn">批量补库存</button>
+            <button class="btn primary">发布新商品</button>
+          </div>
+        </div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>商品</th>
+              <th>核心指标</th>
+              <th>价格与库存</th>
+              <th>状态</th>
+              <th>更新时间</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="primary-text">动力煤5500</div>
+                <div style="color:var(--muted);font-size:12px;">陕西 · 府谷</div>
+              </td>
+              <td>热值 5500kcal/kg<br>全硫分 0.8%<br>全水分 15%</td>
+              <td>600 元/吨<br>50000 吨</td>
+              <td><span class="status green">已上架</span></td>
+              <td>今天 09:20</td>
+              <td><a class="btn ghost" href="./seller_workbench_overview.html">查看</a></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="primary-text">动力煤3000</div>
+                <div style="color:var(--muted);font-size:12px;">榆林 · 神木</div>
+              </td>
+              <td>热值 3000kcal/kg<br>灰分 25%<br>固定碳 50%</td>
+              <td>750 元/吨<br>100 吨</td>
+              <td><span class="status orange">库存不足</span></td>
+              <td>今天 08:46</td>
+              <td><a class="btn warn" href="./seller_workbench_overview.html">补库存</a></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="primary-text">动力煤6200</div>
+                <div style="color:var(--muted);font-size:12px;">山西 · 太原</div>
+              </td>
+              <td>热值 6200kcal/kg<br>硫分 0.4%<br>挥发分 28%</td>
+              <td>820 元/吨<br>12000 吨</td>
+              <td><span class="status">审核中</span></td>
+              <td>昨天 17:12</td>
+              <td><button class="btn">查看进度</button></td>
+            </tr>
+            <tr>
+              <td>
+                <div class="primary-text">喷吹煤4800</div>
+                <div style="color:var(--muted);font-size:12px;">内蒙 · 鄂尔多斯</div>
+              </td>
+              <td>热值 4800kcal/kg<br>全水分 13%<br>灰分 10%</td>
+              <td>680 元/吨<br>28000 吨</td>
+              <td><span class="status red">已下架</span></td>
+              <td>05-11 13:02</td>
+              <td><button class="btn success">重新上架</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+
+      <aside class="stack">
+        <section class="card pad">
+          <div class="section-title">
+            <div>
+              <h3>当前选中商品</h3>
+              <p>沿用工作台商品经营卡，便于卖家快速判断是否需要返回主工作台优化。</p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="cover">
+              <img src="../png/无烟煤图片.png" alt="动力煤3000">
+              <span class="tag solid-red">库存不足</span>
+            </div>
+            <div class="body">
+              <h3 class="name">动力煤3000</h3>
+              <div class="product-meta">
+                <div>价格：<strong style="color:#ff8a34;">750 元/吨</strong></div>
+                <div>库存：100 吨</div>
+                <div>热值：3000kcal/kg</div>
+                <div>灰分：25%</div>
+                <div>全水分：30%</div>
+                <div>固定碳：50%</div>
+              </div>
+            </div>
+          </div>
+          <div class="footer-actions">
+            <a class="btn ghost" href="./seller_workbench_overview.html">回工作台</a>
+            <a class="btn primary" href="./seller_drafts.html">复制到草稿</a>
+          </div>
+        </section>
+
+        <section class="card pad">
+          <div class="section-title">
+            <div>
+              <h3>快捷操作</h3>
+            </div>
+          </div>
+          <div class="stack">
+            <button class="btn">编辑商品信息</button>
+            <button class="btn">调整价格区间</button>
+            <button class="btn">更新指标</button>
+            <button class="btn">上传补充材料</button>
+          </div>
+        </section>
+      </aside>
+    </section>
+  </main>
+</body>
+</html>
